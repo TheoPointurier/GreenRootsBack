@@ -24,7 +24,6 @@ const limiter = rateLimit({
 // Apply the rate limiting middleware to all requests.
 app.use(limiter)
 
-
 app.use(cors(corsOptions));
 
 // Load environment variables
