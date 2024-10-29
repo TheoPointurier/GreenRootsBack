@@ -112,12 +112,27 @@ CampaignLocation.belongsTo(Country, {
 
 // Association entre Campagne et Campagne Location
 
-// CampaignLocation.hasMany(Campaign, {
-//   as: "campaigns",
-//   foreignKey: {
-//     name: "id_location",
-//     allowNull: true,
-//   },
+//Dans bdd campaigns, ajout foreign key id_location
+// "id_location" INT,
+// FOREIGN KEY ("id_location") REFERENCES "campaign_locations"("id")
+
+CampaignLocation.hasMany(Campaign, {
+  as: "",
+  foreignKey: {
+    name: "id_location",
+    allowNull: false,
+  },
+});
+
+  Campaign.belongsTo(CampaignLocation, {
+    as: "locations",
+    foreignKey: {
+      name: "id_location",
+      allowNull: true
+    },
+  });
+
+
 
 
 
