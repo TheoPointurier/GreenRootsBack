@@ -1,7 +1,7 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "./sequelize-client.js";
 
-export class Order extends Model {}
+export class OrderLine extends Model {}
 
 OrderLine.init({
   price_ht_at_order: {
