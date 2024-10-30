@@ -81,6 +81,8 @@ CREATE TABLE "campaigns" (
     "end_campaign" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    "id_location" INT,
+    FOREIGN KEY ("id_location") REFERENCES "campaign_locations"("id")
 );
 
 CREATE TABLE "campaign_trees" (
