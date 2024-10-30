@@ -25,5 +25,5 @@ TreeSpecies.init({
     
 },{
   sequelize,
-  tableName: "reviews"
+  tableName: "tree_species"
 });
