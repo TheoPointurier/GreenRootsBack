@@ -1,38 +1,51 @@
+import "dotenv/config";
+
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import { rateLimit } from 'express-rate-limit'
+import { router as apiRouter} from "./src/routers/index.js";
 
 
 const app = express();
 
 
+// Desactiver le header x-powered-by Express
+app.disable("x-powered-by");
+
+//TODO : Ajouter les domaines autorisés
 // CORS configuration
-const corsOptions = {
-  origin: process.env.CORS_ORIGIN,
-  credentials: true, // si tu utilises des cookies ou des tokens sur le frontend
-};
+// const corsOptions = {
+//   origin: process.env.CORS_ORIGIN,
+//   credentials: true, // si tu utilises des cookies ou des tokens sur le frontend
+// };
 
 const limiter = rateLimit({
 	windowMs: 15 * 60 * 1000, // 15 minutes
 	limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
 	standardHeaders: true, // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
 	legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
-	// store: ... , // Redis, Memcached, etc. See below.
 })
 
 // Apply the rate limiting middleware to all requests.
 app.use(limiter)
 
-app.use(cors(corsOptions));
+//TODO : changer avec la variable une fois paramétrée
+app.use(cors("*"));
 
-// Load environment variables
-dotenv.config();
+// Ajout du body parser
+app.use(express.urlencoded({ extended: false })); // Body parser pour les body des <form>
+app.use(express.json({ limit: "10kb" })); // Body parser pour les body de type "JSON"
 
-app.get('/api', (req, res) => {
-  res.send('Hello World!');
-} );
 
-app.listen(3000, () => {
-  console.log('Server is running on http://localhost:3000');
+app.use("/api", apiRouter);
+
+app.use("/", (req, res) => {
+	res.send("<h1>Bienvenue sur l'API de GreenRoots</h1>")
+	// Todo : Mettre la documentation de l'API à la place
+})
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 } );  
