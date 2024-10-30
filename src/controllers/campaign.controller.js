@@ -1,4 +1,5 @@
-import { Campaign, CampaignLocation, Tree } from "../models/index.js";
+import { Campaign, CampaignLocation, Country, Tree } from "../models/index.js";
+import Joi from "joi";
 
 export async function getAllCampaign(req, res) {
   try {
@@ -7,6 +8,12 @@ export async function getAllCampaign(req, res) {
         {
           model: CampaignLocation,
           as: "location",
+          include: [
+            {
+              model: Country,
+              as: "country",
+            }
+          ]
         },
         {
           model: Tree,
@@ -23,12 +30,35 @@ export async function getAllCampaign(req, res) {
 
 export async function getCampaign(req, res) {
   try {
-    const campaign = await Campaign.findByPk(req.params.id, {
+    // Schéma de validation pour l'ID de la campagne
+    const schema = Joi.object({
+      id: Joi.number().integer().required().messages({
+        "number.base": "L'ID de la campagne doit être un nombre",
+        "number.integer": "L'ID de la campagne doit être un nombre entier",
+        "any.required": "L'ID de la campagne est obligatoire",
+      }),
+    });
+
+    // Validation de l'ID avec Joi
+    const { error } = schema.validate({ id: req.params.id });
+    if (error) {
+      return res.status(400).json({ message: error.message });
+    }
+
+    const campaignID = Number.parseInt(req.params.id);
+
+    const campaign = await Campaign.findByPk(campaignID, {
       // inclure l'assocition avec la table CampaignLocation
       include: [
         {
           model: CampaignLocation,
           as: "location",
+          include: [
+            {
+              model: Country,
+              as: "country",
+            }
+          ]
         },
         // inclure l'assocition avec la table Tree
         {
@@ -54,9 +84,39 @@ export async function getCampaign(req, res) {
 
 export async function createCampaign(req, res) {
   try {
+    // Schéma de validation pour la création de la campagne
+    const schema = Joi.object({
+      name: Joi.string().required().messages({
+        "string.base": "Le nom de la campagne doit être une chaîne de caractères",
+        "any.required": "Le nom de la campagne est obligatoire",
+      }),
+      description: Joi.string().messages({
+        "string.base": "La description de la campagne doit être une chaîne de caractères",
+      }),
+      start_campaign: Joi.date().messages({
+        "date.base": "La date de début de la campagne doit être une date",
+      }),
+      end_campaign: Joi.date().messages({
+        "date.base": "La date de fin de la campagne doit être une date",
+      }),
+      treesCampaign: Joi.array().items(
+        Joi.number().integer().messages({
+          "number.base": "Les IDs des arbres doivent être des nombres",
+          "number.integer": "Les IDs des arbres doivent être des nombres entiers",
+        })
+      ).messages({
+        "array.base": "La liste des arbres de la campagne doit être un tableau",
+      }),
+    });
+
+    // Validation de la requête avec Joi
+    const { error } = schema.validate(req.body);
+    if (error) {
+      return res.status(400).json({ message: error.details[0].message });
+    }
+
     // Extraire les données de la requête
-    const { name, description, start_campaign, end_campaign, treesCampaign } =
-      req.body;
+    const { name, description, start_campaign, end_campaign, treesCampaign } = req.body;
 
     // Création de la campagne
     const campaign = await Campaign.create({
@@ -83,6 +143,7 @@ export async function createCampaign(req, res) {
   }
 }
 
+
 export async function updateCampaign(req, res) {
   try {
     const campaign = await Campaign.findByPk(req.params.id);
@@ -99,7 +160,7 @@ export async function updateCampaign(req, res) {
         req.body;
 
       // Mettre à jour la campagne
-      await campaign.update({
+      await campaign.save({
         name,
         description,
         start_campaign,
@@ -123,6 +184,30 @@ export async function updateCampaign(req, res) {
   } catch (error) {
     res.status(500).json({
       message: "Erreur lors de la mise à jour de la campagne",
+      error: error.message,
+    });
+  }
+}
+
+export async function deleteCampaign(req, res) {
+  try {
+    // Rechercher la campagne par son ID
+    const campaign = await Campaign.findByPk(req.params.id);
+
+    if (campaign === null) {
+      res
+        .status(404)
+        .json({
+          // si id non trouvé informer l'utilisateur
+          message: `La Campagne avec l'id ${req.params.id} n'a pas été trouvé`,
+        });
+    } else {
+      await campaign.destroy();
+      res.json({ message: "Campagne supprimée avec succès" });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Erreur lors de la suppression de la campagne",
       error: error.message,
     });
   }
