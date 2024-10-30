@@ -392,18 +392,34 @@ export async function updateCampaign(req, res) {
 
 export async function deleteCampaign(req, res) {
   try {
-    // Rechercher la campagne par son ID
-    const campaign = await Campaign.findByPk(req.params.id);
+    // Rechercher la campagne par son ID avec ses associations
+    const campaign = await Campaign.findByPk(req.params.id, {
+      include: [
+        {
+          model: Tree,
+          as: 'treesCampaign',
+        },
+        {
+          model: CampaignLocation,
+          as: 'location',
+        },
+      ],
+    });
 
-    if (campaign === null) {
-      res.status(404).json({
-        // si id non trouvé informer l'utilisateur
-        message: `La Campagne avec l'id ${req.params.id} n'a pas été trouvé`,
+    if (!campaign) {
+      return res.status(404).json({
+        message: `La campagne avec l'id ${req.params.id} n'a pas été trouvée`,
       });
-    } else {
-      await campaign.destroy();
-      res.json({ message: 'Campagne supprimée avec succès' });
     }
+
+    // Supprimer les associations avec les arbres
+    await campaign.setTreesCampaign([]);
+    // Supprimer l'association avec la localisation
+    await campaign.setLocation(null);
+    // Supprimer la campagne
+    await campaign.destroy();
+
+    res.json({ message: 'Campagne supprimée avec succès' });
   } catch (error) {
     res.status(500).json({
       message: 'Erreur lors de la suppression de la campagne',
