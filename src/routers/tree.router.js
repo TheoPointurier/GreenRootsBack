@@ -7,4 +7,4 @@ export const router = Router();
 
 // routes pour les arbres
 router.get('/trees', treeController.getAllTrees);
-// router.get('/trees/:id', treeController.getOneTree);
+router.get('/trees/:id', treeController.getOneTree);
