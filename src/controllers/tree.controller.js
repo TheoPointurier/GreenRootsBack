@@ -70,3 +70,41 @@ export async function createTree(req, res) {
   }
 }
 
+export async function updateTree(req,res){
+
+  try {
+    //récupérer l'id de l'arbre à modifier
+    const treeId = Number.parseInt(req.params.id);
+  
+    if(Number.isNaN(treeId)){
+      res.status(400).send("L'id doit être un nombre");
+      return;
+    }
+  
+    const tree = await Tree.findByPk(treeId);
+  
+    if(!tree){
+      res.status(404).send("Arbre non trouvé");
+      return;
+    }
+  
+    const {name, price_ht, quantity, age, id_species} = req.body;
+  
+    //on update les champs modifiés
+    tree.name = name || tree.name;
+    tree.price_ht = price_ht || tree.price_ht;
+    tree.quantity = quantity || tree.quantity;
+    tree.age = age || tree.age;
+    tree.id_species = id_species || tree.id_species;
+  
+    await tree.save();
+  
+  res.json(tree);
+    
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Une erreur s'est produite");
+  }
+
+
+}
