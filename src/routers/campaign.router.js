@@ -6,3 +6,4 @@ export const router = Router();
 
 router.get('/campaigns', campaignController.getAllCampaign);
 router.get('/campaigns/:id', campaignController.getCampaign);
+router.post('/campaigns', campaignController.createCampaign);
