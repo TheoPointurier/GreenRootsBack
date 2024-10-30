@@ -90,14 +90,6 @@ export async function updateTree(req, res) {
       res.status(400).send("L'id doit être un nombre");
       return;
     }
-
-    const tree = await Tree.findByPk(treeId);
-
-    if (!tree) {
-      res.status(404).send("Arbre non trouvé");
-      return;
-    }
-
     const createTreeSchema = Joi.object({
       name: Joi.string().required(),
       price_ht: Joi.number().precision(2).positive(),
@@ -109,6 +101,14 @@ export async function updateTree(req, res) {
     if (error) {
       return res.status(400).json({ error: error.message });
     }
+
+    const tree = await Tree.findByPk(treeId);
+
+    if (!tree) {
+      res.status(404).send("Arbre non trouvé");
+      return;
+    }
+
 
     const { name, price_ht, quantity, age, id_species } = req.body;
 
@@ -122,6 +122,31 @@ export async function updateTree(req, res) {
     await tree.save();
 
     res.json(tree);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Une erreur s'est produite");
+  }
+}
+
+export async function deleteTree(req, res) {
+  try {
+    const treeId = Number.parseInt(req.params.id);
+
+    if (Number.isNaN(treeId)) {
+      res.status(400).send("L'id doit être un nombre");
+      return;
+    }
+
+    const tree = await Tree.findByPk(treeId);
+
+    if (!tree) {
+      res.status(404).send("Arbre non trouvé");
+      return;
+    }
+
+    await tree.destroy();
+
+    res.status(204).end();
   } catch (error) {
     console.error(error);
     res.status(500).send("Une erreur s'est produite");
