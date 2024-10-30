@@ -67,6 +67,7 @@ Campaign.belongsToMany(Tree, {
   as: "treesCampaign",
   foreignKey: "id_campaign",
   otherKey: "id_tree",
+  onDelete: "CASCADE",
 });
 
 Tree.belongsToMany(Campaign, {
@@ -74,6 +75,7 @@ Tree.belongsToMany(Campaign, {
   as: "campaignTree",
   foreignKey: "id_tree",
   otherKey: "id_campaign",
+  onDelete: "CASCADE",
 });
 
 // Assoctiation entre User et Campagne via table liaison (bookmarks)

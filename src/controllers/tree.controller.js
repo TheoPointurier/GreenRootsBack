@@ -43,5 +43,30 @@ export async function getOneTree(req, res) {
     console.error(error);
     res.status(500).send("Une erreur s'est produite");
   }
-
 }
+
+export async function createTree(req, res) {  
+
+  try {
+    //todo vérifier que l'id_species existe
+    //todo vérifier les données et les formater
+    // => JOI schéma
+    const {name, price_ht, quantity, age, id_species} = req.body;
+  
+    const createdTree = await Tree.create({
+      name,
+      price_ht,
+      quantity,
+      age,
+      id_species
+    });
+    console.log(createTree);
+  
+    res.status(201).json(createdTree);
+    
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Une erreur s'est produite");
+  }
+}
+
