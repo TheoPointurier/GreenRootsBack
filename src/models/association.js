@@ -10,7 +10,6 @@ import { Order } from "./order.model.js";
 import { CampaignLocation } from "./campaignLocation.model.js";
 import { sequelize } from "./sequelize-client.js";
 
-
 //Association role et user
 Role.hasMany(User, {
   as: "users",
@@ -92,8 +91,7 @@ Campaign.belongsToMany(User, {
   otherKey: "id_user",
 });
 
-// Association entre Country et Campaign Location 
-
+// Association entre Country et Campaign Location
 Country.hasMany(CampaignLocation, {
   as: "locations",
   foreignKey: {
@@ -111,26 +109,89 @@ CampaignLocation.belongsTo(Country, {
 });
 
 // Association entre Campagne et Campagne Location
-
 CampaignLocation.hasMany(Campaign, {
-  as: "",
+  as: "campaigns",
   foreignKey: {
     name: "id_location",
+    allowNull: true,
+  },
+});
+
+Campaign.belongsTo(CampaignLocation, {
+  as: "location",
+  foreignKey: {
+    name: "id_location",
+    allowNull: true,
+  },
+});
+
+// Association entre orders et user
+User.hasMany(Order, {
+  as: "orders",
+  foreignKey: {
+    name: "id_user",
+    allowNull: true,
+  },
+});
+
+Order.belongsTo(User, {
+  as: "user",
+  foreignKey: {
+    name: "id_user",
     allowNull: false,
   },
 });
 
-  Campaign.belongsTo(CampaignLocation, {
-    as: "locations",
-    foreignKey: {
-      name: "id_location",
-      allowNull: true
-    },
-  });
+// Association entre orders et orderLines
+Order.hasMany(OrderLine, {
+  as: "orderLines",
+  foreignKey: {
+    name: "id_order",
+    allowNull: false,
+  },
+});
 
+OrderLine.belongsTo(Order, {
+  as: "order",
+  foreignKey: {
+    name: "id_order",
+    allowNull: false,
+  },
+});
 
+// Association entre trees et orderLines
+Tree.hasMany(OrderLine, {
+  as: "orderLines",
+  foreignKey: {
+    name: "id_tree",
+    allowNull: true,
+  },
+});
 
+OrderLine.belongsTo(Tree, {
+  as: "tree",
+  foreignKey: {
+    name: "id_tree",
+    allowNull: false,
+  },
+});
 
+// Association entre campaign et orderLines
+Campaign.hasMany(OrderLine, {
+  as: "orderLines",
+  foreignKey: {
+    name: "id_campaign",
+    allowNull: true,
+  },
+});
+
+OrderLine.belongsTo(Campaign, {
+  as: "campaign",
+  foreignKey: {
+    name: "id_campaign",
+    allowNull: false,
+  },
+});
 
 export {
   User,
