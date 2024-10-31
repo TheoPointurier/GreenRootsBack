@@ -1,10 +1,18 @@
-import { User } from '../models/index.js';
+import { User, Review } from '../models/index.js';
 import Joi from 'joi';
 
+//todo obtenir les reviews de l'utilisateur
 export async function getAllUsers(req, res) {
   try {
-    const users = await User.findAll();
-    console.log(users);
+    const users = await User.findAll({
+      include: [
+        {
+          model: Review,
+          as: 'reviews',
+        },
+      ],
+    });
+
     res.json(users);
   } catch (error) {
     console.error(error);
@@ -15,13 +23,19 @@ export async function getAllUsers(req, res) {
 export async function getOneUser(req, res) {
   try {
     const userId = Number.parseInt(req.params.id);
-    console.log(userId);
 
     if (Number.isNaN(userId)) {
       res.status(400).send("L'id doit être un nombre");
       return;
     }
-    const user = await User.findByPk(userId);
+    const user = await User.findByPk(userId, {
+      include: [
+        {
+          model: Review,
+          as: 'reviews',
+        },
+      ],
+    });
 
     if (!user) {
       res.status(404).send('Utilisateur non trouvé');
