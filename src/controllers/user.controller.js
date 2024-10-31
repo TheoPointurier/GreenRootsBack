@@ -1,7 +1,7 @@
 import { User, Review } from '../models/index.js';
 import Joi from 'joi';
+import bcrypt from 'bcrypt';
 
-//todo obtenir les reviews de l'utilisateur
 export async function getAllUsers(req, res) {
   try {
     const users = await User.findAll({
@@ -49,6 +49,7 @@ export async function getOneUser(req, res) {
   }
 }
 
+//todo sécuriser le password
 export async function createUser(req, res) {
   try {
     const {
@@ -68,7 +69,16 @@ export async function createUser(req, res) {
       entity_siret,
     } = req.body;
 
+    //todo  ajouter un minimum de caractère ou de chiffre pour le password ??
+
     //todo limiter le nombre de caracaères pour les champs (ex siret)
+    //todo vérifier que l'email n'existe pas déjà
+    //todo vérifier que le role existe
+    //todo vérifier que le siret est unique
+    //todo vérifier que le siret est valide
+    //todo vérifier que le téléphone est valide (nb de chiffres ?)
+    //todo vérifier que le code postal est valide
+
     const createUserSchema = Joi.object({
       email: Joi.string().email().required(),
       password: Joi.string().required(),
@@ -91,9 +101,12 @@ export async function createUser(req, res) {
       return res.status(400).json({ error: error.message });
     }
 
+    // on hash le password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const user = await User.create({
       email,
-      password,
+      password: hashedPassword,
       firstname,
       lastname,
       city,
@@ -115,6 +128,7 @@ export async function createUser(req, res) {
   }
 }
 
+//todo sécuriser le  nouveau password
 export async function updateUser(req, res) {
   try {
     //récupérer l'id de l'utilisateur à modifier
@@ -186,6 +200,11 @@ export async function updateUser(req, res) {
     user.entity_name = entity_name || user.entity_name;
     user.entity_type = entity_type || user.entity_type;
     user.entity_siret = entity_siret || user.entity_siret;
+
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      user.password = hashedPassword;
+    }
 
     await user.save();
 
