@@ -58,6 +58,16 @@ INSERT INTO trees (name, price_ht, quantity, age, id_species) VALUES
 ('Châtaignier Européen', 20.00, 300, 5, 2),
 ('Prunus d’ornement', 12.00, 400, 2, 3);
 
+-- Localisations de campagnes
+INSERT INTO campaign_locations (name_location, id_country) VALUES
+('Forêt Amazonienne', 3),  -- Brésil
+('Paris', 1),              -- France
+('Berlin', 2),             -- Allemagne
+('Sydney', 8),             -- Australie
+('Nairobi', 13),           -- Kenya
+('Central Park, NYC', 4),  -- États-Unis
+('Barcelone', 15);         -- Espagne
+
 -- Création des campagnes
 INSERT INTO campaigns (name, description, start_campaign, end_campaign, id_location) VALUES
 ('Reforestation Amazonie', 'Projet de replantation d’arbres en Amazonie', '2024-01-01', '2025-01-01', 1),
@@ -68,15 +78,6 @@ INSERT INTO campaigns (name, description, start_campaign, end_campaign, id_locat
 ('Espaces Verts NYC', 'Ajout d’espaces verts à New York', '2023-08-01', '2024-08-01', 6),
 ('Récupération des Forêts Méditerranéennes', 'Retour des arbres dans le Sud de l’Europe', '2023-09-01', '2024-09-01', 7);
 
--- Localisations de campagnes
-INSERT INTO campaign_locations (name_location, id_country) VALUES
-('Forêt Amazonienne', 3),  -- Brésil
-('Paris', 1),              -- France
-('Berlin', 2),             -- Allemagne
-('Sydney', 8),             -- Australie
-('Nairobi', 13),           -- Kenya
-('Central Park, NYC', 4),  -- États-Unis
-('Barcelone', 15);         -- Espagne
 
 -- Ajout des relations entre les campagnes et les arbres
 INSERT INTO campaign_trees (id_campaign, id_tree) VALUES
