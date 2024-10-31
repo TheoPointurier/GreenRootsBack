@@ -11,6 +11,7 @@ export async function getAllUsers(req, res) {
           as: 'reviews',
         },
       ],
+      order: [['id', 'ASC']],
     });
 
     res.json(users);
@@ -72,12 +73,12 @@ export async function createUser(req, res) {
     //todo  ajouter un minimum de caractère ou de chiffre pour le password ??
 
     //todo limiter le nombre de caracaères pour les champs (ex siret)
-    //todo vérifier que l'email n'existe pas déjà
+    //todo vérifier que l'email n'existe pas déjà => find by email ?
     //todo vérifier que le role existe
-    //todo vérifier que le siret est unique
+    //todo vérifier que le siret est unique ?
     //todo vérifier que le siret est valide
     //todo vérifier que le téléphone est valide (nb de chiffres ?)
-    //todo vérifier que le code postal est valide
+    //todo vérifier que le code postal est valide ?
 
     const createUserSchema = Joi.object({
       email: Joi.string().email().required(),
@@ -121,14 +122,17 @@ export async function createUser(req, res) {
       entity_siret,
     });
 
-    res.status(201).json(user);
+    res.status(201).json({
+      message: 'Utilisateur créé',
+    });
   } catch (error) {
     console.error(error);
     res.status(500).send("Une erreur s'est produite");
   }
 }
 
-//todo sécuriser le  nouveau password
+//todo vérifier que l'email n'existe pas déjà => find by email ?
+
 export async function updateUser(req, res) {
   try {
     //récupérer l'id de l'utilisateur à modifier
@@ -201,6 +205,8 @@ export async function updateUser(req, res) {
     user.entity_type = entity_type || user.entity_type;
     user.entity_siret = entity_siret || user.entity_siret;
 
+    // on hash le password
+    //todo il semble hasché même si pas modif, revoir la condition ou comportement attendu ?
     if (password) {
       const hashedPassword = await bcrypt.hash(password, 10);
       user.password = hashedPassword;
@@ -208,7 +214,9 @@ export async function updateUser(req, res) {
 
     await user.save();
 
-    res.json(user);
+    res.json({
+      message: 'Utilisateur modifié',
+    });
   } catch (error) {
     console.error(error);
     res.status(500).send("Une erreur s'est produite");
