@@ -181,3 +181,28 @@ export async function updateUser(req, res) {
     res.status(500).send("Une erreur s'est produite");
   }
 }
+
+export async function deleteUser(req, res) {
+  try {
+    const userId = Number.parseInt(req.params.id);
+
+    if (Number.isNaN(userId)) {
+      res.status(400).send("L'id doit être un nombre");
+      return;
+    }
+
+    const user = await User.findByPk(userId);
+
+    if (!user) {
+      res.status(404).send('Utilisateur non trouvé');
+      return;
+    }
+
+    await user.destroy();
+
+    res.status(204).send();
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Une erreur s'est produite");
+  }
+}
