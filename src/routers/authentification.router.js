@@ -6,4 +6,4 @@ export const router = Router();
 
 // routes pour l'authentification
 router.post('/login', authController.login);
-// router.post('/register', authentificationController.register);
+router.post('/register', authController.register);
