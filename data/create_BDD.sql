@@ -104,6 +104,7 @@ CREATE TABLE "campaigns" (
 );
 
 CREATE TABLE "campaign_trees" (
+
     "id_campaign" INT NOT NULL,
     "id_tree" INT NOT NULL,
     "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
