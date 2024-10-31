@@ -7,3 +7,6 @@ export const router = Router();
 // routes pour les utilisateurs
 router.get('/users', userController.getAllUsers);
 router.get('/users/:id', userController.getOneUser);
+router.post('/users', userController.createUser);
+
+// une route post user qui renvoi un jwt et un id

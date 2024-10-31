@@ -1,4 +1,5 @@
 import { User } from '../models/index.js';
+import Joi from 'joi';
 
 export async function getAllUsers(req, res) {
   try {
@@ -28,6 +29,72 @@ export async function getOneUser(req, res) {
     }
 
     res.json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Une erreur s'est produite");
+  }
+}
+
+export async function createUser(req, res) {
+  try {
+    const {
+      email,
+      password,
+      firstname,
+      lastname,
+      city,
+      postal_code,
+      street,
+      street_number,
+      country,
+      id_role,
+      phone_number,
+      entity_name,
+      entity_type,
+      entity_siret,
+    } = req.body;
+
+    //todo limiter le nombre de caracaères pour les champs (ex siret)
+    const createUserSchema = Joi.object({
+      email: Joi.string().email().required(),
+      password: Joi.string().required(),
+      firstname: Joi.string().required(),
+      lastname: Joi.string().required(),
+      city: Joi.string().required(),
+      postal_code: Joi.string().required(),
+      street: Joi.string().required(),
+      street_number: Joi.number().required(),
+      country: Joi.string().required(),
+      phone_number: Joi.number(),
+      entity_name: Joi.string(),
+      entity_type: Joi.string(),
+      entity_siret: Joi.string(),
+      id_role: Joi.number().required(),
+    });
+
+    const { error } = createUserSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({ error: error.message });
+    }
+
+    const user = await User.create({
+      email,
+      password,
+      firstname,
+      lastname,
+      city,
+      postal_code,
+      street,
+      street_number,
+      country,
+      id_role,
+      phone_number,
+      entity_name,
+      entity_type,
+      entity_siret,
+    });
+
+    res.status(201).json(user);
   } catch (error) {
     console.error(error);
     res.status(500).send("Une erreur s'est produite");
