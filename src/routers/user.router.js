@@ -6,3 +6,4 @@ export const router = Router();
 
 // routes pour les utilisateurs
 router.get('/users', userController.getAllUsers);
+router.get('/users/:id', userController.getOneUser);
