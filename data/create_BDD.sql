@@ -104,10 +104,11 @@ CREATE TABLE "campaigns" (
 );
 
 CREATE TABLE "campaign_trees" (
-  "id_campaign" INT NOT NULL,
-  "id_tree" INT NOT NULL,
-  "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    "id_campaign" INT NOT NULL,
+    "id_tree" INT NOT NULL,
+    "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY ("id_campaign", "id_tree"),
   FOREIGN KEY ("id_campaign") REFERENCES "campaigns"("id"),
   FOREIGN KEY ("id_tree") REFERENCES "trees"("id")
