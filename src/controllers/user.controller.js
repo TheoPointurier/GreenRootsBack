@@ -206,7 +206,6 @@ export async function updateUser(req, res) {
     user.entity_siret = entity_siret || user.entity_siret;
 
     // on hash le password
-    //todo il semble hasché même si pas modif, revoir la condition ou comportement attendu ?
     if (password) {
       const hashedPassword = await bcrypt.hash(password, 10);
       user.password = hashedPassword;

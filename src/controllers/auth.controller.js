@@ -18,7 +18,6 @@ export async function login(req, res) {
         include: ['password'],
       },
     });
-    console.log(user);
 
     // Comparaison du mot de passe entre saisie et bdd
     const passwordMatch = await bcrypt.compare(password, user.password);
@@ -32,7 +31,6 @@ export async function login(req, res) {
       expiresIn: '1h',
     });
 
-    console.log(accesstoken);
     // Envoi du token
     return res.json({ accesstoken });
   } catch (error) {

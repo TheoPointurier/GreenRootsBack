@@ -4,9 +4,8 @@ import cors from 'cors';
 import { rateLimit } from 'express-rate-limit';
 import { router as apiRouter } from './src/routers/index.js';
 
-const app = express();
-
 dotenv.config();
+const app = express();
 
 // Desactiver le header x-powered-by Express
 app.disable('x-powered-by');
