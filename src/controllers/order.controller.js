@@ -1,5 +1,6 @@
 import Joi from 'joi';
 import { Campaign, Order, OrderLine, Tree, User } from '../models/index.js';
+import { or } from 'sequelize';
 //todo changer message si !userId
 export async function getAllOrdersByUser(req, res) {
   //récupérer l'id de l'utilisateur connecté
@@ -39,26 +40,16 @@ export async function getOneOrder(req, res) {}
 //todo changer message si !userId
 export async function createOrder(req, res) {
   //Méthode pour valider son panier
-
   const userId = req.userId;
 
   if (!userId) {
     return res.status(400).json({ error: 'User ID is missing in the request' });
   }
 
-  //todo voir si décomposition possible
-  const { total_amount, status, order_number } = req.body;
-
-  //valdier le schéma Joi pour protéger la commande
-
   const createOrderSchema = Joi.object({
-    order: Joi.array().items(
-      Joi.object({
-        total_amount: Joi.number().precision(2).required(),
-        status: Joi.string().required(),
-        order_number: Joi.string().required(),
-      }),
-    ),
+    total_amount: Joi.number().precision(2).required(),
+    status: Joi.string().required(),
+    order_number: Joi.string().required(),
     orderLines: Joi.array().items(
       Joi.object({
         price_ht_at_order: Joi.number().precision(2).required(),
@@ -66,7 +57,6 @@ export async function createOrder(req, res) {
         total_amount: Joi.number().precision(2).required(),
         id_campaign: Joi.number().required(),
         id_tree: Joi.number().required(),
-        id_order: Joi.number().required(),
       }),
     ),
   });
@@ -76,25 +66,32 @@ export async function createOrder(req, res) {
     return res.status(400).json({ error: error.message });
   }
 
+  const { total_amount, status, order_number, orderLines } = req.body;
+
+  //On créer l'oder avec l'id du token utilisateur
   const createdOrder = await Order.create({
     total_amount,
     status,
     order_number,
     id_user: userId,
   });
-  console.log(createdOrder);
 
-  // const createdOrderLine = await OrderLine.create({
-  //   price_ht_at_order,
-  //   quantity,
-  //   total_amount,
-  //   id_campaign,
-  //   id_tree,
-  //   id_order,
-  // });
-  console.log(createdOrderLine);
+  // gérer le cas ou la commande contient des lignes de commande
+  const createdOrderId = createdOrder.id;
+  // constitution d'un nouveau tableau avec les infos de chaque lignes de commande, auquel on ajouter l'idOrder
+  if (orderLines && orderLines.length > 0) {
+    const orderLinesCreated = orderLines.map((orderLine) => ({
+      ...orderLine,
+      id_order: createdOrderId,
+    }));
 
-  res.status(201).json(createdOrder);
+    //bulkcreate permet de créer plusieurs lignes de commande en une seule requête
+    const createdOrderLine = await OrderLine.bulkCreate(orderLinesCreated);
+    console.log('ICI', createdOrderLine);
+    res.status(201).json({ createdOrder, createdOrderLine });
+  } else {
+    res.status(201).json({ createdOrder });
+  }
 }
 
 export async function updateOrder(req, res) {
