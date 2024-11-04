@@ -86,6 +86,7 @@ export async function createOrder(req, res) {
     }));
 
     //bulkcreate permet de créer plusieurs lignes de commande en une seule requête
+    //Il remplace un for of / create
     const createdOrderLine = await OrderLine.bulkCreate(orderLinesCreated);
     console.log('ICI', createdOrderLine);
     res.status(201).json({ createdOrder, createdOrderLine });

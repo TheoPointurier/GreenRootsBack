@@ -1,10 +1,12 @@
 BEGIN;
 
+
 -- Création des rôles
 INSERT INTO roles (name, role_description) VALUES
 ('particulier', 'Utilisateur individuel'),
 ('association', 'Association engagée dans la reforestation'),
 ('entreprise', 'Entreprise sponsorisant la reforestation');
+
 
 -- Création des pays
 INSERT INTO country (name) VALUES
@@ -13,12 +15,14 @@ INSERT INTO country (name) VALUES
 ('Argentine'), ('Pérou'), ('Kenya'), ('Thaïlande'), ('Italie'),
 ('Espagne'), ('Portugal'), ('Suède'), ('Norvège'), ('Nouvelle-Zélande');
 
+
 -- Création des utilisateurs
 INSERT INTO users (firstname, lastname, email, password, phone_number, street_number, street, city, postal_code, country, entity_name, entity_type, entity_siret, id_role) VALUES
 ('Alice', 'Dupont', 'alice@example.com', 'motdepasse1', 123456789, 12, 'Rue de Paris', 'Paris', '75001', 'France', NULL, 'particulier', NULL, 1),
 ('Bob', 'Martin', 'bob@example.com', 'motdepasse2', 987654321, 56, 'Rue de Lyon', 'Lyon', '69000', 'France', 'Association Verte', 'association', '12345678901234', 2),
 ('Charlie', 'Dupuis', 'charlie@example.com', 'motdepasse3', 543216789, 78, 'Main St', 'New York', '10001', 'États-Unis', NULL, 'particulier', NULL, 1),
 ('Daisy', 'Durand', 'daisy@example.com', 'motdepasse4', 876543219, 22, 'Elm St', 'Los Angeles', '90001', 'États-Unis', 'Green Earth Ltd', 'entreprise', '98765432109876', 3);
+
 
 -- Création des avis
 INSERT INTO reviews (content, rating, id_user) VALUES
@@ -27,36 +31,39 @@ INSERT INTO reviews (content, rating, id_user) VALUES
 ('J’adore le concept et la réalisation.', 5, 3),
 ('GreenRoots m a permis de contribuer rapidement à un geste responsable', 3, 4);
 
+
 -- Création des espèces d'arbres
 INSERT INTO tree_species (description, species_name, co2_absorption, average_lifespan) VALUES
 ('Croissance rapide, absorption élevée de CO2', 'Eucalyptus', 40, 60),
-('Résistant et à longue durée de vie', 'Chêne', 30, 80),
-('Espèce exotique avec un stockage élevé de carbone', 'Acajou', 50, 90),
-('Arbre commun, adaptable à de nombreux environnements', 'Pin', 35, 50),
-('Originaire du Brésil, absorption élevée de CO2', 'Bois de rose', 45, 70);
+('Résistant et à une longue durée de vie', 'Chêne', 30, 100),
+('Arbre majestueux à grande hauteur', 'Séquoia', 50, 2000),
+('Symbolise la longévité, produit des rameaux aériens', 'Banyan', 40, 200),
+('Bois précieux pour mobilier, stockage élevé de carbone', 'Acajou', 35, 80),
+('Populaire pour le sirop d’érable, feuilles caduques', 'Érable', 25, 100),
+('Adapté aux climats froids, résistant', 'Pin', 30, 150),
+('Produit de l’huile d’olive, résistant à la sécheresse', 'Olivier', 20, 500),
+('Bois durable et résistant, utilisé en construction', 'Teck', 33, 100),
+('Bois léger, à croissance rapide', 'Balsa', 15, 30);
+
 
 -- Création des arbres avec des âges réalistes
 INSERT INTO trees (name, price_ht, quantity, age, id_species) VALUES
-('Eucalyptus Hybride', 15.50, 500, 2, 1),
-('Chêne Rouge', 20.00, 200, 5, 2),
-('Acajou des Caraïbes', 35.00, 150, 3, 3),
-('Pin d’Écosse', 12.50, 600, 4, 4),
-('Bois de rose', 50.00, 50, 6, 5),
-('Balsa', 8.00, 700, 1, 1),
-('Manguier', 12.00, 120, 3, 1),
-('Érable Royal', 22.00, 300, 5, 2),
-('Saule Pleureur', 15.00, 400, 3, 4),
-('Sapin Noble', 17.00, 250, 4, 2),
-('Frêne Commun', 18.00, 350, 3, 3),
-('Banyan Sacré', 40.00, 50, 10, 3),
-('Cèdre du Liban', 30.00, 100, 6, 2),
-('Teck Indonésien', 45.00, 80, 7, 3),
-('Olivier Méditerranéen', 60.00, 30, 12, 1),
-('Séquoia Géant', 80.00, 20, 20, 4),
-('Hêtre Commun', 25.00, 200, 4, 2),
-('Noyer Noir', 32.00, 150, 6, 2),
-('Châtaignier Européen', 20.00, 300, 5, 2),
-('Prunus d’ornement', 12.00, 400, 2, 3);
+('Eucalyptus Bleuté', 12.00, 300, 3, 1),                  -- Eucalyptus
+('Chêne Blanc', 18.50, 200, 5, 2),                        -- Chêne
+('Séquoia Géant', 70.00, 25, 50, 3),                      -- Séquoia
+('Banian de l''Inde', 30.00, 40, 15, 4),                  -- Banyan
+('Acajou des Tropiques', 45.00, 100, 10, 5),              -- Acajou
+('Érable Sucre', 25.00, 150, 6, 6),                       -- Érable
+('Pin d''Écosse', 14.50, 600, 4, 7),                      -- Pin
+('Olivier Méditerranéen', 55.00, 80, 20, 8),              -- Olivier
+('Teck d''Asie', 50.00, 70, 8, 9),                        -- Teck
+('Balsa du Pérou', 10.00, 500, 2, 10),                    -- Balsa
+('Chêne Rouge', 20.00, 150, 7, 2),                        -- Chêne
+('Acajou du Honduras', 42.00, 90, 6, 5),                  -- Acajou
+('Pin Blanc', 13.00, 400, 3, 7),                          -- Pin
+('Séquoia Céleste', 75.00, 30, 60, 3),                    -- Séquoia
+('Olivier Sauvage', 50.00, 100, 25, 8);                   -- Olivier
+
 
 -- Localisations de campagnes
 INSERT INTO campaign_locations (name_location, id_country) VALUES
@@ -68,15 +75,16 @@ INSERT INTO campaign_locations (name_location, id_country) VALUES
 ('Central Park, NYC', 4),  -- États-Unis
 ('Barcelone', 15);         -- Espagne
 
+
 -- Création des campagnes
 INSERT INTO campaigns (name, description, start_campaign, end_campaign, id_location) VALUES
 ('Reforestation Amazonie', 'Projet de replantation d’arbres en Amazonie', '2024-01-01', '2025-01-01', 1),
-('Forêt Urbaine France', 'Plantation d’arbres dans les villes françaises', '2024-03-01', '2024-12-01', 2),
-('Habitat Faunique Allemagne', 'Restauration d’habitats fauniques en Allemagne', '2023-05-01', '2024-05-01', 3),
-('Reverdissement Australie', 'Projet pour lutter contre la déforestation en Australie', '2024-07-01', '2025-07-01', 4),
+('Plantation de Forêts Urbaines', 'Plantation d’arbres dans les villes françaises', '2024-03-01', '2024-12-01', 2),
+('Restauration de la faune', 'Restauration d’habitats fauniques en Allemagne', '2023-05-01', '2024-05-01', 3),
+('Reforestation', 'Projet pour lutter contre la déforestation en Australie', '2024-07-01', '2025-07-01', 4),
 ('Restauration de la Savane Africaine', 'Replantation d’espèces natives au Kenya', '2023-06-01', '2024-06-01', 5),
-('Espaces Verts NYC', 'Ajout d’espaces verts à New York', '2023-08-01', '2024-08-01', 6),
-('Récupération des Forêts Méditerranéennes', 'Retour des arbres dans le Sud de l’Europe', '2023-09-01', '2024-09-01', 7);
+('Espaces Verts', 'Ajout d’espaces verts à New York', '2023-08-01', '2024-08-01', 6),
+('Reforestation des Forêts Méditerranéennes', 'Retour des arbres dans le Sud de l’Europe', '2023-09-01', '2024-09-01', 7);
 
 
 -- Ajout des relations entre les campagnes et les arbres
@@ -89,11 +97,13 @@ INSERT INTO campaign_trees (id_campaign, id_tree) VALUES
 (6, 6), (6, 11), (6, 7),    -- Campagne 6 avec arbres 6, 11, et 7
 (7, 4), (7, 9), (7, 13), (7, 10); -- Campagne 7 avec 4 arbres différents
 
+
 -- Favoris (campagnes sauvegardées)
 INSERT INTO bookmarks (id_user, id_campaign) VALUES
 (1, 1), (1, 2), (1, 3),
 (2, 4), (2, 5), (2, 6),
 (3, 7), (4, 1), (4, 2);
+
 
 -- Commandes
 INSERT INTO orders (total_amount, status, order_number, id_user) VALUES
@@ -107,6 +117,7 @@ INSERT INTO orders (total_amount, status, order_number, id_user) VALUES
 (130.00, 'terminée', 'CMD008', 3),
 (250.30, 'expédiée', 'CMD009', 4),
 (95.50, 'terminée', 'CMD010', 2);
+
 
 -- Détails des commandes
 INSERT INTO order_line (price_ht_at_order, quantity, total_amount, id_order, id_tree, id_campaign) VALUES
@@ -125,4 +136,8 @@ INSERT INTO order_line (price_ht_at_order, quantity, total_amount, id_order, id_
 (20.50, 7, 143.50, 7, 4, 7),    -- CMD007 pour Campagne 7, Arbre 4
 (30.00, 4, 120.00, 7, 13, 7);   -- CMD007 pour Campagne 7, Arbre 13
 
+
 COMMIT;
+
+
+
