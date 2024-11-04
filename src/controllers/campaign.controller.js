@@ -18,6 +18,12 @@ export async function getAllCampaign(req, res) {
         {
           model: Tree,
           as: 'treesCampaign',
+          include: [
+            {
+              model: TreeSpecies,
+              as: 'species',
+            },
+          ],
         },
       ],
     });
@@ -56,10 +62,16 @@ export async function getCampaign(req, res) {
             },
           ],
         },
-        // inclure l'assocition avec la table Tree
+        // inclure l'association avec la table Tree
         {
           model: Tree,
           as: 'treesCampaign',
+          include: [
+            {
+              model: TreeSpecies,
+              as: 'species',
+            },
+          ],
         },
       ],
     });
