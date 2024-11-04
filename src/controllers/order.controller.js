@@ -68,7 +68,7 @@ export async function createOrder(req, res) {
 
   const { total_amount, status, order_number, orderLines } = req.body;
 
-  //On créer l'oder avec l'id du token utilisateur
+  //On créer l'order avec l'id du token utilisateur
   const createdOrder = await Order.create({
     total_amount,
     status,
@@ -78,7 +78,7 @@ export async function createOrder(req, res) {
 
   // gérer le cas ou la commande contient des lignes de commande
   const createdOrderId = createdOrder.id;
-  // constitution d'un nouveau tableau avec les infos de chaque lignes de commande, auquel on ajouter l'idOrder
+  // constitution d'un nouveau tableau avec les infos de chaque lignes de commande, auquel on ajoute l'idOrder
   if (orderLines && orderLines.length > 0) {
     const orderLinesCreated = orderLines.map((orderLine) => ({
       ...orderLine,

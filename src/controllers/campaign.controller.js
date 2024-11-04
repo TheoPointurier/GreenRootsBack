@@ -1,4 +1,10 @@
-import { Campaign, CampaignLocation, Country, Tree } from '../models/index.js';
+import {
+  Campaign,
+  CampaignLocation,
+  Country,
+  Tree,
+  TreeSpecies,
+} from '../models/index.js';
 import Joi from 'joi';
 
 export async function getAllCampaign(req, res) {
@@ -50,7 +56,7 @@ export async function getCampaign(req, res) {
     const campaignID = Number.parseInt(req.params.id);
 
     const campaign = await Campaign.findByPk(campaignID, {
-      // inclure l'assocition avec la table CampaignLocation
+      // inclure l'association avec la table CampaignLocation
       include: [
         {
           model: CampaignLocation,
