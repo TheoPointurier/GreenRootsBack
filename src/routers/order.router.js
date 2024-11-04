@@ -6,7 +6,7 @@ export const router = Router();
 
 router.get('/orders', verifyToken, orderController.getAllOrdersByUser);
 router.get('/orders/:id', orderController.getOneOrder);
-router.post('/orders', orderController.createOrder);
+router.post('/orders', verifyToken, orderController.createOrder);
 
 //Route pour le back office
 router.patch('/orders/:id', orderController.updateOrder);

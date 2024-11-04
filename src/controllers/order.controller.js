@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import { Campaign, Order, OrderLine, Tree, User } from '../models/index.js';
-
+//todo changer message si !userId
 export async function getAllOrdersByUser(req, res) {
   //récupérer l'id de l'utilisateur connecté
   const userId = req.userId;
@@ -14,10 +14,6 @@ export async function getAllOrdersByUser(req, res) {
       id_user: userId,
     },
     include: [
-      {
-        model: User,
-        as: 'user',
-      },
       {
         model: OrderLine,
         as: 'orderLines',
@@ -40,7 +36,66 @@ export async function getAllOrdersByUser(req, res) {
 
 export async function getOneOrder(req, res) {}
 
-export async function createOrder(req, res) {}
+//todo changer message si !userId
+export async function createOrder(req, res) {
+  //Méthode pour valider son panier
+
+  const userId = req.userId;
+
+  if (!userId) {
+    return res.status(400).json({ error: 'User ID is missing in the request' });
+  }
+
+  //todo voir si décomposition possible
+  const { total_amount, status, order_number } = req.body;
+
+  //valdier le schéma Joi pour protéger la commande
+
+  const createOrderSchema = Joi.object({
+    order: Joi.array().items(
+      Joi.object({
+        total_amount: Joi.number().precision(2).required(),
+        status: Joi.string().required(),
+        order_number: Joi.string().required(),
+      }),
+    ),
+    orderLines: Joi.array().items(
+      Joi.object({
+        price_ht_at_order: Joi.number().precision(2).required(),
+        quantity: Joi.number().required(),
+        total_amount: Joi.number().precision(2).required(),
+        id_campaign: Joi.number().required(),
+        id_tree: Joi.number().required(),
+        id_order: Joi.number().required(),
+      }),
+    ),
+  });
+
+  const { error } = createOrderSchema.validate(req.body);
+  if (error) {
+    return res.status(400).json({ error: error.message });
+  }
+
+  const createdOrder = await Order.create({
+    total_amount,
+    status,
+    order_number,
+    id_user: userId,
+  });
+  console.log(createdOrder);
+
+  // const createdOrderLine = await OrderLine.create({
+  //   price_ht_at_order,
+  //   quantity,
+  //   total_amount,
+  //   id_campaign,
+  //   id_tree,
+  //   id_order,
+  // });
+  console.log(createdOrderLine);
+
+  res.status(201).json(createdOrder);
+}
 
 export async function updateOrder(req, res) {
   const orderId = Number.parseInt(req.params.id);
