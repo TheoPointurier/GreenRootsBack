@@ -28,6 +28,13 @@ export async function getOneUser(req, res) {
   try {
     const userId = Number.parseInt(req.params.id);
 
+    // Comparer l'id de user et req.userId du token
+    if (userId !== req.userId) {
+      console.log('dégage');
+      res.status(403).send('Accès refusé');
+      return;
+    }
+
     if (Number.isNaN(userId)) {
       res.status(400).send("L'id doit être un nombre");
       return;
