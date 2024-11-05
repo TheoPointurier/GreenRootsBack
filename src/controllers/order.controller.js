@@ -35,6 +35,7 @@ export async function getAllOrdersByUser(req, res) {
   res.json(orders);
 }
 
+//todo à faire ?
 export async function getOneOrder(req, res) {}
 
 //todo changer message si !userId
