@@ -41,7 +41,7 @@ export async function getOneUser(req, res) {
     }
     const user = await User.findByPk(userId, {
       attributes: {
-        exclude: ['password'],
+        exclude: ['password', 'is_admin'],
       },
       include: [
         {

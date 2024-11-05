@@ -17,11 +17,12 @@ INSERT INTO country (name) VALUES
 
 
 -- Création des utilisateurs
-INSERT INTO users (firstname, lastname, email, password, phone_number, street_number, street, city, postal_code, country, entity_name, entity_type, entity_siret, id_role) VALUES
-('Alice', 'Dupont', 'alice@example.com', 'motdepasse1', 123456789, 12, 'Rue de Paris', 'Paris', '75001', 'France', NULL, 'particulier', NULL, 1),
-('Bob', 'Martin', 'bob@example.com', 'motdepasse2', 987654321, 56, 'Rue de Lyon', 'Lyon', '69000', 'France', 'Association Verte', 'association', '12345678901234', 2),
-('Charlie', 'Dupuis', 'charlie@example.com', 'motdepasse3', 543216789, 78, 'Main St', 'New York', '10001', 'États-Unis', NULL, 'particulier', NULL, 1),
-('Daisy', 'Durand', 'daisy@example.com', 'motdepasse4', 876543219, 22, 'Elm St', 'Los Angeles', '90001', 'États-Unis', 'Green Earth Ltd', 'entreprise', '98765432109876', 3);
+INSERT INTO users (firstname, lastname, email, password, phone_number, street_number, street, city, postal_code, country, entity_name, entity_type, entity_siret, id_role, is_admin) VALUES
+('Alice', 'Dupont', 'alice@example.com', 'motdepasse1', 123456789, 12, 'Rue de Paris', 'Paris', '75001', 'France', NULL, 'particulier', NULL, 1, FALSE),
+('Bob', 'Martin', 'bob@example.com', 'motdepasse2', 987654321, 56, 'Rue de Lyon', 'Lyon', '69000', 'France', 'Association Verte', 'association', '12345678901234', 2, FALSE),
+('Charlie', 'Dupuis', 'charlie@example.com', 'motdepasse3', 543216789, 78, 'Main St', 'New York', '10001', 'États-Unis', NULL, 'particulier', NULL, 1, FALSE),
+('Daisy', 'Durand', 'daisy@example.com', 'motdepasse4', 876543219, 22, 'Elm St', 'Los Angeles', '90001', 'États-Unis', 'Green Earth Ltd', 'entreprise', '98765432109876', 3, FALSE),
+('Etienne', 'GreenRoots', 'greenroots@oclock.io', 'motdepasse1', 123456789, 12, 'Rue de Paris', 'Paris', '75001', 'France', NULL, 'particulier', NULL, 1, TRUE);
 
 
 -- Création des avis
