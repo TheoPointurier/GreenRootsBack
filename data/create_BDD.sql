@@ -40,6 +40,7 @@ CREATE TABLE "users" (
     "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     "id_role" INT NOT NULL,
+    "is_admin" BOOLEAN DEFAULT FALSE,
     FOREIGN KEY ("id_role") REFERENCES "roles"("id")
 );
 

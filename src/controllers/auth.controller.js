@@ -27,13 +27,24 @@ export async function login(req, res) {
       res.status(401).send('Email ou mot de passe incorrect');
       return;
     }
+
+    //
+    const userSafe = {
+      ...user.dataValues,
+    };
+
+    // biome-ignore lint/performance/noDelete: <explanation>
+    delete userSafe.password;
+    // biome-ignore lint/performance/noDelete: <explanation>
+    delete userSafe.is_admin;
+
     // Création du token d'authentification qui expire au bout d'une heure
     const accesstoken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
       expiresIn: '1h',
     });
 
     // Envoi du token
-    return res.json({ accesstoken });
+    return res.json({ accesstoken, user: userSafe });
   } catch (error) {
     console.error(error);
     res.status(500).send("Une erreur s'est produite");

@@ -58,6 +58,10 @@ User.init(
       type: DataTypes.STRING,
       allowNul: false,
     },
+    is_admin: {
+      type: DataTypes.BOOLEAN,
+      allowNul: false,
+    },
   },
   { sequelize, tableName: 'users' },
 );
