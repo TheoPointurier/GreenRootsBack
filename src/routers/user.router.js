@@ -12,6 +12,6 @@ router.patch('/users/:id', verifyToken, userController.updateUser);
 router.delete('/users/:id', verifyToken, userController.deleteUser);
 
 // route en post pour backoffice
-router.post('/users', userController.createUser);
+// router.post('/users', userController.createUser);
 //(besoin de moins de vérification)
-router.get('/users', userController.getAllUsers);
+// router.get('/users', userController.getAllUsers);
