@@ -28,7 +28,7 @@ export async function login(req, res) {
       return;
     }
     // Création du token d'authentification qui expire au bout d'une heure
-    const accesstoken = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+    const accesstoken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
       expiresIn: '1h',
     });
 

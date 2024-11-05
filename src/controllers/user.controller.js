@@ -5,6 +5,9 @@ import bcrypt from 'bcrypt';
 export async function getAllUsers(req, res) {
   try {
     const users = await User.findAll({
+      attributes: {
+        exclude: ['password'],
+      },
       include: [
         {
           model: Review,
@@ -30,6 +33,9 @@ export async function getOneUser(req, res) {
       return;
     }
     const user = await User.findByPk(userId, {
+      attributes: {
+        exclude: ['password'],
+      },
       include: [
         {
           model: Review,
