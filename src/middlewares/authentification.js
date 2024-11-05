@@ -1,6 +1,11 @@
 import jwt from 'jsonwebtoken';
 
 export default function verifyToken(req, res, next) {
+  // On vérifie que le token est présent
+  if (!req.header('Authorization')) {
+    return res.status(401).send('Accès refusé');
+  }
+
   // On sépare le token du mot Bearer (car le token est de la forme "Bearer token)
   const token = req.header('Authorization').split(' ');
 
