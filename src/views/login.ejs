@@ -11,6 +11,18 @@
 
 <%- include('./partials/header.ejs') %>
 
-  <h1>Vue Home ADMIN</h1>
+  <form action="" method="post" class="form_login">
+    <div>
+      <label for="email"></label>
+      <input type="email" placeholder="Email" required>
+    </div>
+    <div>
+      <label for="password"></label>
+      <input type="password" placeholder="Password" required>
+    </div>
+
+
+    <button type="submit">Login</button>
+  </form>
 
   <%- include('./partials/footer.ejs') %>

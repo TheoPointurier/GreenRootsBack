@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 import { rateLimit } from 'express-rate-limit';
+import { router as backOfficeRouter } from './src/routers/backOffice/backOffice.router.js';
 import { router as apiRouter } from './src/routers/index.js';
 
 dotenv.config();
@@ -10,7 +11,8 @@ const app = express();
 // Désactiver le header x-powered-by Express
 app.disable('x-powered-by');
 
-const allowedOrigins = [process.env.CORS_ORIGIN]; // Remplace par l'origine autorisée
+// Adresses autorisées pour CORS
+const allowedOrigins = process.env.CORS_ORIGIN.split(','); // Remplace par l'origine autorisée
 
 // Middleware de vérification d'origine
 app.use((req, res, next) => {
@@ -63,9 +65,7 @@ app.set('views', './src/views');
 app.use(express.static('public'));
 
 // Route pour le backoffice
-app.use('/admin', (req, res) => {
-  res.render('home'); // Pas besoin du chemin complet ni de l'extension .ejs
-});
+app.use('/admin', backOfficeRouter);
 
 // Route racine
 app.use('/', (req, res) => {
