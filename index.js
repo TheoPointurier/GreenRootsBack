@@ -10,12 +10,13 @@ const app = express();
 // Desactiver le header x-powered-by Express
 app.disable('x-powered-by');
 
-//TODO : Ajouter les domaines autorisés
 // CORS configuration
-// const corsOptions = {
-//   origin: process.env.CORS_ORIGIN,
-//   credentials: true, // si tu utilises des cookies ou des tokens sur le frontend
-// };
+const corsOptions = {
+  origin: process.env.CORS_ORIGIN,
+  methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true, // si tu utilises des cookies ou des tokens sur le frontend
+};
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -27,8 +28,8 @@ const limiter = rateLimit({
 // Apply the rate limiting middleware to all requests.
 app.use(limiter);
 
-//TODO : changer avec la variable une fois paramétrée
-app.use(cors('*'));
+// Ajout du CORS avec les paramètres définis
+app.use(cors(corsOptions));
 
 // Ajout du body parser
 app.use(express.urlencoded({ extended: false })); // Body parser pour les body des <form>
