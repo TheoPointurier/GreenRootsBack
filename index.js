@@ -57,6 +57,16 @@ app.use(express.json({ limit: '10kb' })); // Body parser pour les body de type "
 // Routes API
 app.use('/api', apiRouter);
 
+// Configuration du moteur de vue
+app.set('view engine', 'ejs');
+app.set('views', './src/views');
+app.use(express.static('public'));
+
+// Route pour le backoffice
+app.use('/admin', (req, res) => {
+  res.render('home'); // Pas besoin du chemin complet ni de l'extension .ejs
+});
+
 // Route racine
 app.use('/', (req, res) => {
   res.send("<h1>Bienvenue sur l'API de GreenRoots</h1>");
