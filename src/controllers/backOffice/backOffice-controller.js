@@ -37,6 +37,23 @@ export async function loginVerify(req, res) {
       expiresIn: '1h',
     });
 
+    // Stocker le token dans un cookie sécurisé
+    res.cookie('token', accesstoken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 60 * 60 * 1000, // 1 heure
+    });
+
+    // Stocker les informations utilisateur dans un autre cookie
+    res.cookie(
+      'userInfo',
+      JSON.stringify({ name: user.name, role: user.role }),
+      {
+        httpOnly: false, // Pour pouvoir accéder aux informations côté client si nécessaire
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 60 * 60 * 1000, // 1 heure
+      },
+    );
     // // Stocker le token dans un cookie sécurisé
     // res.cookie('token', accesstoken, {
     //   httpOnly: true,
@@ -59,5 +76,5 @@ export function loginPage(req, res) {
 }
 
 export function adminPage(req, res) {
-  res.render('home');
+  res.render('home', { User });
 }
