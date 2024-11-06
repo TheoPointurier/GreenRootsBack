@@ -19,6 +19,12 @@ export async function loginVerify(req, res) {
       },
     });
 
+    // Si l'utilisateur n'existe pas
+    if (!user) {
+      res.status(401).send('Email ou mot de passe incorrect');
+      return;
+    }
+
     // Comparaison du mot de passe entre saisie et bdd
     const passwordMatch = await bcrypt.compare(password, user.password);
 
@@ -37,16 +43,13 @@ export async function loginVerify(req, res) {
       expiresIn: '1h',
     });
 
-    // // Stocker le token dans un cookie sécurisé
-    // res.cookie('token', accesstoken, {
-    //   httpOnly: true,
-    //   secure: process.env.NODE_ENV === 'production', // true en production, false en développement
-    //   maxAge: 60 * 60 * 1000, // 1 heure
-    // });
+    // Stocker le token dans un cookie sécurisé
+    res.cookie('token', accesstoken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 60 * 60 * 1000, // 1 heure
+    });
 
-    // Envoi du token
-    // return res.json({ accesstoken });
-    console.log('coucou');
     res.redirect('/admin/home');
   } catch (error) {
     console.error(error);
@@ -60,4 +63,18 @@ export function loginPage(req, res) {
 
 export function adminPage(req, res) {
   res.render('home');
+}
+
+export function logout(req, res) {
+  console.log('Déconnexion ok');
+
+  // Suppression du cookie 'jwt'
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'Strict',
+    path: '/',
+  });
+
+  res.redirect('/admin');
 }
