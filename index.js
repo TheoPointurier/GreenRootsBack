@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 import { rateLimit } from 'express-rate-limit';
-import { router as backOfficeRouter } from './src/routers/backOffice/backOffice.router.js';
+import { router as backOfficeRouter } from './src/routers/backOffice/auth.router.js';
 import { router as apiRouter } from './src/routers/index.js';
 import cookieParser from 'cookie-parser';
 

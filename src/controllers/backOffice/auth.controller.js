@@ -50,9 +50,6 @@ export async function loginVerify(req, res) {
       maxAge: 60 * 60 * 1000, // 1 heure
     });
 
-    // Envoi du token
-    // return res.json({ accesstoken });
-    console.log('coucou');
     res.redirect('/admin/home');
   } catch (error) {
     console.error(error);
@@ -69,7 +66,7 @@ export function adminPage(req, res) {
 }
 
 export function logout(req, res) {
-  console.log('Déconnexion en cours...');
+  console.log('Déconnexion ok');
 
   // Suppression du cookie 'jwt'
   res.clearCookie('token', {
@@ -79,6 +76,5 @@ export function logout(req, res) {
     path: '/',
   });
 
-  // Redirection vers la page de connexion ou d'accueil après la déconnexion
-  res.redirect('/admin'); // Redirige l'utilisateur vers /admin
+  res.redirect('/admin');
 }

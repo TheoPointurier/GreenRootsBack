@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import * as backOfficeController from '../../controllers/backOffice/backOffice-controller.js';
+import * as backOfficeController from '../../controllers/backOffice/auth.controller.js';
 import verifyTokenAdmin from '../../middlewares/authentificationAdmin.js';
 
 export const router = Router();

@@ -3,7 +3,6 @@ import jwt from 'jsonwebtoken';
 export default function verifyTokenAdmin(req, res, next) {
   // Récupérer le token stocké dans les cookies
   const token = req.cookies.token;
-  console.log('Token brut:', token);
 
   // Vérifier que le token est présent et qu'il suit le format "Bearer <token>"
   if (!token) {
