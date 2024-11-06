@@ -11,6 +11,9 @@ router.get('/users/:id', verifyToken, userController.getOneUser);
 router.patch('/users/:id', verifyToken, userController.updateUser);
 router.delete('/users/:id', verifyToken, userController.deleteUser);
 
+//route pour les reviewss utilisateurs
+router.get('/reviews', userController.getAllReviews);
+
 // route en post pour backoffice
 // router.post('/users', userController.createUser);
 //(besoin de moins de vérification)

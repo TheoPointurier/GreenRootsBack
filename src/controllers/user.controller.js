@@ -259,3 +259,21 @@ export async function deleteUser(req, res) {
     res.status(500).send("Une erreur s'est produite");
   }
 }
+
+export async function getAllReviews(req, res) {
+  try {
+    const reviews = await Review.findAll({
+      order: [['id', 'ASC']],
+    });
+
+    if (!reviews || reviews.length === 0) {
+      res.status(404).send('Aucun avis trouvé');
+      return;
+    }
+
+    res.json(reviews);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Une erreur s'est produite");
+  }
+}
