@@ -1,24 +1,23 @@
+import jwt from 'jsonwebtoken';
+
 export default function verifyTokenAdmin(req, res, next) {
-  // On vérifie que le token est présent
-  // if (!req.header('Authorization')) {
-  //   return res.status(401).send('Accès refusé');
-  // }
+  // Récupérer le token stocké dans les cookies
+  const token = req.cookies.token;
+  console.log('Token brut:', token);
 
-  // On sépare le token du mot Bearer (car le token est de la forme "Bearer token)
-  const token = req.cookie;
-  console.log(token);
-
-  // On vérifie que le token est bien de la forme "Bearer token
-  // if (!token[1] || token[0] !== 'Bearer') {
-  //   return res.status(401).send('Accès refusé');
-  // }
+  // Vérifier que le token est présent et qu'il suit le format "Bearer <token>"
+  if (!token) {
+    return res.status(401).send('Accès refusé : token manquant ou incorrect');
+  }
 
   try {
-    // On vérifie que le token est valide
-    const decoded = jwt.verify(token[1], process.env.JWT_SECRET);
+    // Vérifier que le token est valide et décoder le payload
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    // Stocker l'identifiant de l'utilisateur dans la requête pour l'utiliser dans les routes suivantes
     req.userId = decoded.userId;
     next();
   } catch (error) {
+    // Si le token est invalide ou a expiré
     res.status(401).send('Token invalide');
   }
 }

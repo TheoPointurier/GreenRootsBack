@@ -4,6 +4,7 @@ import cors from 'cors';
 import { rateLimit } from 'express-rate-limit';
 import { router as backOfficeRouter } from './src/routers/backOffice/backOffice.router.js';
 import { router as apiRouter } from './src/routers/index.js';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 const app = express();
@@ -40,6 +41,9 @@ const corsOptions = {
 
 // Ajout du CORS avec les paramètres définis
 app.use(cors(corsOptions));
+
+// Ajout du cookie parser pour le backOffice
+app.use(cookieParser());
 
 // Limitation de la fréquence des requêtes
 const limiter = rateLimit({
