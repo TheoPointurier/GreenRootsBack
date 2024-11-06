@@ -10,6 +10,8 @@ router.post('/', backOfficeController.loginVerify);
 
 router.get('/home', verifyTokenAdmin, backOfficeController.adminPage);
 
+router.post('/home', backOfficeController.logout);
+
 // pour le back office:
 // router.post('/campaigns', campaignController.createCampaign);
 // router.patch('/campaigns/:id', campaignController.updateCampaign);

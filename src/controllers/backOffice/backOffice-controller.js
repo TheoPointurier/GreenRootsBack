@@ -65,5 +65,20 @@ export function loginPage(req, res) {
 }
 
 export function adminPage(req, res) {
-  res.render('home', { User });
+  res.render('home');
+}
+
+export function logout(req, res) {
+  console.log('Déconnexion en cours...');
+
+  // Suppression du cookie 'jwt'
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'Strict',
+    path: '/',
+  });
+
+  // Redirection vers la page de connexion ou d'accueil après la déconnexion
+  res.redirect('/admin'); // Redirige l'utilisateur vers /admin
 }
