@@ -1,28 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
+<%- include('./partials/head.ejs') %>
+  <%- include('./partials/header.ejs') %>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <link rel="stylesheet" href="/reset.css">
-  <link rel="stylesheet" href="/style.css">
-</head>
+    <form action="" method="post" class="form_login">
+      <div>
+        <label for="email"></label>
+        <input type="email" id="email" name="email" placeholder="Email" required>
+      </div>
+      <div>
+        <label for="password"></label>
+        <input type="password" id="password" name="password" placeholder="Password" required>
+      </div>
 
-<%- include('./partials/header.ejs') %>
+      <button type="submit">Login</button>
+    </form>
 
-  <form action="" method="post" class="form_login">
-    <div>
-      <label for="email"></label>
-      <input type="email" placeholder="Email" required>
-    </div>
-    <div>
-      <label for="password"></label>
-      <input type="password" placeholder="Password" required>
-    </div>
-
-
-    <button type="submit">Login</button>
-  </form>
-
-  <%- include('./partials/footer.ejs') %>
+    <%- include('./partials/footer.ejs') %>

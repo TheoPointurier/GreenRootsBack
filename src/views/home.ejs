@@ -1,16 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
+<%- include('./partials/head.ejs') %>
+  <%- include('./partials/header.ejs') %>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <link rel="stylesheet" href="/reset.css">
-  <link rel="stylesheet" href="/style.css">
-</head>
+    <h1>Bienvenue </h1>
 
-<%- include('./partials/header.ejs') %>
 
-  <h1>Vue Home ADMIN</h1>
+    <%= user %>
 
-  <%- include('./partials/footer.ejs') %>
+
+      <%- include('./partials/footer.ejs') %>

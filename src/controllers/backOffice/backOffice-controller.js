@@ -37,6 +37,13 @@ export async function loginVerify(req, res) {
       expiresIn: '1h',
     });
 
+    // // Stocker le token dans un cookie sécurisé
+    // res.cookie('token', accesstoken, {
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV === 'production', // true en production, false en développement
+    //   maxAge: 60 * 60 * 1000, // 1 heure
+    // });
+
     // Envoi du token
     // return res.json({ accesstoken });
     console.log('coucou');
@@ -47,7 +54,7 @@ export async function loginVerify(req, res) {
   }
 }
 
-export function homeLogin(req, res) {
+export function loginPage(req, res) {
   res.render('login');
 }
 
