@@ -2,8 +2,8 @@
   <%- include('./partials/header.ejs') %>
 
     <main>
-      <h1>Campagnes</h1>
 
+      <h1>Gestion des Campagnes</h1>
       <table>
         <thead>
           <tr>
@@ -27,10 +27,10 @@
                 <%= campaign.description %>
               </td>
               <td>
-                <%= campaign.start_campaign %>
+                <%= new Date(campaign.start_campaign).toLocaleDateString('fr-FR') %>
               </td>
               <td>
-                <%= campaign.end_campaign %>
+                <%= new Date(campaign.end_campaign).toLocaleDateString('fr-FR') %>
               </td>
               <td>
                 <%= campaign.location.name_location %>
