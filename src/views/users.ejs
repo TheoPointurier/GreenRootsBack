@@ -4,81 +4,83 @@
     <main>
       <h1>Gestion des Utilisateurs</h1>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Prénom</th>
-            <th>Nom</th>
-            <th>Email</th>
-            <th>Mot de passe</th>
-            <th>Téléphone</th>
-            <th>Numéro de rue</th>
-            <th>Rue</th>
-            <th>Ville</th>
-            <th>Code postal</th>
-            <th>Pays</th>
-            <th>Type d'entité</th>
-            <th>Nom de l'entité</th>
-            <th>SIRET</th>
-            <th>Administrateur</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% users.forEach(user=> { %>
+      <div class="table_container">
+        <table>
+          <thead>
             <tr>
-              <td>
-                <%= user.firstname %>
-              </td>
-              <td>
-                <%= user.lastname %>
-              </td>
-              <td>
-                <%= user.email %>
-              </td>
-              <td>
-                <%= user.password %>
-              </td>
-              <td>
-                <%= user.phone_number %>
-              </td>
-              <td>
-                <%= user.street_number %>
-              </td>
-              <td>
-                <%= user.street %>
-              </td>
-              <td>
-                <%= user.city %>
-              </td>
-              <td>
-                <%= user.postal_code %>
-              </td>
-              <td>
-                <%= user.country %>
-              </td>
-              <td>
-                <%= user.entity_type %>
-              </td>
-              <td>
-                <%= user.entity_name %>
-              </td>
-              <td>
-                <%= user.entity_siret %>
-              </td>
-              <td>
-                <%= user.is_admin %>
-              </td>
-              <td>
-                <button>Modifier</button>
-                <button>Supprimer</button>
-              </td>
+              <th>Id</th>
+              <th>Prénom</th>
+              <th>Nom</th>
+              <th>Email</th>
+              <th>Téléphone</th>
+              <th>Numéro de rue</th>
+              <th>Rue</th>
+              <th>Ville</th>
+              <th>Code postal</th>
+              <th>Pays</th>
+              <th>Type d'entité</th>
+              <th>Nom de l'entité</th>
+              <th>SIRET</th>
+              <th>Administrateur</th>
+              <th>Actions</th>
             </tr>
-            <% }) %>
+          </thead>
+          <tbody>
+            <% users.forEach(user=> { %>
+              <tr>
+                <td>
+                  <%= user.id %>
+                </td>
+                <td>
+                  <%= user.firstname %>
+                </td>
+                <td>
+                  <%= user.lastname %>
+                </td>
+                <td>
+                  <%= user.email %>
+                </td>
+                <td>
+                  <%= user.phone_number %>
+                </td>
+                <td>
+                  <%= user.street_number %>
+                </td>
+                <td>
+                  <%= user.street %>
+                </td>
+                <td>
+                  <%= user.city %>
+                </td>
+                <td>
+                  <%= user.postal_code %>
+                </td>
+                <td>
+                  <%= user.country %>
+                </td>
+                <td>
+                  <%= user.entity_type %>
+                </td>
+                <td>
+                  <%= user.entity_name %>
+                </td>
+                <td>
+                  <%= user.entity_siret %>
+                </td>
+                <td>
+                  <%= user.is_admin %>
+                </td>
+                <td>
+                  <button>Modifier</button>
+                  <button>Supprimer</button>
+                </td>
+              </tr>
+              <% }) %>
 
-        </tbody>
+          </tbody>
 
-      </table>
+        </table>
+      </div>
 
     </main>
 

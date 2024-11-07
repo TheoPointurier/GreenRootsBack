@@ -33,6 +33,7 @@ export async function getAllCampaignBackofice(req, res) {
           ],
         },
       ],
+
     })
     const trees = await Tree.findAll();
     console.log(campaigns);

@@ -1,0 +1,62 @@
+<div id="editModal" class="modal hidden">
+  <div class="modal-content">
+    <span class="close-button" onclick="closeModal()">&times;</span>
+    <h2>Modifier la campagne</h2>
+
+    <!-- Formulaire de modification -->
+    <form id="editForm" onsubmit="submitEdit(event)">
+      <input type="hidden" id="editId" name="id">
+      <div>
+        <label for="editName">Nom :</label>
+        <input type="text" id="editName" name="name">
+      </div>
+      <div>
+        <label for="editDescription">Description :</label>
+        <input type="text" id="editDescription" name="description">
+      </div>
+      <div>
+        <label for="editStartCampain">Date de début :</label>
+        <input type="date" id="editStartCampain" name="start_campaign">
+      </div>
+      <div>
+        <label for="editEndCampain">Date de fin :</label>
+        <input type="date" id="editEndCampain" name="end_campaign">
+      </div>
+      <div>
+        <label for="editLocation">Emplacement</label>
+        <input type="text" id="editLocation" name="campaign.location.name_location">
+      </div>
+      <div>
+        <label for="editCountry">Pays</label>
+        <input type="text" id="editCountry" name="campaign.location.country_name">
+      </div>
+
+      <div>
+        <label>Arbres disponibles</label>
+        <div class="tree-options">
+          <% trees.forEach(tree=> { %>
+            <div class="tree-option">
+              <span>
+                <%= tree.name %>
+              </span>
+
+
+              <label>
+                <input type="radio" id="includeTree_<%= tree.id %>" name="tree_<%= tree.id %>" value="include">
+                Inclus
+              </label>
+
+              <label>
+                <input type="radio" id="excludeTree_<%= tree.id %>" name="tree_<%= tree.id %>" value="exclude" checked>
+                Exclus
+              </label>
+            </div>
+            <% }) %>
+        </div>
+        <button>Créer un arbre non existant</button>
+      </div>
+  </div>
+  <button type="submit">Enregistrer les modifications</button>
+  </form>
+</div>
+</div>

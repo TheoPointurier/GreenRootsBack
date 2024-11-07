@@ -4,59 +4,65 @@
     <main>
       <h1>Gestion des Arbres</h1>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Nom</th>
-            <th>Prix HT</th>
-            <th>Quantité</th>
-            <th>Age</th>
-            <th>Espèce</th>
-            <th>Description</th>
-            <th>Absorption de CO2</th>
-            <th>Durée de vie moyenne</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% trees.forEach(tree=> { %>
+      <div class="table_container">
+        <table>
+          <thead>
             <tr>
-              <td>
-                <%= tree.name %>
-              </td>
-              <td>
-                <%= tree.price_ht %>
-              </td>
-              <td>
-                <%= tree.quantity %>
-              </td>
-              <td>
-                <%= tree.age %>
-              </td>
-              <td>
-                <%= tree.species_name %>
-              </td>
-              <td>
-                <%= tree.species.description %>
-              </td>
-              <td>
-                <%= tree.species.co2_absorption %>
-              </td>
-              <td>
-                <%= tree.species.average_lifespan%>
-              </td>
-
-              <td>
-                <button>Modifier</button>
-                <button>Supprimer</button>
-              </td>
+              <th>Id</th>
+              <th>Nom</th>
+              <th>Prix HT</th>
+              <th>Quantité</th>
+              <th>Age</th>
+              <th>Espèce</th>
+              <th>Description</th>
+              <th>Absorption de CO2</th>
+              <th>Durée de vie moyenne</th>
+              <th>Actions</th>
             </tr>
+          </thead>
+          <tbody>
+            <% trees.forEach(tree=> { %>
+              <tr>
+                <td>
+                  <%= tree.id %>
+                </td>
+                <td>
+                  <%= tree.name %>
+                </td>
+                <td>
+                  <%= tree.price_ht %>
+                </td>
+                <td>
+                  <%= tree.quantity %>
+                </td>
+                <td>
+                  <%= tree.age %>
+                </td>
+                <td>
+                  <%= tree.species.species_name %>
+                </td>
+                <td>
+                  <%= tree.species.description %>
+                </td>
+                <td>
+                  <%= tree.species.co2_absorption %>
+                </td>
+                <td>
+                  <%= tree.species.average_lifespan%>
+                </td>
 
-            <% }) %>
+                <td>
+                  <button>Modifier</button>
+                  <button>Supprimer</button>
+                </td>
+              </tr>
 
-        </tbody>
+              <% }) %>
 
-      </table>
+          </tbody>
+
+        </table>
+      </div>
 
     </main>
 

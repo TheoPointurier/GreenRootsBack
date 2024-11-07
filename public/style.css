@@ -130,3 +130,20 @@ td button {
   padding: 0.3rem 0.6rem;
   margin: 0 0.5rem;
 }
+
+.table_container {
+  overflow-y: scroll;
+  max-height: 70vh;
+  width: fit-content;
+}
+
+table thead tr th {
+  position: sticky;
+  top: 0;
+  background-color: #6a9c89;
+  color: white;
+}
+
+/* .hidden {
+  display: none;
+} */
