@@ -8,6 +8,7 @@
         <table>
           <thead>
             <tr>
+              <th>Id</th>
               <th>Avis</th>
               <th>Note</th>
               <th>Utilisateur</th>
@@ -19,6 +20,9 @@
           <tbody>
             <% reviews.forEach(review=> { %>
               <tr>
+                <td>
+                  <%= review.id %>
+                </td>
                 <td>
                   <%= review.content %>
                 </td>

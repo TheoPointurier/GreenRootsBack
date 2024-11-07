@@ -5,12 +5,10 @@
       <h1>Gestion des Arbres</h1>
 
       <div class="table_container">
-
-
-
         <table>
           <thead>
             <tr>
+              <th>Id</th>
               <th>Nom</th>
               <th>Prix HT</th>
               <th>Quantité</th>
@@ -25,6 +23,9 @@
           <tbody>
             <% trees.forEach(tree=> { %>
               <tr>
+                <td>
+                  <%= tree.id %>
+                </td>
                 <td>
                   <%= tree.name %>
                 </td>
