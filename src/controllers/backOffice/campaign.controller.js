@@ -5,11 +5,6 @@ import {
   Tree,
   TreeSpecies,
 } from '../../models/index.js';
-import {
-  updateCampaign,
-  getAllCampaign,
-  getCampaign,
-} from '../campaign.controller.js';
 import Joi from 'joi';
 
 export async function getAllCampaignBackofice(req, res) {
@@ -194,10 +189,164 @@ export async function createCampaignBackofice(req, res) {
   }
 }
 
-export function updateCampaignBackofice(req, res) {
-  updateCampaign(req, res);
+export async function updateCampaignBackOffice(req, res) {
+  try {
+    // Schéma de validation pour la mise à jour de la campagne
+    const schema = Joi.object({
+      id: Joi.number().integer().required(),
+      name: Joi.string(),
+      description: Joi.string().allow(null, ''),
+      start_campaign: Joi.date().iso().allow(null),
+      end_campaign: Joi.date().iso().allow(null),
+      treesCampaign: Joi.array().items(
+        Joi.object({
+          id: Joi.number().integer().required(),
+        }),
+      ),
+      location: Joi.object({
+        id: Joi.number().integer(),
+        name_location: Joi.string(),
+        id_country: Joi.number().integer(),
+        country: Joi.object({
+          id: Joi.number().integer(),
+          name: Joi.string(),
+        }),
+      }),
+    });
 
-  res.redirect('/');
+    // Validation de la requête avec Joi
+    const { error } = schema.validate(req.body);
+    if (error) {
+      return res.status(400).json({ message: error.message });
+    }
+
+    const campaign = await Campaign.findByPk(req.params.id);
+
+    if (!campaign) {
+      return res.status(404).json({
+        message: `La campagne avec l'id ${req.params.id} n'a pas été trouvée`,
+      });
+    }
+
+    // Extraire les données de la requête
+    const {
+      name,
+      description,
+      start_campaign,
+      end_campaign,
+      treesCampaign,
+      location,
+    } = req.body;
+
+    // Mettre à jour la campagne
+    if (name !== undefined) campaign.name = name;
+    if (description !== undefined) campaign.description = description;
+    if (start_campaign !== undefined) campaign.start_campaign = start_campaign;
+    if (end_campaign !== undefined) campaign.end_campaign = end_campaign;
+    await campaign.save();
+
+    // Gérer les associations d'arbres
+    if (treesCampaign) {
+      if (treesCampaign.length > 0) {
+        // Vérifier que tous les arbres existent
+        const treeIds = treesCampaign.map((tree) => tree.id);
+        const existingTrees = await Tree.findAll({
+          where: { id: treeIds },
+        });
+
+        if (existingTrees.length !== treeIds.length) {
+          return res
+            .status(400)
+            .json({ message: 'Certains arbres fournis n’existent pas' });
+        }
+
+        // Mettre à jour les associations
+        await campaign.setTreesCampaign(treeIds);
+      } else {
+        await campaign.setTreesCampaign([]);
+      }
+    }
+
+    // Gérer les associations de localisation
+    if (location) {
+      const { id: locationId, name_location, id_country, country } = location;
+      let campaignLocation;
+
+      if (locationId) {
+        // Trouver la localisation par ID
+        campaignLocation = await CampaignLocation.findByPk(locationId);
+        if (!campaignLocation) {
+          return res.status(404).json({
+            message: `La localisation avec l'id ${locationId} n'a pas été trouvée`,
+          });
+        }
+        // Mettre à jour la localisation
+        if (name_location !== undefined)
+          campaignLocation.name_location = name_location;
+        if (id_country !== undefined) campaignLocation.id_country = id_country;
+        await campaignLocation.save();
+      } else {
+        // Créer une nouvelle localisation
+        campaignLocation = await CampaignLocation.create({
+          name_location,
+          id_country,
+        });
+      }
+
+      // Gérer le pays associé à la localisation
+      if (country) {
+        const { id: countryId, name: countryName } = country;
+        let countryRecord;
+
+        if (countryId) {
+          countryRecord = await Country.findByPk(countryId);
+          if (!countryRecord) {
+            return res.status(404).json({
+              message: `Le pays avec l'id ${countryId} n'a pas été trouvé`,
+            });
+          }
+          if (countryName !== undefined) countryRecord.name = countryName;
+          await countryRecord.save();
+        } else {
+          countryRecord = await Country.create({ name: countryName });
+        }
+
+        // Associer le pays à la localisation
+        await campaignLocation.setCountry(countryRecord);
+      }
+
+      // Associer la localisation à la campagne
+      await campaign.setLocation(campaignLocation);
+    }
+
+    // Récupérer la campagne mise à jour avec ses associations
+    const updatedCampaign = await Campaign.findByPk(req.params.id, {
+      include: [
+        {
+          model: Tree,
+          as: 'treesCampaign',
+          through: { attributes: [] }, // Pour exclure les champs de la table pivot
+        },
+        {
+          model: CampaignLocation,
+          as: 'location',
+          include: [
+            {
+              model: Country,
+              as: 'country',
+            },
+          ],
+        },
+      ],
+    });
+
+    res.redirect('campaigns');
+  } catch (error) {
+    res.status(500).json({
+      message: 'Erreur lors de la mise à jour de la campagne',
+      error: error.message,
+    });
+  }
 }
 
 export async function deleteCampaignBackOffice(req, res) {

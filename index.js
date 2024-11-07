@@ -57,7 +57,7 @@ const limiter = rateLimit({
 app.use(limiter);
 
 // Ajout du body parser
-app.use(express.urlencoded({ extended: false })); // Body parser pour les body des <form>
+app.use(express.urlencoded({ extended: true })); // Body parser pour les body des <form> (mettre true pour permettre la lecture de form en HTML)
 app.use(express.json({ limit: '10kb' })); // Body parser pour les body de type "JSON"
 
 // Routes API
