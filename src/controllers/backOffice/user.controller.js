@@ -3,6 +3,9 @@ import { User, Review } from '../../models/index.js';
 export async function getAllUsers(req, res) {
   try {
     const users = await User.findAll({
+      attributes: {
+        exclude: ['password'],
+      },
       include: [
         {
           model: Review,

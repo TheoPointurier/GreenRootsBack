@@ -4,64 +4,63 @@
     <main>
 
       <h1>Gestion des Campagnes</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Nom</th>
-            <th>Description</th>
-            <th>Date de début</th>
-            <th>Date de fin</th>
-            <th>Emplacement</th>
-            <th>Pays</th>
-            <th>Arbres associés</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% campaigns.forEach(campaign=> { %>
+      <div class="table_container">
+        <table>
+          <thead>
             <tr>
-              <td>
-                <%= campaign.id %>
-              </td>
-              <td>
-                <%= campaign.name %>
-              </td>
-              <td>
-                <%= campaign.description %>
-              </td>
-              <td>
-                <%= new Date(campaign.start_campaign).toLocaleDateString('fr-FR') %>
-              </td>
-              <td>
-                <%= new Date(campaign.end_campaign).toLocaleDateString('fr-FR') %>
-              </td>
-              <td>
-                <%= campaign.location.name_location %>
-              </td>
-              <td>
-                <%= campaign.location.country.name %>
-              </td>
-              <td>
-                <ul>
-                  <% campaign.treesCampaign.forEach(tree=> { %>
-                    <li>
-                      <%= tree.name %>
-                    </li>
-                    <% }) %>
-                </ul>
-              </td>
-
-              <td>
-                <button>Modifier</button>
-                <button>Supprimer</button>
-              </td>
+              <th>Nom</th>
+              <th>Description</th>
+              <th>Date de début</th>
+              <th>Date de fin</th>
+              <th>Emplacement</th>
+              <th>Pays</th>
+              <th>Arbres associés</th>
+              <th>Actions</th>
             </tr>
+          </thead>
+          <tbody>
+            <% campaigns.forEach(campaign=> { %>
+              <tr>
+                <td>
+                  <%= campaign.name %>
+                </td>
+                <td>
+                  <%= campaign.description %>
+                </td>
+                <td>
+                  <%= new Date(campaign.start_campaign).toLocaleDateString('fr-FR') %>
+                </td>
+                <td>
+                  <%= new Date(campaign.end_campaign).toLocaleDateString('fr-FR') %>
+                </td>
+                <td>
+                  <%= campaign.location.name_location %>
+                </td>
+                <td>
+                  <%= campaign.location.country.name %>
+                </td>
+                <td>
+                  <ul>
+                    <% campaign.treesCampaign.forEach(tree=> { %>
+                      <li>
+                        <%= tree.name %>
+                      </li>
+                      <% }) %>
+                  </ul>
+                </td>
 
-            <% }) %>
+                <td>
+                  <button>Modifier</button>
+                  <button>Supprimer</button>
+                </td>
+              </tr>
 
-        </tbody>
+              <% }) %>
 
-      </table>
+          </tbody>
+
+        </table>
+      </div>
 
     </main>
 

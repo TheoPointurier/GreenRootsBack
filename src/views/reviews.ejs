@@ -4,43 +4,45 @@
     <main>
       <h1>Gestion des Avis</h1>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Avis</th>
-            <th>Note</th>
-            <th>Utilisateur</th>
-            <th>Email</th>
-            <th>Date</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% reviews.forEach(review=> { %>
+      <div class="table_container">
+        <table>
+          <thead>
             <tr>
-              <td>
-                <%= review.content %>
-              </td>
-              <td>
-                <%= review.rating %>
-              </td>
-              <td>
-                <%= review.user.firstname + ' ' review.user.lastname %>
-              </td>
-              <td>
-                <%= review.user.email %>
-              </td>
-              <td>
-                <%= new Date(review.created_at).toLocaleDateString('fr-FR') %>
-              </td>
-              <td>
-                <button>Modifier</button>
-                <button>Supprimer</button>
-              </td>
+              <th>Avis</th>
+              <th>Note</th>
+              <th>Utilisateur</th>
+              <th>Email</th>
+              <th>Date</th>
+              <th>Actions</th>
             </tr>
-            <% }) %>
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            <% reviews.forEach(review=> { %>
+              <tr>
+                <td>
+                  <%= review.content %>
+                </td>
+                <td>
+                  <%= review.rating %>
+                </td>
+                <td>
+                  <%= review.user.firstname + ' ' review.user.lastname %>
+                </td>
+                <td>
+                  <%= review.user.email %>
+                </td>
+                <td>
+                  <%= new Date(review.created_at).toLocaleDateString('fr-FR') %>
+                </td>
+                <td>
+                  <button>Modifier</button>
+                  <button>Supprimer</button>
+                </td>
+              </tr>
+              <% }) %>
+          </tbody>
+        </table>
+      </div>
     </main>
 
 
