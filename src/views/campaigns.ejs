@@ -1,6 +1,6 @@
 <%- include('./partials/head.ejs') %>
   <%- include('./partials/header.ejs') %>
-
+    <script src='/script.js'></script>
     <main>
 
       <h1>Gestion des Campagnes</h1>
@@ -54,7 +54,17 @@
                 </td>
 
                 <td>
-                  <button>Modifier</button>
+                  <button onclick="editCampaignModal(
+                
+                    '<%= campaign.id %>',
+                    '<%= campaign.name %>',
+                    '<%= campaign.description %>',
+                    '<%= campaign.start_campaign %>',
+                    '<%= campaign.end_campaign %>',
+                    '<%= campaign.location.name_location %>',
+                    '<%= campaign.location.country.name %>',
+                    this.dataset.trees
+  )" data-trees='<%= JSON.stringify(campaign.treesCampaign) %>'>Modifier</button>
                   <button>Supprimer</button>
                 </td>
               </tr>

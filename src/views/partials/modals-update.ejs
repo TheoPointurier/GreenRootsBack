@@ -42,17 +42,18 @@
 
 
               <label>
-                <input type="radio" name="<%= tree.id %>" value="include">
+                <input type="radio" id="includeTree_<%= tree.id %>" name="tree_<%= tree.id %>" value="include">
                 Inclus
               </label>
 
               <label>
-                <input type="radio" name="<%= tree.id %>" value="exclude" checked>
+                <input type="radio" id="excludeTree_<%= tree.id %>" name="tree_<%= tree.id %>" value="exclude" checked>
                 Exclus
               </label>
             </div>
             <% }) %>
         </div>
+        <button>Créer un arbre non existant</button>
       </div>
   </div>
   <button type="submit">Enregistrer les modifications</button>
