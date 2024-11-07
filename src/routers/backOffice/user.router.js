@@ -6,5 +6,4 @@ export const router = Router();
 
 router.get('/users', userControllerBackOffice.getAllUsersBackOffice);
 router.post('/users', userControllerBackOffice.createUserBackOffice);
-//(besoin de moins de vérification)
-// router.get('/users', userController.getAllUsers);
+router.patch('/users/:id', userControllerBackOffice.updateUserBackOffice);
