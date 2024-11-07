@@ -91,7 +91,7 @@ export async function updateTreeBackOffice(req, res) {
 
     await tree.save();
 
-    res.json(tree);
+    res.status(200).redirect('/admin/trees');
   } catch (error) {
     console.error(error);
     res.status(500).send("Une erreur s'est produite");

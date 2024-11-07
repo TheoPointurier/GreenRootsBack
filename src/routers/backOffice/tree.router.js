@@ -6,5 +6,5 @@ export const router = Router();
 
 router.get('/trees', treeControllerBackOffice.getAllTreesBackOffice);
 router.post('/trees', treeControllerBackOffice.createTreeBackOffice);
-// router.patch('/trees/:id', treeController.updateTree);
+router.patch('/trees/:id', treeControllerBackOffice.updateTreeBackOffice);
 // router.delete('/trees/:id', treeController.deleteTree);
