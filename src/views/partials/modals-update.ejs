@@ -1,9 +1,7 @@
 <div id="editModal" class="modal hidden">
   <div class="modal-content">
-    <span class="close-button" onclick="closeModal()">&times;</span>
     <h2>Modifier la campagne</h2>
 
-    <!-- Formulaire de modification -->
     <form id="editForm" onsubmit="submitEdit(event)" class="modal-form">
       <input type="hidden" id="editId" name="id">
       <div>
@@ -56,8 +54,11 @@
         <button>Créer un arbre non existant</button>
       </div>
   </div>
-  <button type="submit">Enregistrer les modifications</button>
-  <button>Annuler</button>
+  <div class="edit_modal_button">
+
+    <button class="save" type="submit">Enregistrer les modifications</button>
+    <button class="cancel">Annuler</button>
+  </div>
   </form>
 </div>
 </div>
