@@ -84,6 +84,7 @@ User.belongsToMany(Campaign, {
   as: "bookmarksUser",
   foreignKey: "id_user",
   otherKey: "id_campaign",
+  onDelete: "CASCADE",
 });
 
 Campaign.belongsToMany(User, {
@@ -91,6 +92,7 @@ Campaign.belongsToMany(User, {
   as: "bookmarksCampaign",
   foreignKey: "id_campaign",
   otherKey: "id_user",
+  onDelete: "CASCADE",
 });
 
 // Association entre Country et Campaign Location
@@ -151,6 +153,7 @@ Order.hasMany(OrderLine, {
     name: "id_order",
     allowNull: false,
   },
+  onDelete: "CASCADE",
 });
 
 OrderLine.belongsTo(Order, {
@@ -159,6 +162,7 @@ OrderLine.belongsTo(Order, {
     name: "id_order",
     allowNull: false,
   },
+onDelete: "CASCADE",
 });
 
 // Association entre trees et orderLines
@@ -168,6 +172,7 @@ Tree.hasMany(OrderLine, {
     name: "id_tree",
     allowNull: true,
   },
+  onDelete: "CASCADE",
 });
 
 OrderLine.belongsTo(Tree, {
@@ -176,6 +181,7 @@ OrderLine.belongsTo(Tree, {
     name: "id_tree",
     allowNull: false,
   },
+  onDelete: "CASCADE",
 });
 
 // Association entre campaign et orderLines
@@ -185,6 +191,7 @@ Campaign.hasMany(OrderLine, {
     name: "id_campaign",
     allowNull: true,
   },
+  onDelete: "CASCADE",
 });
 
 OrderLine.belongsTo(Campaign, {
@@ -193,6 +200,7 @@ OrderLine.belongsTo(Campaign, {
     name: "id_campaign",
     allowNull: false,
   },
+  onDelete: "CASCADE",
 });
 
 export {

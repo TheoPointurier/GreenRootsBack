@@ -6,6 +6,7 @@ import {
   TreeSpecies,
 } from '../../models/index.js';
 import Joi from 'joi';
+import { sequelize } from '../../models/index.js';
 
 export async function getAllCampaignBackofice(req, res) {
   try {
@@ -352,43 +353,36 @@ export async function updateCampaignBackOffice(req, res) {
 }
 
 export async function deleteCampaignBackOffice(req, res) {
+  const transaction = await sequelize.transaction(); // Démarrer une transaction
   try {
-    // Vérifiez si l'ID est un nombre valide
-    console.log('ici REQ ID', typeof req.params.id);
+    // Vérification de l'ID
     const campaignId = Number.parseInt(req.params.id, 10);
     if (Number.isNaN(campaignId)) {
-      return res.status(400).json({
-        message: 'ID de campagne invalide',
-      });
+      await transaction.rollback();
+      return res.status(400).json({ message: 'ID de campagne invalide' });
     }
+
     const campaign = await Campaign.findByPk(campaignId, {
       include: [
-        {
-          model: Tree,
-          as: 'treesCampaign',
-        },
-        {
-          model: CampaignLocation,
-          as: 'location',
-        },
+        { model: Tree, as: 'treesCampaign' },
+        { model: CampaignLocation, as: 'location' },
       ],
+      transaction,
     });
 
     if (!campaign) {
-      return res.status(404).json({
-        message: `La campagne avec l'id ${req.params.id} n'a pas été trouvée`,
-      });
+      await transaction.rollback();
+      return res.status(404).json({ message: `La campagne avec l'id ${req.params.id} n'a pas été trouvée` });
     }
 
-    // Supprimer les associations avec les arbres
-    await campaign.setTreesCampaign([]);
-    // Supprimer l'association avec la localisation
-    await campaign.setLocation(null);
-    // Supprimer la campagne
-    await campaign.destroy();
-
+    // Supprimer la campagne avec toutes les associations grâce à `CASCADE`
+    await campaign.destroy({ transaction });
+    
+    await transaction.commit(); // Valider la transaction
     res.status(200).redirect('/admin/campaigns');
   } catch (error) {
+    await transaction.rollback(); // Annuler la transaction en cas d'erreur
+    console.error('Erreur lors de la suppression de la campagne :', error);
     res.status(500).json({
       message: 'Erreur lors de la suppression de la campagne',
       error: error.message,
