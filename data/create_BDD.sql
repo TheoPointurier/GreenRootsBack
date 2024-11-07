@@ -51,7 +51,7 @@ CREATE TABLE "reviews" (
     "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     "id_user" INT NOT NULL,
-    FOREIGN KEY ("id_user") REFERENCES "users"("id")
+    FOREIGN KEY ("id_user") REFERENCES "users"("id") ON DELETE CASCADE
 );
 
 CREATE TABLE "tree_species" (
@@ -132,7 +132,7 @@ CREATE TABLE "orders" (
     "id_user" INT NOT NULL,
     "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY ("id_user") REFERENCES "users"("id")
+    FOREIGN KEY ("id_user") REFERENCES "users"("id") ON DELETE CASCADE
 );
 
 CREATE TABLE "order_line" (
