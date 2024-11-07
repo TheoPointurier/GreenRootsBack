@@ -33,8 +33,9 @@ export async function getAllCampaignBackofice(req, res) {
         },
       ],
     });
+    const trees = await Tree.findAll();
     console.log(campaigns);
-    res.render('campaigns', { campaigns });
+    res.render('campaigns', { campaigns, trees });
   } catch (error) {
     console.error(error);
     res.status(500).send("Une erreur s'est produite");
