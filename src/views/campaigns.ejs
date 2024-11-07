@@ -1,4 +1,3 @@
-
 <%- include('./partials/head.ejs') %>
   <%- include('./partials/header.ejs') %>
 
@@ -33,14 +32,14 @@
                 <%= campaign.end_campaign %>
               </td>
               <td>
-                <%= campaign.locations %>
+                <%= campaign.location.name_location %>
               </td>
               <td>
-                <%= campaign.country %>
+                <%= campaign.location.country.name %>
               </td>
               <td>
                 <ul>
-                  <% campaign.trees.forEach(tree=> { %>
+                  <% campaign.treesCampaign.forEach(tree=> { %>
                     <li>
                       <%= tree.name %>
                     </li>
@@ -63,4 +62,3 @@
 
 
     <%- include('./partials/footer.ejs') %>
-
