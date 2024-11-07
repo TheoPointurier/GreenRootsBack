@@ -387,7 +387,7 @@ export async function deleteCampaignBackOffice(req, res) {
     // Supprimer la campagne
     await campaign.destroy();
 
-    res.send('Campaign successfully deleted');
+    res.status(200).redirect('/admin/campaigns');
   } catch (error) {
     res.status(500).json({
       message: 'Erreur lors de la suppression de la campagne',
