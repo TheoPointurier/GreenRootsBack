@@ -43,9 +43,9 @@ export async function createTreeBackOffice(req, res) {
       age,
       id_species,
     });
-    console.log(createTree);
+    console.log(createdTree);
 
-    res.status(201).json(createdTree);
+    res.status(201).redirect('/admin/trees');
   } catch (error) {
     console.error(error);
     res.status(500).send("Une erreur s'est produite");
