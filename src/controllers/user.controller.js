@@ -93,6 +93,14 @@ export async function createUser(req, res) {
       return res.status(400).json({ error: error.message });
     }
 
+    // Vérifier si l'email existe déjà
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser) {
+      return res
+        .status(400)
+        .json({ error: 'Cet email est déjà utilisé par un autre utilisateur' });
+    }
+
     // on hash le password
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -121,8 +129,6 @@ export async function createUser(req, res) {
     res.status(500).send("Une erreur s'est produite");
   }
 }
-
-//todo vérifier que l'email n'existe pas déjà => find by email ?
 
 export async function updateUser(req, res) {
   try {
@@ -180,6 +186,15 @@ export async function updateUser(req, res) {
       entity_type,
       entity_siret,
     } = req.body;
+
+    // Vérifier si l'email existe déjà dans la base de données pour un autre utilisateur
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser && existingUser.id !== userId) {
+      console.log('Email déjà utilisé par un autre utilisateur'); // Debug
+      return res
+        .status(400)
+        .json({ error: 'Cet email est déjà utilisé par un autre utilisateur' });
+    }
 
     user.email = email || user.email;
     user.password = password || user.password;

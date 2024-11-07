@@ -51,7 +51,7 @@ CREATE TABLE "reviews" (
     "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     "id_user" INT NOT NULL,
-    FOREIGN KEY ("id_user") REFERENCES "users"("id")
+    FOREIGN KEY ("id_user") REFERENCES "users"("id") ON DELETE CASCADE
 );
 
 CREATE TABLE "tree_species" (
@@ -105,14 +105,13 @@ CREATE TABLE "campaigns" (
 );
 
 CREATE TABLE "campaign_trees" (
-
     "id_campaign" INT NOT NULL,
     "id_tree" INT NOT NULL,
     "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY ("id_campaign", "id_tree"),
-  FOREIGN KEY ("id_campaign") REFERENCES "campaigns"("id"),
-  FOREIGN KEY ("id_tree") REFERENCES "trees"("id")
+    PRIMARY KEY ("id_campaign", "id_tree"),
+    FOREIGN KEY ("id_campaign") REFERENCES "campaigns"("id") ON DELETE CASCADE,
+    FOREIGN KEY ("id_tree") REFERENCES "trees"("id") ON DELETE CASCADE
 );
 
 CREATE TABLE "bookmarks" (
@@ -121,8 +120,8 @@ CREATE TABLE "bookmarks" (
     "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY ("id_user", "id_campaign"),
-    FOREIGN KEY ("id_user") REFERENCES "users"("id"),
-    FOREIGN KEY ("id_campaign") REFERENCES "campaigns"("id")
+    FOREIGN KEY ("id_user") REFERENCES "users"("id") ON DELETE CASCADE,
+    FOREIGN KEY ("id_campaign") REFERENCES "campaigns"("id") ON DELETE CASCADE
 );
 
 CREATE TABLE "orders" (
@@ -133,7 +132,7 @@ CREATE TABLE "orders" (
     "id_user" INT NOT NULL,
     "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY ("id_user") REFERENCES "users"("id")
+    FOREIGN KEY ("id_user") REFERENCES "users"("id") ON DELETE CASCADE
 );
 
 CREATE TABLE "order_line" (
@@ -146,9 +145,9 @@ CREATE TABLE "order_line" (
     "id_campaign" INT NOT NULL,
     "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY ("id_order") REFERENCES "orders"("id"),
-    FOREIGN KEY ("id_tree") REFERENCES "trees"("id"),
-    FOREIGN KEY ("id_campaign") REFERENCES "campaigns"("id")
+    FOREIGN KEY ("id_order") REFERENCES "orders"("id") ON DELETE CASCADE,
+    FOREIGN KEY ("id_tree") REFERENCES "trees"("id") ON DELETE CASCADE,
+    FOREIGN KEY ("id_campaign") REFERENCES "campaigns"("id") ON DELETE CASCADE
 );
 
 COMMIT;
