@@ -1,10 +1,12 @@
 import { Router } from 'express';
 
-import * as campaingController from '../../controllers/backOffice/campaign.controller.js';
+import * as campaignControllerBackOffice from '../../controllers/backOffice/campaign.controller.js';
 
 export const router = Router();
 
 // pour le back office:
-// router.post('/campaigns', campaignController.createCampaign);
+
+router.get('/campaigns', campaignControllerBackOffice.getAllCampaignBackofice);
+router.post('/campaigns', campaignControllerBackOffice.createCampaignBackofice);
 // router.patch('/campaigns/:id', campaignController.updateCampaign);
 // router.delete('/campaigns/:id', campaignController.deleteCampaign);

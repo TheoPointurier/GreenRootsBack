@@ -13,6 +13,6 @@ export const router = Router();
 router.use(treeRouterBackOffice);
 router.use(campaignRouterBackOffice);
 router.use(userRouterBackOffice);
-router.use(authentificationRouter);
+router.use(authentificationRouterBackOffice);
 router.use(orderRouterBackOffice);
 router.use(authentificationRouterBackOffice);
