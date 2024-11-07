@@ -180,7 +180,7 @@ export async function createCampaignBackofice(req, res) {
       ],
     });
 
-    res.redirect('campaigns');
+    res.redirect('/admin/campaigns');
   } catch (error) {
     res.status(500).send({
       message: 'Erreur lors de la création de la campagne',
@@ -340,7 +340,9 @@ export async function updateCampaignBackOffice(req, res) {
       ],
     });
 
-    res.send('mise à jour effectué');
+    console.log('mise à jour effectué pour la campagne ID:', campaignId);
+
+    res.status(200).redirect('/admin/campaigns');
   } catch (error) {
     res.status(500).json({
       message: 'Erreur lors de la mise à jour de la campagne',
