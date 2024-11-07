@@ -55,7 +55,6 @@ function hideEditCampaignModal() {
 }
 
 async function editCampaign(event) {
-  console.log('coucou');
   event.preventDefault();
 
   const id = document.getElementById('editId').value;
@@ -81,7 +80,6 @@ async function editCampaign(event) {
       treesCampaign.push({ id: Number.parseInt(treeId) });
     }
   }
-  console.log(treesCampaign);
   console.log(JSON.stringify(treesCampaign, null, 2));
   try {
     const response = await fetch(`/admin/campaigns/${id}`, {
@@ -106,8 +104,6 @@ async function editCampaign(event) {
       window.location.reload();
     } else {
       console.error('Erreur lors de la mise à jour de la campagne');
-      const result = await response.json();
-      alert(result.message || 'Une erreur est survenue');
     }
   } catch (error) {
     console.error('Erreur réseau lors de la mise à jour de la campagne', error);
