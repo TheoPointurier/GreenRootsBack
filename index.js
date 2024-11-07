@@ -45,10 +45,11 @@ app.use(cors(corsOptions));
 // Ajout du cookie parser pour le backOffice
 app.use(cookieParser());
 
+//TODO A MODIFIER POUR LA PROD SUR LA LIMITATION
 // Limitation de la fréquence des requêtes
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+  windowMs: 1 * 60 * 1000, // 1 minutes
+  limit: 100, // Limit each IP to 100 requests per `window` (here, per 1 minutes).
   standardHeaders: true, // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
 });

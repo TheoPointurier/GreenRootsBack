@@ -4,7 +4,7 @@
     <h2>Modifier la campagne</h2>
 
     <!-- Formulaire de modification -->
-    <form id="editForm" onsubmit="submitEdit(event)">
+    <form id="editForm" onsubmit="submitEdit(event)" class="modal-form">
       <input type="hidden" id="editId" name="id">
       <div>
         <label for="editName">Nom :</label>
@@ -31,9 +31,9 @@
         <input type="text" id="editCountry" name="campaign.location.country_name">
       </div>
 
-      <div>
+      <div class="modal-form_trees">
         <label>Arbres disponibles</label>
-        <div class="tree-options">
+        <div class="trees-options">
           <% trees.forEach(tree=> { %>
             <div class="tree-option">
               <span>
