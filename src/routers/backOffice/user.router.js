@@ -1,11 +1,10 @@
 import { Router } from 'express';
 
-import * as userController from '../../controllers/backOffice/user.controller.js';
+import * as userControllerBackOffice from '../../controllers/backOffice/user.controller.js';
 
 export const router = Router();
 
-router.get('/users', userController.getAllUsers);
-
-// router.post('/users', userController.createUser);
-//(besoin de moins de vérification)
-// router.get('/users', userController.getAllUsers);
+router.get('/users', userControllerBackOffice.getAllUsersBackOffice);
+router.post('/users', userControllerBackOffice.createUserBackOffice);
+router.patch('/users/:id', userControllerBackOffice.updateUserBackOffice);
+router.delete('/users/:id', userControllerBackOffice.deleteUserBackOffice);

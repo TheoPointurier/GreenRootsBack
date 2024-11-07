@@ -2,7 +2,7 @@
   <%- include('./partials/header.ejs') %>
 
     <main>
-      <h1>Utilisateurs</h1>
+      <h1>Gestion des Utilisateurs</h1>
 
       <table>
         <thead>
@@ -10,7 +10,7 @@
             <th>Prénom</th>
             <th>Nom</th>
             <th>Email</th>
-            <th>Password</th>
+            <th>Mot de passe</th>
             <th>Téléphone</th>
             <th>Numéro de rue</th>
             <th>Rue</th>
@@ -21,6 +21,7 @@
             <th>Nom de l'entité</th>
             <th>SIRET</th>
             <th>Administrateur</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -68,11 +69,11 @@
               <td>
                 <%= user.is_admin %>
               </td>
+              <td>
+                <button>Modifier</button>
+                <button>Supprimer</button>
+              </td>
             </tr>
-            <td>
-              <button>Modifier</button>
-              <button>Supprimer</button>
-            </td>
             <% }) %>
 
         </tbody>

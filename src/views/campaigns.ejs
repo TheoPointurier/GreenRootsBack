@@ -1,10 +1,9 @@
-
 <%- include('./partials/head.ejs') %>
   <%- include('./partials/header.ejs') %>
 
     <main>
-      <h1>Campagnes</h1>
 
+      <h1>Gestion des Campagnes</h1>
       <table>
         <thead>
           <tr>
@@ -15,11 +14,15 @@
             <th>Emplacement</th>
             <th>Pays</th>
             <th>Arbres associés</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           <% campaigns.forEach(campaign=> { %>
             <tr>
+              <td>
+                <%= campaign.id %>
+              </td>
               <td>
                 <%= campaign.name %>
               </td>
@@ -27,20 +30,20 @@
                 <%= campaign.description %>
               </td>
               <td>
-                <%= campaign.start_campaign %>
+                <%= new Date(campaign.start_campaign).toLocaleDateString('fr-FR') %>
               </td>
               <td>
-                <%= campaign.end_campaign %>
+                <%= new Date(campaign.end_campaign).toLocaleDateString('fr-FR') %>
               </td>
               <td>
-                <%= campaign.locations %>
+                <%= campaign.location.name_location %>
               </td>
               <td>
-                <%= campaign.country %>
+                <%= campaign.location.country.name %>
               </td>
               <td>
                 <ul>
-                  <% campaign.trees.forEach(tree=> { %>
+                  <% campaign.treesCampaign.forEach(tree=> { %>
                     <li>
                       <%= tree.name %>
                     </li>
@@ -52,8 +55,9 @@
                 <button>Modifier</button>
                 <button>Supprimer</button>
               </td>
+            </tr>
 
-              <% }) %>
+            <% }) %>
 
         </tbody>
 
@@ -63,4 +67,3 @@
 
 
     <%- include('./partials/footer.ejs') %>
-
