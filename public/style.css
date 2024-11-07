@@ -9,6 +9,12 @@ img {
   width: 50%;
 }
 
+.loginImage {
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .form_login {
   width: 50%;
   margin: 0 auto;

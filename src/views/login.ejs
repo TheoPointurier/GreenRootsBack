@@ -1,16 +1,23 @@
 <%- include('./partials/head.ejs') %>
 
-  <form action="" method="post" class="form_login">
-    <div>
-      <label for="email"></label>
-      <input type="email" id="email" name="email" placeholder="Email" required>
-    </div>
-    <div>
-      <label for="password"></label>
-      <input type="password" id="password" name="password" placeholder="Password" required>
+  <main>
+    <div class="loginImage">
+
+      <img src="/img/Logo_principal.webp" alt="logo Greenroots">
     </div>
 
-    <button type="submit">Login</button>
-  </form>
+    <form action="" method="post" class="form_login">
+      <div>
+        <label for="email"></label>
+        <input type="email" id="email" name="email" placeholder="Email" required>
+      </div>
+      <div>
+        <label for="password"></label>
+        <input type="password" id="password" name="password" placeholder="Password" required>
+      </div>
+
+      <button type="submit">Login</button>
+    </form>
+  </main>
 
   <%- include('./partials/footer.ejs') %>
