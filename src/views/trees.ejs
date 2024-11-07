@@ -1,0 +1,62 @@
+<%- include('./partials/head.ejs') %>
+  <%- include('./partials/header.ejs') %>
+
+    <main>
+      <h1>Arbres</h1>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Prix HT</th>
+            <th>Quantité</th>
+            <th>Age</th>
+            <th>Espèce</th>
+            <th>Description</th>
+            <th>Absorption de CO2</th>
+            <th>Durée de vie moyenne</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% trees.forEach(tree=> { %>
+            <tr>
+              <td>
+                <%= tree.name %>
+              </td>
+              <td>
+                <%= tree.price_ht %>
+              </td>
+              <td>
+                <%= tree.quantity %>
+              </td>
+              <td>
+                <%= tree.age %>
+              </td>
+              <td>
+                <%= tree.species_name %>
+              </td>
+              <td>
+                <%= tree.species.description %>
+              </td>
+              <td>
+                <%= tree.species.co2_absorption %>
+              </td>
+              <td>
+                <%= tree.species.average_lifespan%>
+              </td>
+
+              <td>
+                <button>Modifier</button>
+                <button>Supprimer</button>
+              </td>
+
+              <% }) %>
+
+        </tbody>
+
+      </table>
+
+    </main>
+
+
+    <%- include('./partials/footer.ejs') %>

@@ -1,1 +1,66 @@
+
 <%- include('./partials/head.ejs') %>
+  <%- include('./partials/header.ejs') %>
+
+    <main>
+      <h1>Campagnes</h1>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Description</th>
+            <th>Date de début</th>
+            <th>Date de fin</th>
+            <th>Emplacement</th>
+            <th>Pays</th>
+            <th>Arbres associés</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% campaigns.forEach(campaign=> { %>
+            <tr>
+              <td>
+                <%= campaign.name %>
+              </td>
+              <td>
+                <%= campaign.description %>
+              </td>
+              <td>
+                <%= campaign.start_campaign %>
+              </td>
+              <td>
+                <%= campaign.end_campaign %>
+              </td>
+              <td>
+                <%= campaign.locations %>
+              </td>
+              <td>
+                <%= campaign.country %>
+              </td>
+              <td>
+                <ul>
+                  <% campaign.trees.forEach(tree=> { %>
+                    <li>
+                      <%= tree.name %>
+                    </li>
+                    <% }) %>
+                </ul>
+              </td>
+
+              <td>
+                <button>Modifier</button>
+                <button>Supprimer</button>
+              </td>
+
+              <% }) %>
+
+        </tbody>
+
+      </table>
+
+    </main>
+
+
+    <%- include('./partials/footer.ejs') %>
+

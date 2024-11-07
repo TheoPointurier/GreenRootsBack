@@ -25,10 +25,69 @@ img {
 
 .form_login button {
   width: 100%;
-  background-color: #4CAF50;
+  background-color: #6a9c89;
   color: white;
   padding: 14px 20px;
   margin: 8px 0;
   border: none;
   cursor: pointer;
+}
+
+nav {
+  background-color: #6a9c89;
+  padding: 1rem;
+  width: 12rem;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+ul {
+  padding: 0;
+}
+li {
+  list-style: none;
+  margin-top: 1rem;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+  cursor: pointer;
+}
+
+.form_logout button {
+  background-color: #cd5c08;
+  border-radius: 20px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 0.3rem 0.6rem;
+}
+
+nav > div > h1 {
+  font-size: 1.2rem;
+  color: white;
+}
+
+body {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: 1fr;
+}
+
+header {
+  grid-column: 0;
+  grid-row: 1;
+}
+main {
+  grid-column: span 2;
+  grid-row: 1;
+}
+
+tr {
+  background-color: #cd5c08;
+  color: white;
 }
