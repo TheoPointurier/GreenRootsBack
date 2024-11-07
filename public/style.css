@@ -1,18 +1,36 @@
+html {
+  height: 100vh;
+}
+
+body {
+  height: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: 1fr;
+}
+
+header {
+  grid-column: 0;
+  grid-row: 1;
+}
+main {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+main > h1 {
+  margin-bottom: 2rem;
+  text-align: left;
+}
+span {
+  font-weight: bold;
+}
+
 h1 {
   text-align: center;
-}
-
-img {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%;
-}
-
-.loginImage {
-  width: 50%;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .form_login {
@@ -82,32 +100,8 @@ nav > div > img {
   cursor: pointer;
 }
 
-body {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  grid-template-rows: 1fr;
-}
-
-header {
-  grid-column: 0;
-  grid-row: 1;
-}
-main {
-  grid-column: span 2;
-  grid-row: 1;
-  padding-left: 3rem;
-  margin-top: 3rem;
-}
-
-main > h1 {
-  margin-bottom: 2rem;
-  text-align: left;
-}
-span {
-  font-weight: bold;
-}
-
 tr {
+  padding: 0.5rem;
   background-color: #fff9f3;
   color: rgb(0, 0, 0);
 }
@@ -131,10 +125,17 @@ td button {
   margin: 0 0.5rem;
 }
 
+table {
+  max-width: 100%;
+  table-layout: fixed;
+}
+
 .table_container {
   overflow-y: scroll;
-  max-height: 70vh;
-  width: fit-content;
+  max-height: 40rem;
+  max-width: 95%;
+  margin: 0 auto;
+  overflow-wrap: anywhere; /*Permet de casser les mots */
 }
 
 table thead tr th {
@@ -142,6 +143,53 @@ table thead tr th {
   top: 0;
   background-color: #6a9c89;
   color: white;
+}
+
+.modal-form {
+  width: 90%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin: 0 auto;
+  gap: 0.5rem;
+}
+
+.modal-form input {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.modal-form_trees {
+  grid-column: 1 / 4;
+  display: flex;
+  justify-content: space-around;
+  margin: 1rem 0;
+}
+.modal-form_trees > label {
+  grid-column: 1 / 4;
+}
+
+.trees-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  flex-grow: 1;
+  justify-content: space-around;
+  padding: 0.5rem;
+}
+
+.tree-option {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+  border-radius: 5px;
+  background-color: #6a9c89;
+  cursor: pointer;
 }
 
 /* .hidden {
