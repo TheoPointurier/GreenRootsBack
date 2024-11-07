@@ -9,4 +9,7 @@ export const router = Router();
 router.get('/campaigns', campaignControllerBackOffice.getAllCampaignBackofice);
 router.post('/campaigns', campaignControllerBackOffice.createCampaignBackofice);
 // router.patch('/campaigns/:id', campaignController.updateCampaign);
-// router.delete('/campaigns/:id', campaignController.deleteCampaign);
+router.delete(
+  '/campaigns/:id',
+  campaignControllerBackOffice.deleteCampaignBackOffice,
+);
