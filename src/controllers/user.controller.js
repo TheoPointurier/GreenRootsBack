@@ -2,28 +2,6 @@ import { User, Review } from '../models/index.js';
 import Joi from 'joi';
 import bcrypt from 'bcrypt';
 
-export async function getAllUsers(req, res) {
-  try {
-    const users = await User.findAll({
-      attributes: {
-        exclude: ['password'],
-      },
-      include: [
-        {
-          model: Review,
-          as: 'reviews',
-        },
-      ],
-      order: [['id', 'ASC']],
-    });
-
-    res.json(users);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Une erreur s'est produite");
-  }
-}
-
 export async function getOneUser(req, res) {
   try {
     const userId = Number.parseInt(req.params.id);
