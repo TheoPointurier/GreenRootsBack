@@ -192,6 +192,6 @@ table thead tr th {
   cursor: pointer;
 }
 
-/* .hidden {
+.hidden {
   display: none;
-} */
+}

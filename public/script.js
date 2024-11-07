@@ -8,6 +8,7 @@ function editCampaignModal(
   country,
   treeCampaign,
 ) {
+  treeCampaign = JSON.parse(treeCampaign);
   console.log('treeCampaign:', treeCampaign);
   document.getElementById('editId').value = id;
   document.getElementById('editName').value = name;
@@ -34,21 +35,16 @@ function editCampaignModal(
     radio.checked = radio.value === 'exclude';
   });
 
-  // Parcourir les arbres inclus dans la campagne et cocher les boutons "include"
-  treeIdsInCampaign.forEach((tree) => {
+  // Cocher les boutons radio "include" pour les arbres dans `treeIdsInCampaign`
+  treeIdsInCampaign.forEach((treeId) => {
     const includeRadio = document.querySelector(
-      `input[type="radio"][name="tree_${tree.id}"][value="include"]`,
+      `input[type="radio"][name="tree_${treeId}"][value="include"]`,
     );
     if (includeRadio) {
       includeRadio.checked = true;
     }
   });
 
-  // récupérer les arbres de  campaginTrees
-
-  // Récupérer les treesCampaign
-
-  //Voir si trees de campaigntress sont présent
-
-  //Si oui, cocher input radio en checked
+  // Afficher la modal
+  document.getElementById('editModal').classList.remove('hidden');
 }
