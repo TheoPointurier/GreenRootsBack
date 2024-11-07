@@ -33,10 +33,8 @@ export async function getAllCampaignBackofice(req, res) {
           ],
         },
       ],
-
-    })
+    });
     const trees = await Tree.findAll();
-    console.log(campaigns);
     res.render('campaigns', { campaigns, trees });
   } catch (error) {
     console.error(error);
@@ -193,6 +191,7 @@ export async function createCampaignBackofice(req, res) {
 }
 
 export async function updateCampaignBackOffice(req, res) {
+  console.log(req.body);
   try {
     // Schéma de validation pour la mise à jour de la campagne
     const schema = Joi.object({
@@ -347,6 +346,7 @@ export async function updateCampaignBackOffice(req, res) {
 
     res.status(200).redirect('/admin/campaigns');
   } catch (error) {
+    console.error('Erreur lors de la mise à jour de la campagne:', error);
     res.status(500).json({
       message: 'Erreur lors de la mise à jour de la campagne',
       error: error.message,
@@ -374,12 +374,14 @@ export async function deleteCampaignBackOffice(req, res) {
 
     if (!campaign) {
       await transaction.rollback();
-      return res.status(404).json({ message: `La campagne avec l'id ${req.params.id} n'a pas été trouvée` });
+      return res.status(404).json({
+        message: `La campagne avec l'id ${req.params.id} n'a pas été trouvée`,
+      });
     }
 
     // Supprimer la campagne avec toutes les associations grâce à `CASCADE`
     await campaign.destroy({ transaction });
-    
+
     await transaction.commit(); // Valider la transaction
     res.status(200).redirect('/admin/campaigns');
   } catch (error) {

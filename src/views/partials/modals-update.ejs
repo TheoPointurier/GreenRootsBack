@@ -2,8 +2,11 @@
   <div class="modal-content">
     <h2>Modifier la campagne</h2>
 
-    <form id="editForm" onsubmit="submitEdit(event)" class="modal-form">
-      <input type="hidden" id="editId" name="id">
+    <form id="editForm" onsubmit="editCampaign(event)" class="modal-form">
+      <div>
+        <label for="editId">Id :</label>
+        <input type="text" id="editId" name="id">
+      </div>
       <div>
         <label for="editName">Nom :</label>
         <input type="text" id="editName" name="name">
@@ -57,7 +60,7 @@
   <div class="edit_modal_button">
 
     <button class="save" type="submit">Enregistrer les modifications</button>
-    <button class="cancel">Annuler</button>
+    <button type="button" onclick="hideEditCampaignModal()" class="cancel">Annuler</button>
   </div>
   </form>
 </div>
