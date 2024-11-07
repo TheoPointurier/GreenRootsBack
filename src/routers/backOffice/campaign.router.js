@@ -8,7 +8,10 @@ export const router = Router();
 
 router.get('/campaigns', campaignControllerBackOffice.getAllCampaignBackofice);
 router.post('/campaigns', campaignControllerBackOffice.createCampaignBackofice);
-// router.patch('/campaigns/:id', campaignController.updateCampaign);
+router.patch(
+  '/campaigns/:id',
+  campaignControllerBackOffice.updateCampaignBackOffice,
+);
 router.delete(
   '/campaigns/:id',
   campaignControllerBackOffice.deleteCampaignBackOffice,

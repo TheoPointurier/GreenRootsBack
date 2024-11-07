@@ -193,7 +193,6 @@ export async function updateCampaignBackOffice(req, res) {
   try {
     // Schéma de validation pour la mise à jour de la campagne
     const schema = Joi.object({
-      id: Joi.number().integer().required(),
       name: Joi.string(),
       description: Joi.string().allow(null, ''),
       start_campaign: Joi.date().iso().allow(null),
@@ -220,7 +219,8 @@ export async function updateCampaignBackOffice(req, res) {
       return res.status(400).json({ message: error.message });
     }
 
-    const campaign = await Campaign.findByPk(req.params.id);
+    const campaignId = Number.parseInt(req.params.id, 10);
+    const campaign = await Campaign.findByPk(campaignId);
 
     if (!campaign) {
       return res.status(404).json({
@@ -340,7 +340,7 @@ export async function updateCampaignBackOffice(req, res) {
       ],
     });
 
-    res.redirect('campaigns');
+    res.send('mise à jour effectué');
   } catch (error) {
     res.status(500).json({
       message: 'Erreur lors de la mise à jour de la campagne',
