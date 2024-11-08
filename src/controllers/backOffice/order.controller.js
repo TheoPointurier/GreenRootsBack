@@ -3,6 +3,7 @@ import { Campaign, Order, OrderLine, Tree, User } from '../../models/index.js';
 
 export async function getAllOrdersBackOffice(req, res) {
   const orders = await Order.findAll({
+    order: [['id', 'ASC']],
     include: [
       {
         model: OrderLine,
@@ -170,9 +171,7 @@ export async function updateOrderBackOffice(req, res) {
   }
 }
 
-// todo gérer erreur :  original: error: UPDATE ou DELETE sur la table « orders » viole la contrainte de clé étrangère « order_line_id_order_fkey » de la table « order_line »
-// todo voir pour modif association on delete cascade
-export async function deleteOrder(req, res) {
+export async function deleteOrderBackOffice(req, res) {
   try {
     const orderId = Number.parseInt(req.params.id);
 
