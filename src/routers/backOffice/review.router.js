@@ -5,3 +5,4 @@ import * as reviewControllerBackOffice from '../../controllers/backOffice/review
 export const router = Router();
 
 router.get('/reviews', reviewControllerBackOffice.getAllReviewsBackOffice);
+router.patch('/reviews/:id', reviewControllerBackOffice.updateReviewBackOffice);
