@@ -21,3 +21,7 @@ function displayEditTreeModal(
 
   document.getElementById('editTreeModal').classList.remove('hidden');
 }
+
+function hideEditTreeModal() {
+  document.getElementById('editTreeModal').classList.add('hidden');
+}
