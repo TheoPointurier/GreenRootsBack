@@ -201,7 +201,8 @@ table thead tr th {
   display: none;
 }
 
-#editModal {
+#editModal,
+#createModal {
   z-index: 5;
   position: fixed;
   top: 8rem;
@@ -212,13 +213,23 @@ table thead tr th {
   max-height: 80vh;
 }
 
-.edit_modal_button {
+.edit_modal_button,
+.create_modal_button {
   display: flex;
   justify-content: center;
   gap: 5rem;
 }
 
 .edit_modal_button > button {
+  border-radius: 20px;
+  color: white;
+  cursor: pointer;
+  padding: 0.3rem 0.6rem;
+  border: none;
+  margin-bottom: 2rem;
+}
+
+.create_modal_button > button {
   border-radius: 20px;
   color: white;
   cursor: pointer;
@@ -236,4 +247,14 @@ table thead tr th {
 
 h2 {
   text-align: center;
+}
+
+.create_button {
+  background-color: #cd5c08;
+  border-radius: 20px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 0.3rem 0.6rem;
+  margin-bottom: 2rem;
 }
