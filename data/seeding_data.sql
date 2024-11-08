@@ -108,29 +108,28 @@ INSERT INTO bookmarks (id_user, id_campaign) VALUES
 
 -- Commandes
 INSERT INTO orders (total_amount, status, order_number, id_user) VALUES
-(155.00, 'terminée', 'CMD001', 1),
-(300.50, 'en attente', 'CMD002', 2),
-(75.75, 'expédiée', 'CMD003', 3),
-(200.20, 'terminée', 'CMD004', 4),
-(90.10, 'en traitement', 'CMD005', 1),
-(180.75, 'terminée', 'CMD006', 1),
-(225.40, 'en traitement', 'CMD007', 2),
-(130.00, 'terminée', 'CMD008', 3),
-(250.30, 'expédiée', 'CMD009', 4),
-(95.50, 'terminée', 'CMD010', 2);
-
+(255.00, 'terminée', 'CMD001', 1),
+(400.50, 'en attente', 'CMD002', 2),
+(147.75, 'expédiée', 'CMD003', 3),
+(300.20, 'terminée', 'CMD004', 4),
+(165.10, 'en traitement', 'CMD005', 1),
+(212.00, 'terminée', 'CMD006', 1),
+(263.50, 'en traitement', 'CMD007', 2),
+(127.50, 'terminée', 'CMD008', 3),
+(252.50, 'expédiée', 'CMD009', 4),
+(162.00, 'terminée', 'CMD010', 2);
 
 -- Détails des commandes
 INSERT INTO order_line (price_ht_at_order, quantity, total_amount, id_order, id_tree, id_campaign) VALUES
 (15.50, 10, 155.00, 1, 1, 1),   -- CMD001 pour Campagne 1, Arbre 1
 (20.00, 5, 100.00, 1, 5, 1),    -- CMD001 pour Campagne 1, Arbre 5
-(20.00, 15, 300.50, 2, 2, 2),   -- CMD002 pour Campagne 2, Arbre 2
+(20.00, 15, 300.00, 2, 2, 2),   -- CMD002 pour Campagne 2, Arbre 2
 (12.50, 8, 100.00, 2, 4, 2),    -- CMD002 pour Campagne 2, Arbre 4
-(12.50, 6, 75.75, 3, 6, 3),     -- CMD003 pour Campagne 3, Arbre 6
+(12.50, 6, 75.00, 3, 6, 3),     -- CMD003 pour Campagne 3, Arbre 6
 (18.00, 4, 72.00, 3, 3, 3),     -- CMD003 pour Campagne 3, Arbre 3
-(35.00, 5, 200.20, 4, 2, 4),    -- CMD004 pour Campagne 4, Arbre 2
+(35.00, 5, 175.00, 4, 2, 4),    -- CMD004 pour Campagne 4, Arbre 2
 (10.00, 10, 100.00, 4, 10, 4),  -- CMD004 pour Campagne 4, Arbre 10
-(8.00, 11, 90.10, 5, 8, 5),     -- CMD005 pour Campagne 5, Arbre 8
+(8.00, 11, 88.00, 5, 8, 5),     -- CMD005 pour Campagne 5, Arbre 8
 (15.00, 5, 75.00, 5, 3, 5),     -- CMD005 pour Campagne 5, Arbre 3
 (18.50, 6, 111.00, 6, 6, 6),    -- CMD006 pour Campagne 6, Arbre 6
 (25.25, 4, 101.00, 6, 11, 6),   -- CMD006 pour Campagne 6, Arbre 11
@@ -142,6 +141,7 @@ INSERT INTO order_line (price_ht_at_order, quantity, total_amount, id_order, id_
 (18.00, 7, 126.00, 9, 5, 6),     -- CMD009 pour Campagne 9, Arbre 5
 (15.50, 4, 62.00, 10, 12, 6),   -- CMD010 pour Campagne 10, Arbre 12
 (20.00, 5, 100.00, 10, 8, 7);   -- CMD010 pour Campagne 10, Arbre 8
+
 
 
 COMMIT;
