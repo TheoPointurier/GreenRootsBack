@@ -213,7 +213,8 @@ table thead tr th {
 }
 
 #editModal,
-#createModal {
+#createModal,
+#editTreeModal {
   z-index: 5;
   position: fixed;
   top: 8rem;
