@@ -1,5 +1,6 @@
 <%- include('./partials/head.ejs') %>
   <%- include('./partials/header.ejs') %>
+    <script src="/treesScript.js"></script>
 
     <main>
       <h1>Gestion des Arbres</h1>
@@ -12,7 +13,7 @@
               <th>Nom</th>
               <th>Prix HT</th>
               <th>Quantité</th>
-              <th>Age</th>
+              <th>Age (années)</th>
               <th>Espèce</th>
               <th>Description</th>
               <th>Absorption de CO2</th>
@@ -52,7 +53,17 @@
                 </td>
 
                 <td>
-                  <button>Modifier</button>
+                  <button onclick="displayEditTreeModal(
+                    '<%= tree.id %>',
+                    '<%= tree.name %>',
+                    '<%= tree.price_ht %>',
+                    '<%= tree.quantity %>',
+                    '<%= tree.age %>',
+                    '<%= tree.species.species_name %>',
+                    '<%= tree.species.description %>',
+                    '<%= tree.species.co2_absorption %>',
+                    '<%= tree.species.average_lifespan%>'
+                  )">Modifier</button>
                   <button>Supprimer</button>
                 </td>
               </tr>
@@ -63,5 +74,5 @@
 
         </table>
       </div>
-
+      <%- include('./partials/modals-updateTree.ejs') %>
     </main>
