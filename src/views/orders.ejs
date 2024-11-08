@@ -1,0 +1,41 @@
+<%- include('./partials/head.ejs') %>
+  <%- include('./partials/header.ejs') %>
+
+    <main>
+      <h1>Commandes : </h1>
+      <div class="table_container">
+        <table>
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Utilisateur</th>
+              <th>Adresse</th>
+              <th>Date</th>
+              <th>Montant</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% orders.forEach(order=> { %>
+              <tr>
+                <td>
+                  <%= order.id %>
+                </td>
+                <td>
+                  <%= order.address %>
+                </td>
+                <td>
+                  <%= new Date(order.created_at).toLocaleDateString('fr-FR') %>
+                </td>
+                <td>
+                  <%= order.total_price %> €
+                </td>
+                <td>
+                  <button>Modifier</button>
+                  <button>Supprimer</button>
+                </td>
+              </tr>
+              <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </main>

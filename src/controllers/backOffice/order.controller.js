@@ -1,6 +1,29 @@
 import Joi from 'joi';
 import { Campaign, Order, OrderLine, Tree, User } from '../../models/index.js';
 
+export async function getAllOrdersBackOffice(req, res) {
+  const orders = await Order.findAll({
+    include: [
+      {
+        model: OrderLine,
+        as: 'orderLines',
+        include: [
+          {
+            model: Tree,
+            as: 'tree',
+          },
+          {
+            model: Campaign,
+            as: 'campaign',
+          },
+        ],
+      },
+    ],
+  });
+
+  res.render('orders', { orders });
+}
+
 //todo changer message si !userId
 export async function getAllOrdersByUser(req, res) {
   //récupérer l'id de l'utilisateur connecté

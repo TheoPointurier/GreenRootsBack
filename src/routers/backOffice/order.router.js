@@ -1,10 +1,13 @@
 import { Router } from 'express';
 
-import * as orderController from '../../controllers/backOffice/order.controller.js';
+import * as orderControllerBackOffice from '../../controllers/backOffice/order.controller.js';
 
 export const router = Router();
 
-//Route pour le back office ?
+//Route pour le back office
+
+router.get('/orders', orderControllerBackOffice.getAllOrdersBackOffice);
+
 //todo voir si dispo pour user ou admin
 // router.get('/orders/:id', orderController.getOneOrder);
 
