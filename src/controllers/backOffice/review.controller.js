@@ -78,3 +78,28 @@ export async function updateReviewBackOffice(req, res) {
     res.status(500).send("Une erreur s'est produite");
   }
 }
+
+export async function deleteReviewBackOffice(req, res) {
+  try {
+    const reviewId = Number.parseInt(req.params.id);
+
+    if (!reviewId) {
+      res.status(400).send('ID manquant');
+      return;
+    }
+
+    const review = await Review.findByPk(reviewId);
+
+    if (!review) {
+      res.status(404).send('Avis non trouvé');
+      return;
+    }
+
+    await review.destroy();
+
+    res.status(204).redirect('/admin/reviews');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Une erreur s'est produite");
+  }
+}
