@@ -135,7 +135,13 @@ INSERT INTO order_line (price_ht_at_order, quantity, total_amount, id_order, id_
 (18.50, 6, 111.00, 6, 6, 6),    -- CMD006 pour Campagne 6, Arbre 6
 (25.25, 4, 101.00, 6, 11, 6),   -- CMD006 pour Campagne 6, Arbre 11
 (20.50, 7, 143.50, 7, 4, 7),    -- CMD007 pour Campagne 7, Arbre 4
-(30.00, 4, 120.00, 7, 13, 7);   -- CMD007 pour Campagne 7, Arbre 13
+(30.00, 4, 120.00, 7, 13, 7),   -- CMD007 pour Campagne 7, Arbre 13
+(12.00, 5, 60.00, 8, 9, 5),      -- CMD008 pour Campagne 8, Arbre 9
+(22.50, 3, 67.50, 8, 7, 5),      -- CMD008 pour Campagne 8, Arbre 7
+(25.30, 5, 126.50, 9, 10, 5),    -- CMD009 pour Campagne 9, Arbre 10
+(18.00, 7, 126.00, 9, 5, 6),     -- CMD009 pour Campagne 9, Arbre 5
+(15.50, 4, 62.00, 10, 12, 6),   -- CMD010 pour Campagne 10, Arbre 12
+(20.00, 5, 100.00, 10, 8, 7);   -- CMD010 pour Campagne 10, Arbre 8
 
 
 COMMIT;

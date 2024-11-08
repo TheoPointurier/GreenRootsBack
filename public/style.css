@@ -9,7 +9,7 @@ body {
 }
 
 main {
-  max-width: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -22,7 +22,7 @@ main > h1 {
 }
 
 header {
-  width: 25%;
+  width: 16%;
 }
 
 span {
@@ -48,6 +48,17 @@ h1 {
   display: flex;
   width: 100%;
   justify-content: center;
+}
+
+.homeAdmin {
+  padding: 1rem;
+  width: 100%;
+  height: 30%;
+}
+
+.homeAdmin > ul {
+  margin: 4rem 4rem;
+  font-size: 1.5rem;
 }
 
 .form_login {
@@ -116,6 +127,14 @@ nav > div > img {
   cursor: pointer;
 }
 
+nav > ul {
+  padding: 0.5rem;
+}
+
+nav > ul > li {
+  font-size: 1.8rem;
+}
+
 tr {
   padding: 0.5rem;
   background-color: #fff9f3;
@@ -142,14 +161,13 @@ td button {
 }
 
 table {
-  max-width: 100%;
-  table-layout: fixed;
+  width: 100%;
 }
 
 .table_container {
   overflow-y: scroll;
   max-height: 40rem;
-  max-width: 95%;
+  width: 99%;
   margin: 0 auto;
   overflow-wrap: anywhere; /*Permet de casser les mots */
 }

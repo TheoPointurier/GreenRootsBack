@@ -92,7 +92,8 @@ export async function createCampaignBackoffice(req, res) {
 
     // Gérer les associations de localisation et de pays
     let countryRecord;
-    if (location && location.country && location.country.name) {
+    // test avec une chaine optionnelle au lieu de if(location && location.country && location.country.name)
+    if (location?.country?.name) {
       const countryNameLower = location.country.name.toLowerCase();
       [countryRecord] = await Country.findOrCreate({
         where: sequelize.where(
