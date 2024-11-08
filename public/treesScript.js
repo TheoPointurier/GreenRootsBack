@@ -19,6 +19,17 @@ function displayEditTreeModal(
   document.getElementById('editTreeCo2Absorption').value = co2_absorption;
   document.getElementById('editTreeAverageLifespan').value = average_lifespan;
 
+  console.log(
+    id,
+    name,
+    price_ht,
+    quantity,
+    age,
+    species_name,
+    description,
+    co2_absorption,
+    average_lifespan,
+  );
   document.getElementById('editTreeModal').classList.remove('hidden');
 }
 

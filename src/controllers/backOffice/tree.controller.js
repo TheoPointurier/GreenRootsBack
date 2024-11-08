@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { Tree, TreeSpecies } from '../../models/index.js';
+import { Tree, TreeSpecies, Campaign } from '../../models/index.js';
 
 export async function getAllTreesBackOffice(req, res) {
   try {
@@ -9,9 +9,15 @@ export async function getAllTreesBackOffice(req, res) {
           model: TreeSpecies,
           as: 'species',
         },
+        {
+          model: Campaign, // modèle associé via la table de liaison
+          as: 'campaignTree',
+          through: { attributes: [] },
+        },
       ],
       order: [['id', 'ASC']],
     });
+
     res.render('trees', { trees });
   } catch (error) {
     console.error(error);
