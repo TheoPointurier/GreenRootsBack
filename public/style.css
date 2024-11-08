@@ -57,7 +57,8 @@ h1 {
 }
 
 .homeAdmin > ul {
-  margin: 2rem;
+  margin: 4rem 4rem;
+  font-size: 1.5rem;
 }
 
 .form_login {
@@ -160,14 +161,13 @@ td button {
 }
 
 table {
-  max-width: 100%;
-  table-layout: fixed;
+  width: 100%;
 }
 
 .table_container {
   overflow-y: scroll;
   max-height: 40rem;
-  max-width: 100%;
+  width: 99%;
   margin: 0 auto;
   overflow-wrap: anywhere; /*Permet de casser les mots */
 }

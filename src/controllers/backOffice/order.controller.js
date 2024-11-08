@@ -18,9 +18,14 @@ export async function getAllOrdersBackOffice(req, res) {
           },
         ],
       },
+      {
+        model: User,
+        as: 'user',
+        attributes: ['firstname', 'lastname'],
+      },
     ],
   });
-
+  console.log(orders);
   res.render('orders', { orders });
 }
 
