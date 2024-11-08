@@ -126,3 +126,81 @@ async function deleteCampaign(id) {
     console.error('Erreur réseau lors de la suppression de la campagne', error);
   }
 }
+
+function displayCreateCampaignModal() {
+  document.getElementById('createModal').classList.remove('hidden');
+}
+
+function hideCreateCampaignModal() {
+  document.getElementById('createModal').classList.add('hidden');
+}
+
+async function createCampaign(event) {
+  event.preventDefault();
+
+  const name = document.getElementById('createName').value;
+  const description = document.getElementById('createDescription').value;
+  const start_campaign =
+    document.getElementById('createStartCampain').value || null;
+  const end_campaign =
+    document.getElementById('createEndCampain').value || null;
+  const location = {
+    name_location: document.getElementById('createLocation').value,
+    country: {
+      name: document.getElementById('createCountry').value,
+    },
+  };
+
+  const treesCampaign = [];
+
+  const allRadioButtons = document.querySelectorAll('input[type="radio"]');
+
+  for (const radio of allRadioButtons) {
+    const treeId = radio.name.split('_')[1];
+    if (radio.value === 'include' && radio.checked) {
+      // Ajoute chaque arbre sous forme d'objet { id: <treeId> }
+      treesCampaign.push({ id: Number.parseInt(treeId) });
+    }
+  }
+  console.log(
+    'Création de la campagne avec :',
+    JSON.stringify(
+      {
+        name,
+        description,
+        start_campaign,
+        end_campaign,
+        location,
+        treesCampaign,
+      },
+      null,
+      2,
+    ),
+  );
+
+  try {
+    const response = await fetch('/admin/campaigns', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name,
+        description,
+        start_campaign,
+        end_campaign,
+        location,
+        treesCampaign,
+      }),
+    });
+
+    if (response.ok) {
+      console.log('Campagne crée avec succès');
+      window.location.reload();
+    } else {
+      console.error('Erreur lors de la création de la campagne');
+    }
+  } catch (error) {
+    console.error('Erreur réseau lors de la création de la campagne', error);
+  }
+}
