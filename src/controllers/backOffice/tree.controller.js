@@ -10,6 +10,7 @@ export async function getAllTreesBackOffice(req, res) {
           as: 'species',
         },
       ],
+      order: [['id', 'ASC']],
     });
     res.render('trees', { trees });
   } catch (error) {
