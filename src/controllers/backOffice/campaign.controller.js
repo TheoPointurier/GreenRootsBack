@@ -274,46 +274,66 @@ export async function updateCampaignBackOffice(req, res) {
       const { id: locationId, name_location, id_country, country } = location;
       let campaignLocation;
 
+      // Cas où locationId est fourni (mise à jour d'une localisation existante)
       if (locationId) {
-        // Trouver la localisation par ID
         campaignLocation = await CampaignLocation.findByPk(locationId);
         if (!campaignLocation) {
           return res.status(404).json({
             message: `La localisation avec l'id ${locationId} n'a pas été trouvée`,
           });
         }
-        // Mettre à jour la localisation
+
         if (name_location !== undefined)
           campaignLocation.name_location = name_location;
         if (id_country !== undefined) campaignLocation.id_country = id_country;
         await campaignLocation.save();
       } else {
-        // Créer une nouvelle localisation
+        // Cas pour la création d'une nouvelle localisation
+
+        // Si `id_country` n'est pas directement fourni, essayez de le trouver ou de le créer à partir de `country`
+        let countryId = id_country;
+        if (!countryId && country) {
+          const [countryRecord] = await Country.findOrCreate({
+            where: { name: country.name },
+          });
+          countryId = countryRecord.id;
+        }
+
+        if (!countryId) {
+          return res.status(400).json({
+            message:
+              'Impossible de créer la localisation sans un id_country valide.',
+          });
+        }
+
+        // Créer la nouvelle localisation avec l'`id_country` résolu
         campaignLocation = await CampaignLocation.create({
           name_location,
-          id_country,
+          id_country: countryId,
         });
       }
 
-      // Gérer le pays associé à la localisation
+      // Associer le pays à la localisation si des détails `country` sont fournis
       if (country) {
-        const { id: countryId, name: countryName } = country;
         let countryRecord;
-
-        if (countryId) {
-          countryRecord = await Country.findByPk(countryId);
+        if (country.id) {
+          countryRecord = await Country.findByPk(country.id);
           if (!countryRecord) {
             return res.status(404).json({
-              message: `Le pays avec l'id ${countryId} n'a pas été trouvé`,
+              message: `Le pays avec l'id ${country.id} n'a pas été trouvé`,
             });
           }
-          if (countryName !== undefined) countryRecord.name = countryName;
-          await countryRecord.save();
         } else {
-          countryRecord = await Country.create({ name: countryName });
+          [countryRecord] = await Country.findOrCreate({
+            where: { name: country.name },
+          });
         }
 
-        // Associer le pays à la localisation
+        // Mettre à jour le nom du pays si nécessaire
+        if (country.name !== undefined) countryRecord.name = country.name;
+        await countryRecord.save();
+
+        // Associer le pays à la localisation de la campagne
         await campaignLocation.setCountry(countryRecord);
       }
 
