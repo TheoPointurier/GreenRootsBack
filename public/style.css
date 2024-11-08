@@ -22,7 +22,7 @@ main > h1 {
 }
 
 header {
-  width: 25%;
+  width: 16%;
 }
 
 span {
@@ -126,6 +126,14 @@ nav > div > img {
   cursor: pointer;
 }
 
+nav > ul {
+  padding: 0.5rem;
+}
+
+nav > ul > li {
+  font-size: 1.8rem;
+}
+
 tr {
   padding: 0.5rem;
   background-color: #fff9f3;
@@ -159,7 +167,7 @@ table {
 .table_container {
   overflow-y: scroll;
   max-height: 40rem;
-  max-width: 95%;
+  max-width: 100%;
   margin: 0 auto;
   overflow-wrap: anywhere; /*Permet de casser les mots */
 }
