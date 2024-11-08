@@ -1,0 +1,63 @@
+<div id="createModal" class="modal hidden">
+  <div class="modal-content">
+    <h2>Créer une nouvelle campagne</h2>
+
+    <form id="createForm" onsubmit="createCampaign(event)" class="modal-form">
+      <div>
+        <label for="createName">Nom :</label>
+        <input type="text" id="createName" name="name" required>
+      </div>
+      <div>
+        <label for="createDescription">Description :</label>
+        <input type="text" id="createDescription" name="description">
+      </div>
+      <div>
+        <label for="createStartCampain">Date de début :</label>
+        <input type="date" id="createStartCampain" name="start_campaign">
+      </div>
+      <div>
+        <label for="createEndCampain">Date de fin :</label>
+        <input type="date" id="createEndCampain" name="end_campaign">
+      </div>
+      <div>
+        <label for="createLocation">Emplacement</label>
+        <input type="text" id="createLocation" name="campaign.location.name_location" required>
+      </div>
+      <div>
+        <label for="createCountry">Pays</label>
+        <input type="text" id="createCountry" name="campaign.location.country_name" required>
+      </div>
+
+      <div class="modal-form_trees">
+        <label>Arbres disponibles</label>
+        <div class="trees-options">
+          <% trees.forEach(tree=> { %>
+            <div class="tree-option">
+              <span>
+                <%= tree.name %>
+              </span>
+
+
+              <label>
+                <input type="radio" id="includeTree_<%= tree.id %>" name="tree_<%= tree.id %>" value="include">
+                Inclus
+              </label>
+
+              <label>
+                <input type="radio" id="excludeTree_<%= tree.id %>" name="tree_<%= tree.id %>" value="exclude" checked>
+                Exclus
+              </label>
+            </div>
+            <% }) %>
+        </div>
+        <button>Créer un arbre non existant</button>
+      </div>
+  </div>
+  <div class="create_modal_button">
+
+    <button class="save" type="submit">Créer la campagne</button>
+    <button type="button" onclick="hideCreateCampaignModal()" class="cancel">Annuler</button>
+  </div>
+  </form>
+</div>
+</div>
