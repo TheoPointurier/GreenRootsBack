@@ -35,7 +35,7 @@ export async function updateReviewBackOffice(req, res) {
       return;
     }
 
-    const review = await Review.findByPk(id);
+    const review = await Review.findByPk(reviewId);
 
     if (!review) {
       res.status(404).send('Avis non trouvé');
@@ -50,6 +50,7 @@ export async function updateReviewBackOffice(req, res) {
         .min(1)
         .max(5) // Par exemple, pour une note de 1 à 5
         .required(),
+      id_user: Joi.number().required(),
     });
 
     // Validation des données de req.body avec Joi
