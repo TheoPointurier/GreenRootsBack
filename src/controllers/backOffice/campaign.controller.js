@@ -293,9 +293,18 @@ export async function updateCampaignBackOffice(req, res) {
         // Si `id_country` n'est pas directement fourni, essayez de le trouver ou de le créer à partir de `country`
         let countryId = id_country;
         if (!countryId && country) {
+          // Normaliser le nom du pays en minuscule pour éviter les doublons dus à la casse
+          const countryNameLower = country.name.toLowerCase();
+          console.log('countryNameLower:', countryNameLower);
+
           const [countryRecord] = await Country.findOrCreate({
-            where: { name: country.name },
+            where: sequelize.where(
+              sequelize.fn('LOWER', sequelize.col('name')),
+              countryNameLower,
+            ),
+            defaults: { name: countryNameLower }, // Utiliser la même casse pour l'insertion
           });
+
           countryId = countryRecord.id;
         }
 
@@ -324,8 +333,13 @@ export async function updateCampaignBackOffice(req, res) {
             });
           }
         } else {
+          // find ou create pour éviter les doublons porte bien son nom
           [countryRecord] = await Country.findOrCreate({
-            where: { name: country.name },
+            where: sequelize.where(
+              sequelize.fn('LOWER', sequelize.col('name')),
+              country.name.toLowerCase(),
+            ),
+            defaults: { name: country.name.toLowerCase() }, // Utiliser la même casse pour l'insertion
           });
         }
 
@@ -340,27 +354,6 @@ export async function updateCampaignBackOffice(req, res) {
       // Associer la localisation à la campagne
       await campaign.setLocation(campaignLocation);
     }
-
-    // Récupérer la campagne mise à jour avec ses associations
-    const updatedCampaign = await Campaign.findByPk(req.params.id, {
-      include: [
-        {
-          model: Tree,
-          as: 'treesCampaign',
-          through: { attributes: [] }, // Pour exclure les champs de la table pivot
-        },
-        {
-          model: CampaignLocation,
-          as: 'location',
-          include: [
-            {
-              model: Country,
-              as: 'country',
-            },
-          ],
-        },
-      ],
-    });
 
     console.log('mise à jour effectué pour la campagne ID:', campaignId);
 
