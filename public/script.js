@@ -109,3 +109,20 @@ async function editCampaign(event) {
     console.error('Erreur réseau lors de la mise à jour de la campagne', error);
   }
 }
+
+async function deleteCampaign(id) {
+  try {
+    const response = await fetch(`/admin/campaigns/${id}`, {
+      method: 'DELETE',
+    });
+
+    if (response.ok) {
+      console.log('Campagne supprimée avec succès');
+      window.location.reload();
+    } else {
+      console.error('Erreur lors de la suppression de la campagne');
+    }
+  } catch (error) {
+    console.error('Erreur réseau lors de la suppression de la campagne', error);
+  }
+}

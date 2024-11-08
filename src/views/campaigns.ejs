@@ -65,7 +65,7 @@
                     '<%= campaign.location.country.name %>',
                     this.dataset.trees
   )" data-trees='<%= JSON.stringify(campaign.treesCampaign) %>'>Modifier</button>
-                  <button>Supprimer</button>
+                  <button onclick="deleteCampaign('<%= campaign.id %>')">Supprimer</button>
                 </td>
               </tr>
 
@@ -75,6 +75,7 @@
 
         </table>
       </div>
+
 
       <%- include('./partials/modals-update.ejs') %>
     </main>
