@@ -131,7 +131,18 @@ export async function createCampaignBackofice(req, res) {
           if (countryName !== undefined) countryRecord.name = countryName;
           await countryRecord.save();
         } else {
-          countryRecord = await Country.create({ name: countryName });
+          // Normaliser le nom du pays en minuscule pour éviter les doublons dus à la casse
+          const countryNameLower = countryName.toLowerCase();
+          console.log('countryNameLower:', countryNameLower);
+
+          // Recherche insensible à la casse pour éviter les doublons de pays
+          [countryRecord] = await Country.findOrCreate({
+            where: sequelize.where(
+              sequelize.fn('LOWER', sequelize.col('name')),
+              countryNameLower,
+            ),
+            defaults: { name: countryNameLower }, // Utiliser la même casse pour l'insertion
+          });
         }
 
         // Associer le pays à la localisation
