@@ -7,7 +7,10 @@ export const router = Router();
 // pour le back office:
 
 router.get('/campaigns', campaignControllerBackOffice.getAllCampaignBackofice);
-router.post('/campaigns', campaignControllerBackOffice.createCampaignBackofice);
+router.post(
+  '/campaigns',
+  campaignControllerBackOffice.createCampaignBackoffice,
+);
 router.patch(
   '/campaigns/:id',
   campaignControllerBackOffice.updateCampaignBackOffice,

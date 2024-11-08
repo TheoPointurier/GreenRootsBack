@@ -42,7 +42,7 @@ export async function getAllCampaignBackofice(req, res) {
   }
 }
 
-export async function createCampaignBackofice(req, res) {
+export async function createCampaignBackoffice(req, res) {
   try {
     // Schéma de validation pour la création de la campagne
     const schema = Joi.object({
@@ -90,68 +90,27 @@ export async function createCampaignBackofice(req, res) {
       end_campaign,
     });
 
-    // Gérer les associations de localisation
-    let campaignLocation;
-    if (location) {
-      const { id: locationId, name_location, id_country, country } = location;
-
-      if (locationId) {
-        // Trouver la localisation par ID
-        campaignLocation = await CampaignLocation.findByPk(locationId);
-        if (!campaignLocation) {
-          return res.status(404).send({
-            message: `La localisation avec l'id ${locationId} n'a pas été trouvée`,
-          });
-        }
-        // Mettre à jour la localisation
-        if (name_location !== undefined)
-          campaignLocation.name_location = name_location;
-        if (id_country !== undefined) campaignLocation.id_country = id_country;
-        await campaignLocation.save();
-      } else {
-        // Créer une nouvelle localisation
-        campaignLocation = await CampaignLocation.create({
-          name_location,
-          id_country,
-        });
-      }
-
-      // Gérer le pays associé à la localisation
-      if (country) {
-        const { id: countryId, name: countryName } = country;
-        let countryRecord;
-
-        if (countryId) {
-          countryRecord = await Country.findByPk(countryId);
-          if (!countryRecord) {
-            return res.status(404).send({
-              message: `Le pays avec l'id ${countryId} n'a pas été trouvé`,
-            });
-          }
-          if (countryName !== undefined) countryRecord.name = countryName;
-          await countryRecord.save();
-        } else {
-          // Normaliser le nom du pays en minuscule pour éviter les doublons dus à la casse
-          const countryNameLower = countryName.toLowerCase();
-          console.log('countryNameLower:', countryNameLower);
-
-          // Recherche insensible à la casse pour éviter les doublons de pays
-          [countryRecord] = await Country.findOrCreate({
-            where: sequelize.where(
-              sequelize.fn('LOWER', sequelize.col('name')),
-              countryNameLower,
-            ),
-            defaults: { name: countryNameLower }, // Utiliser la même casse pour l'insertion
-          });
-        }
-
-        // Associer le pays à la localisation
-        await campaignLocation.setCountry(countryRecord);
-      }
-
-      // Associer la localisation à la campagne
-      await campaign.setLocation(campaignLocation);
+    // Gérer les associations de localisation et de pays
+    let countryRecord;
+    if (location && location.country && location.country.name) {
+      const countryNameLower = location.country.name.toLowerCase();
+      [countryRecord] = await Country.findOrCreate({
+        where: sequelize.where(
+          sequelize.fn('LOWER', sequelize.col('name')),
+          countryNameLower,
+        ),
+        defaults: { name: location.country.name }, // Nom avec la casse originale pour l'insertion
+      });
     }
+
+    // Création de la localisation avec l'ID du pays
+    const campaignLocation = await CampaignLocation.create({
+      name_location: location ? location.name_location : null,
+      id_country: countryRecord ? countryRecord.id : null,
+    });
+
+    // Associer la localisation à la campagne
+    await campaign.setLocation(campaignLocation);
 
     // Gérer les associations d'arbres
     if (treesCampaign && treesCampaign.length > 0) {
@@ -194,6 +153,7 @@ export async function createCampaignBackofice(req, res) {
 
     res.redirect('/admin/campaigns');
   } catch (error) {
+    console.error('Erreur lors de la création de la campagne:', error);
     res.status(500).send({
       message: 'Erreur lors de la création de la campagne',
       error: error.message,
