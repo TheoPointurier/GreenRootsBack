@@ -18,6 +18,7 @@
               <th>Description</th>
               <th>Absorption de CO2</th>
               <th>Durée de vie moyenne</th>
+              <th>Campagne(s) associée(s)</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -51,18 +52,27 @@
                 <td>
                   <%= tree.species.average_lifespan%>
                 </td>
+                <td>
+                  <ul>
+                    <% tree.campaignTree.forEach(campaign=> { %>
+                      <li>
+                        <%= campaign.name %>
+                      </li>
+                      <% }) %>
+                </td>
 
                 <td>
                   <button onclick="displayEditTreeModal(
-                    '<%= tree.id %>',
-                    '<%= tree.name %>',
-                    '<%= tree.price_ht %>',
-                    '<%= tree.quantity %>',
-                    '<%= tree.age %>',
-                    '<%= tree.species.species_name %>',
-                    '<%= tree.species.description %>',
-                    '<%= tree.species.co2_absorption %>',
-                    '<%= tree.species.average_lifespan%>'
+                    `<%= tree.id %>`,
+  `<%= tree.name %>`,
+  `<%= tree.price_ht %>`,
+  `<%= tree.quantity %>`,
+  `<%= tree.age %>`,
+  `<%= tree.species.species_name %>`,
+  `<%= tree.species.description %>`,
+  `<%= tree.species.co2_absorption %>`,
+  `<%= tree.species.average_lifespan %>`
+                    
                   )">Modifier</button>
                   <button>Supprimer</button>
                 </td>

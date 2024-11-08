@@ -57,15 +57,15 @@
                 <td>
                   <button onclick="displayEditCampaignModal(
                 
-                    '<%= campaign.id %>',
-                    '<%= campaign.name %>',
-                    '<%= campaign.description %>',
-                    '<%= campaign.start_campaign %>',
-                    '<%= campaign.end_campaign %>',
-                    '<%= campaign.location.name_location %>',
-                    '<%= campaign.location.country.name %>',
-                    this.dataset.trees
-  )" data-trees='<%= JSON.stringify(campaign.treesCampaign) %>'>Modifier</button>
+                `<%= campaign.id %>`,
+  `<%= campaign.name %>`,
+  `<%= campaign.description %>`,
+  `<%= campaign.start_campaign %>`,
+  `<%= campaign.end_campaign %>`,
+  `<%= campaign.location.name_location %>`,
+  `<%= campaign.location.country.name %>`,
+  this.dataset.trees
+)" data-trees='<%= JSON.stringify(campaign.treesCampaign) %>'>Modifier</button>
                   <button onclick="deleteCampaign('<%= campaign.id %>')">Supprimer</button>
                 </td>
               </tr>
@@ -82,4 +82,3 @@
 
         <%- include('./partials/modals-create.ejs') %>
     </main>
-

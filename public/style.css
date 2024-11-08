@@ -166,7 +166,7 @@ table {
 
 .table_container {
   overflow-y: scroll;
-  max-height: 40rem;
+  height: 100%;
   width: 99%;
   margin: 0 auto;
   overflow-wrap: anywhere; /*Permet de casser les mots */
