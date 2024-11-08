@@ -15,6 +15,7 @@ export async function getAllTreesBackOffice(req, res) {
           through: { attributes: [] },
         },
       ],
+      order: [['id', 'ASC']],
     });
 
     res.render('trees', { trees });
@@ -69,7 +70,9 @@ export async function updateTreeBackOffice(req, res) {
 
     // Schéma de validation pour la mise à jour
     const updateTreeSchema = Joi.object({
-      name: Joi.string().required(),
+      name: Joi.string()
+        .pattern(/^[\w\s'À-ÿ-]+$/) // Autorise les lettres, espaces, apostrophes, caractères accentués et traits d'union
+        .required(),
       price_ht: Joi.number().precision(2).positive().optional(),
       quantity: Joi.number().optional(),
       age: Joi.number().positive().optional(),

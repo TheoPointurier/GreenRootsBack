@@ -17,6 +17,7 @@ export async function getAllOrdersBackOffice(req, res) {
             as: 'campaign',
           },
         ],
+        order: [['id', 'ASC']],
       },
       {
         model: User,
