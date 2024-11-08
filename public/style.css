@@ -248,3 +248,13 @@ table thead tr th {
 h2 {
   text-align: center;
 }
+
+.create_button {
+  background-color: #cd5c08;
+  border-radius: 20px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 0.3rem 0.6rem;
+  margin-bottom: 2rem;
+}
