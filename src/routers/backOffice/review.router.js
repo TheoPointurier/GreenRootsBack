@@ -6,3 +6,7 @@ export const router = Router();
 
 router.get('/reviews', reviewControllerBackOffice.getAllReviewsBackOffice);
 router.patch('/reviews/:id', reviewControllerBackOffice.updateReviewBackOffice);
+router.delete(
+  '/reviews/:id',
+  reviewControllerBackOffice.deleteReviewBackOffice,
+);
