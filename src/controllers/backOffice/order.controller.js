@@ -27,7 +27,6 @@ export async function getAllOrdersBackOffice(req, res) {
       },
     ],
   });
-  console.log(orders);
   res.render('orders', { orders });
 }
 
@@ -41,6 +40,8 @@ export async function updateOrderBackOffice(req, res) {
     res.status(400).send("L'id doit être un nombre");
     return;
   }
+
+  console.log('Requête reçue avec le corps:', req.body);
 
   // Schéma Joi pour la validation
   const updateOrderSchema = Joi.object({
@@ -61,6 +62,7 @@ export async function updateOrderBackOffice(req, res) {
         Joi.object({
           id: Joi.number().required(),
           quantity: Joi.number().positive().required(),
+          total_amount: Joi.number().positive().required(),
         }),
       )
       .required()
@@ -164,7 +166,18 @@ export async function updateOrderBackOffice(req, res) {
       order_number: order.order_number,
     });
 
-    res.status(200).redirect('/admin/orders');
+    // res.status(200).redirect('/admin/orders');
+
+    // Envoyer une réponse JSON au lieu de rediriger
+    res.status(200).json({
+      message: 'Commande mise à jour avec succès',
+      updatedOrder: {
+        id: orderId,
+        total_amount: order.total_amount,
+        status: order.status,
+        order_number: order.order_number,
+      },
+    });
   } catch (updateError) {
     console.log('Erreur lors de la mise à jour de la commande:', updateError);
     res.status(500).send('Erreur lors de la mise à jour de la commande');

@@ -1,0 +1,68 @@
+<div id="editOrderModal-<%= order.id %>" class="modal hidden modalOrder modal-form">
+  <div class="modal-content modal-content-order">
+    <h2>Modifier la Commande #<%= order.id %>
+    </h2>
+    <form id="editOrderForm" onsubmit="editOrder(event)">
+      <input type="hidden" name="id" value="<%= order.id %>">
+      <div>
+        <label>Utilisateur :</label>
+        <input disabled type="text" value="<%= order.user ? order.user.firstname + ' ' + order.user.lastname : 'N/A' %>"
+          readonly>
+      </div>
+      <div>
+        <label>Date :</label>
+        <input disabled type="date" name="date" value="<%= new Date(order.created_at).toISOString().split('T')[0] %>">
+      </div>
+      <div>
+        <label>Montant total :</label>
+        <input disabled type="number" id="orderTotalAmount-<%= order.id %>" name="total_amount"
+          value="<%= order.total_amount %>" readonly>
+      </div>
+      <div>
+        <label>Status :</label>
+        <input type="text" name="status" value="<%= order.status %>">
+      </div>
+
+      <!-- Section des lignes de commande -->
+      <div>
+        <label>Détail de la commande :</label>
+        <div id="editOrderLinesContainer" class="modal-orderLines">
+          <% order.orderLines.forEach((orderLine, index)=> { %>
+            <div class="order-line">
+              <div>
+                <label>Arbre :</label>
+                <input disabled type="text" value="<%= orderLine.tree ? orderLine.tree.name : 'N/A' %>" readonly>
+              </div>
+              <div>
+                <label>Campagne :</label>
+                <input disabled type="text" value="<%= orderLine.campaign ? orderLine.campaign.name : 'N/A' %>"
+                  readonly>
+              </div>
+              <div>
+                <label>Quantité :</label>
+                <input type="number" name="orderLines[<%= orderLine.id %>][quantity]" value="<%= orderLine.quantity %>"
+                  min="1"
+                  oninput="updateLineTotal('<%= order.id %>', '<%= orderLine.id %>', '<%= orderLine.price_ht_at_order %>')">
+              </div>
+              <div>
+                <label>Prix Unitaire :</label>
+                <input disabled type="text" value="<%= orderLine.price_ht_at_order %> €" readonly>
+              </div>
+              <div>
+                <label>Total :</label>
+                <input disabled type="text" id="lineTotal-<%= order.id %>-<%= orderLine.id %>"
+                  value="<%= orderLine.total_amount %> €" readonly>
+              </div>
+            </div>
+            <% }) %>
+        </div>
+      </div>
+
+      <div class="edit_modal_button">
+        <button class="save" type="submit" onclick="editOrder(event,'<%= order.id %>' )">Enregistrer les
+          modifications</button>
+        <button onclick="hideEditOrderModal(`<%= order.id %>`)" class="cancel" type="button">Annuler</button>
+      </div>
+    </form>
+  </div>
+</div>
