@@ -1,10 +1,8 @@
 <%- include('./partials/head.ejs') %>
   <%- include('./partials/header.ejs') %>
     <script src="/treesScript.js"></script>
-
     <main>
-      <h1>Gestion des Arbres</h1>
-
+      <button class="create_button" onclick="displayCreateTreeModal()">Ajouter un nouvel arbre</button>
       <div class="table_container">
         <table>
           <thead>
@@ -74,7 +72,7 @@
                     `<%= tree.species.average_lifespan%>`
 
                   )">Modifier</button>
-                  <button>Supprimer</button>
+                  <button onclick="deleteTree('<%= tree.id %>')">Supprimer</button>
                 </td>
               </tr>
 
@@ -85,4 +83,5 @@
         </table>
       </div>
       <%- include('./partials/modals-updateTree.ejs') %>
+        <%- include('./partials/modals-createTree.ejs') %>
     </main>

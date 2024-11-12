@@ -2,8 +2,6 @@
   <%- include('./partials/header.ejs') %>
     <script src='/script.js'></script>
     <main>
-
-      <h1>Gestion des Campagnes</h1>
       <button class="create_button" onclick="displayCreateCampaignModal()">Créer une nouvelle campagne</button>
       <div class="table_container">
         <table>
@@ -76,9 +74,6 @@
 
         </table>
       </div>
-
-
-      <%- include('./partials/modals-update.ejs') %>
-
-        <%- include('./partials/modals-create.ejs') %>
+      <%- include('./partials/modals-create.ejs') %>
+        <%- include('./partials/modals-update.ejs') %>
     </main>

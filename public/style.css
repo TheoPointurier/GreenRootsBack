@@ -226,17 +226,14 @@ table thead tr th {
   cursor: pointer;
 }
 
-.hidden {
-  display: none;
-}
-
 #editModal,
 #createModal,
-#editTreeModal {
-  z-index: 5;
+#editTreeModal,
+#createTreeModal {
+  z-index: 99;
   position: fixed;
   top: 8rem;
-  left: 14rem;
+  left: 17rem;
   background-color: white;
   overflow-y: scroll;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
@@ -286,5 +283,9 @@ h2 {
   border: none;
   cursor: pointer;
   padding: 0.3rem 0.6rem;
-  margin-bottom: 2rem;
+  margin: 3rem;
+}
+
+.hidden {
+  display: none;
 }

@@ -8,6 +8,9 @@ function displayEditCampaignModal(
   country,
   treeCampaign,
 ) {
+  // Afficher la modal
+  document.getElementById('editModal').classList.remove('hidden');
+
   const parsedTreeCampaign = JSON.parse(treeCampaign);
 
   document.getElementById('editId').value = id;
@@ -45,9 +48,6 @@ function displayEditCampaignModal(
       includeRadio.checked = true;
     }
   }
-
-  // Afficher la modal
-  document.getElementById('editModal').classList.remove('hidden');
 }
 
 function hideEditCampaignModal() {

@@ -27,7 +27,7 @@ export async function getAllTreesBackOffice(req, res) {
 
 export async function createTreeBackOffice(req, res) {
   try {
-    const { name, price_ht, quantity, age, id_species } = req.body;
+    const { name, price_ht, quantity, age, species } = req.body;
 
     //todo gérer le cas ou le champ name comprends ("toto11")
 
@@ -36,19 +36,39 @@ export async function createTreeBackOffice(req, res) {
       price_ht: Joi.number().precision(2).positive(),
       quantity: Joi.number(),
       age: Joi.number().required().positive(),
-      id_species: Joi.number(),
+      species: Joi.object({
+        species_name: Joi.string().required(),
+        description: Joi.string().optional(),
+        co2_absorption: Joi.number().positive().optional(),
+        average_lifespan: Joi.number().positive().optional(),
+      }).optional(),
     });
     const { error } = createTreeSchema.validate(req.body);
     if (error) {
       return res.status(400).json({ error: error.message });
     }
 
+    // Rechercher ou créer l'espèce d'arbre
+    let treeSpecies = await TreeSpecies.findOne({
+      where: { species_name: species.species_name },
+    });
+
+    if (!treeSpecies) {
+      treeSpecies = await TreeSpecies.create({
+        species_name: species.species_name,
+        description: species.description,
+        co2_absorption: species.co2_absorption,
+        average_lifespan: species.average_lifespan,
+      });
+    }
+
+    // Créer l'arbre avec la référence à l'espèce trouvée ou créée
     const createdTree = await Tree.create({
       name,
       price_ht,
       quantity,
       age,
-      id_species,
+      id_species: treeSpecies.id,
     });
     console.log(createdTree);
 

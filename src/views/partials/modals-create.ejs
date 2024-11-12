@@ -36,8 +36,6 @@
               <span>
                 <%= tree.name %>
               </span>
-
-
               <label>
                 <input type="radio" id="includeTree_<%= tree.id %>" name="tree_<%= tree.id %>" value="include">
                 Inclus
@@ -50,14 +48,12 @@
             </div>
             <% }) %>
         </div>
-        <button>Créer un arbre non existant</button>
-      </div>
-  </div>
-  <div class="create_modal_button">
+        <div class="create_modal_button">
 
-    <button class="save" type="submit">Créer la campagne</button>
-    <button type="button" onclick="hideCreateCampaignModal()" class="cancel">Annuler</button>
+          <button class="save" type="submit">Créer la campagne</button>
+          <button type="button" onclick="hideCreateCampaignModal()" class="cancel">Annuler</button>
+        </div>
+      </div>
+    </form>
   </div>
-  </form>
-</div>
 </div>

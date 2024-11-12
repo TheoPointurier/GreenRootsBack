@@ -4,10 +4,6 @@
 
     <form id="editForm" onsubmit="editCampaign(event)" class="modal-form">
       <div>
-        <label for="editId">Id :</label>
-        <input type="text" id="editId" name="id">
-      </div>
-      <div>
         <label for="editName">Nom :</label>
         <input type="text" id="editName" name="name">
       </div>
@@ -54,14 +50,11 @@
             </div>
             <% }) %>
         </div>
-        <button>Créer un arbre non existant</button>
-      </div>
-  </div>
-  <div class="edit_modal_button">
+        <div class="edit_modal_button">
 
-    <button class="save" type="submit">Enregistrer les modifications</button>
-    <button type="button" onclick="hideEditCampaignModal()" class="cancel">Annuler</button>
+          <button class="save" type="submit">Enregistrer les modifications</button>
+          <button type="button" onclick="hideEditCampaignModal()" class="cancel">Annuler</button>
+        </div>
+    </form>
   </div>
-  </form>
-</div>
 </div>

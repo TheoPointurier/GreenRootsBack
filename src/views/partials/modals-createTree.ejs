@@ -1,0 +1,47 @@
+<div id="createTreeModal" class="modal hidden">
+  <div class="modal-content">
+    <h2>Ajouter un nouvel arbre</h2>
+
+    <form id="createTreeForm" onsubmit="createTree(event)" class="modal-form">
+      <input type="hidden" id="editTreeId" name="id">
+      <div>
+        <label for="createTreeName">Nom :</label>
+        <input type="text" id="createTreeName" name="name">
+      </div>
+      <div>
+        <label for="createTreePriceHt">Prix HT :</label>
+        <input type="number" id="createTreePriceHt" name="price_ht" step="0.01">
+      </div>
+      <div>
+        <label for="createTreeQuantity">Quantité :</label>
+        <input type="number" id="createTreeQuantity" name="quantity">
+      </div>
+      <div>
+        <label for="createTreeAge">Age (années) :</label>
+        <input type="number" id="createTreeAge" name="age">
+      </div>
+      <div>
+        <label for="createTreeSpecies">Espèce :</label>
+        <input type="text" id="createTreeSpecies" name="species_name">
+      </div>
+      <div>
+        <label for="createTreeDescription">Description :</label>
+        <textarea id="createTreeDescription" name="description"></textarea>
+      </div>
+      <div>
+        <label for="createTreeCo2Absorption">Absorption de CO2 :</label>
+        <input type="number" id="createTreeCo2Absorption" name="co2_absorption">
+      </div>
+      <div>
+        <label for="createTreeAverageLifespan">Durée de vie moyenne :</label>
+        <input type="number" id="createTreeAverageLifespan" name="average_lifespan">
+      </div>
+
+
+      <div class="create_modal_button">
+        <button class="save" type="submit">Ajouter l'arbre</button>
+        <button onclick="hideCreateTreeModal()" class="cancel" type="button">Annuler</button>
+      </div>
+    </form>
+  </div>
+</div>
