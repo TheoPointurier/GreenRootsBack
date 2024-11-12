@@ -1,5 +1,6 @@
 <%- include('./partials/head.ejs') %>
   <%- include('./partials/header.ejs') %>
+    <script src='/ordersScript.js'></script>
 
     <main>
       <h1>Commandes :</h1>
@@ -57,7 +58,7 @@
                             <%= orderLine.quantity %>
                           </td>
                           <td>
-                            <%= orderLine.total_amount %> €
+                            <%= orderLine.price_ht_at_order %> €
                           </td>
                         </tr>
                         <% }) %>
@@ -65,12 +66,13 @@
                   </table>
                 </td>
                 <td>
-                  <button>Modifier</button>
+                  <!-- Pass `order` as context to the modal template -->
+                  <button onclick="displayEditOrderModal('<%= order.id %>')">Modifier</button>
                   <button>Supprimer</button>
                 </td>
               </tr>
-              <% }) %>
-          </tbody>
-        </table>
-      </div>
+
+              <!-- Include the modal with the specific order details -->
+              <%- include('./partials/modals-updateOrder.ejs', { order }) %>
+                <% }) %>
     </main>
