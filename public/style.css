@@ -182,7 +182,6 @@ table thead tr th {
 .modal-form {
   width: 90%;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
   margin: 0 auto;
   gap: 0.5rem;
 }
@@ -259,6 +258,13 @@ table thead tr th {
   margin-bottom: 2rem;
 }
 
+.modal-content-order {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 90%;
+}
+
 .create_modal_button > button {
   border-radius: 20px;
   color: white;
@@ -271,13 +277,19 @@ table thead tr th {
 .modalOrder {
   z-index: 5;
   position: fixed;
-  top: 20%;
+  top: 5%;
   left: 22%;
   width: 70%;
   background-color: white;
   overflow-y: scroll;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
-  max-height: 80vh;
+  max-height: 90vh;
+}
+
+.modal-orderLines {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
 }
 
 .save {

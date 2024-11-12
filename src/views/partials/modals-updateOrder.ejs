@@ -1,8 +1,8 @@
-<div id="editOrderModal-<%= order.id %>" class="modal hidden modalOrder">
-  <div class="modal-content">
+<div id="editOrderModal-<%= order.id %>" class="modal hidden modalOrder modal-form">
+  <div class="modal-content modal-content-order">
     <h2>Modifier la Commande #<%= order.id %>
     </h2>
-    <form id="editOrderForm" onsubmit="editOrder(event)" class="modal-form">
+    <form id="editOrderForm" onsubmit="editOrder(event)">
       <input type="hidden" name="id" value="<%= order.id %>">
       <div>
         <label>Utilisateur :</label>
@@ -24,9 +24,9 @@
       </div>
 
       <!-- Section des lignes de commande -->
-      <div class="modal-form_trees">
+      <div>
         <label>Détail de la commande :</label>
-        <div id="editOrderLinesContainer">
+        <div id="editOrderLinesContainer" class="modal-orderLines">
           <% order.orderLines.forEach((orderLine, index)=> { %>
             <div class="order-line">
               <div>
