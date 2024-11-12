@@ -1,4 +1,4 @@
-import { User, Review } from '../../models/index.js';
+import { User, Review, Role } from '../../models/index.js';
 import bcrypt from 'bcrypt';
 import Joi from 'joi';
 
@@ -13,11 +13,15 @@ export async function getAllUsersBackOffice(req, res) {
           model: Review,
           as: 'reviews',
         },
+        {
+          model: Role,
+          as: 'role',
+        },
       ],
       order: [['id', 'ASC']],
     });
-    console.log(users);
-    res.render('users', { users });
+    const roles = await Role.findAll();
+    res.render('users', { users, roles });
   } catch (error) {
     console.error(error);
     res.status(500).send("Une erreur s'est produite");
@@ -40,20 +44,9 @@ export async function createUserBackOffice(req, res) {
       id_role,
       phone_number,
       entity_name,
-      entity_type,
       entity_siret,
       is_admin,
     } = req.body;
-
-    //todo  ajouter un minimum de caractère ou de chiffre pour le password ??
-
-    //todo limiter le nombre de caracaères pour les champs (ex siret)
-    //todo vérifier que l'email n'existe pas déjà => find by email ?
-    //todo vérifier que le role existe
-    //todo vérifier que le siret est unique ?
-    //todo vérifier que le siret est valide
-    //todo vérifier que le téléphone est valide (nb de chiffres ?)
-    //todo vérifier que le code postal est valide ?
 
     const createUserSchema = Joi.object({
       email: Joi.string().email().required(),
@@ -66,9 +59,8 @@ export async function createUserBackOffice(req, res) {
       street_number: Joi.number().required(),
       country: Joi.string().required(),
       phone_number: Joi.number(),
-      entity_name: Joi.string(),
-      entity_type: Joi.string(),
-      entity_siret: Joi.string(),
+      entity_name: Joi.string().allow(''),
+      entity_siret: Joi.string().allow(''),
       id_role: Joi.number().required(),
       is_admin: Joi.boolean().required(),
     });
@@ -78,7 +70,6 @@ export async function createUserBackOffice(req, res) {
       return res.status(400).json({ error: error.message });
     }
 
-    // Vérifier si l'email existe déjà
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
       return res
@@ -86,7 +77,12 @@ export async function createUserBackOffice(req, res) {
         .json({ error: 'Cet email est déjà utilisé par un autre utilisateur' });
     }
 
-    // on hash le password
+    const role = await Role.findByPk(id_role);
+    if (!role) {
+      return res.status(400).json({ error: "Le rôle spécifié n'existe pas" });
+    }
+    const entity_type = role.name;
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     await User.create({
@@ -110,7 +106,7 @@ export async function createUserBackOffice(req, res) {
     res.status(201).redirect('/admin/users');
   } catch (error) {
     console.error(error);
-    res.status(500).send("Une erreur s'est produite");
+    res.status(500).json({ error: "Une erreur s'est produite" });
   }
 }
 
@@ -118,7 +114,6 @@ export async function updateUserBackOffice(req, res) {
   try {
     //récupérer l'id de l'utilisateur à modifier
     const userId = Number.parseInt(req.params.id);
-    console.log(userId);
 
     if (Number.isNaN(userId)) {
       res.status(400).send("L'id doit être un nombre");
@@ -127,7 +122,6 @@ export async function updateUserBackOffice(req, res) {
 
     const createUserSchema = Joi.object({
       email: Joi.string().email().required(),
-      password: Joi.string().required(),
       firstname: Joi.string().required(),
       lastname: Joi.string().required(),
       city: Joi.string().required(),
@@ -136,13 +130,15 @@ export async function updateUserBackOffice(req, res) {
       street_number: Joi.number().required(),
       country: Joi.string().required(),
       phone_number: Joi.number(),
-      entity_name: Joi.string(),
+      entity_name: Joi.string().allow(''),
       entity_type: Joi.string(),
-      entity_siret: Joi.string(),
+      entity_siret: Joi.string().allow(''),
       id_role: Joi.number().required(),
+      is_admin: Joi.boolean(), // Ajout de is_admin
     });
 
     const { error } = createUserSchema.validate(req.body);
+    console.log(req.body); // Debug
     if (error) {
       return res.status(400).json({ error: error.message });
     }
@@ -169,6 +165,7 @@ export async function updateUserBackOffice(req, res) {
       entity_name,
       entity_type,
       entity_siret,
+      is_admin,
     } = req.body;
 
     // Vérifier si l'email existe déjà dans la base de données pour un autre utilisateur
@@ -189,11 +186,21 @@ export async function updateUserBackOffice(req, res) {
     user.street = street || user.street;
     user.street_number = street_number || user.street_number;
     user.country = country || user.country;
-    user.id_role = id_role || user.id_role;
     user.phone_number = phone_number || user.phone_number;
     user.entity_name = entity_name || user.entity_name;
     user.entity_type = entity_type || user.entity_type;
     user.entity_siret = entity_siret || user.entity_siret;
+    // passage en undefined car avec l'opérateur ||, si is_admin est false, il ne sera pas mis à jour car considéré comme falsy
+    user.is_admin = is_admin !== undefined ? is_admin : user.is_admin;
+    if (id_role !== user.id_role) {
+      user.id_role = id_role;
+
+      // Récupérer le rôle correspondant pour définir l'entity_type avec le name du rôle
+      const role = await Role.findByPk(id_role);
+      if (role) {
+        user.entity_type = role.name; // Assigner le `name` du rôle comme `entity_type`
+      }
+    }
 
     // on hash le password
     if (password) {
@@ -202,6 +209,7 @@ export async function updateUserBackOffice(req, res) {
     }
 
     await user.save();
+    console.log('User mis à jour avec succès :', user);
 
     res.status(200).redirect('/admin/users');
   } catch (error) {

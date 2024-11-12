@@ -4,7 +4,11 @@
 
     <main>
 
+      <button class="create_button" onclick="displayCreateUserModal()">Créer un nouvel utilisateur</button>
+
+
       <input type="text" class="searchInput" placeholder="Filtrer..." onkeyup="filterSearchBar()">
+
       <div class="table_container table_container-users">
         <table>
           <thead>
@@ -20,6 +24,7 @@
               <th>Code postal</th>
               <th>Pays</th>
               <th>Type d'entité</th>
+              <th>Rôle</th>
               <th>Nom de l'entité</th>
               <th>SIRET</th>
               <th>Administrateur</th>
@@ -60,6 +65,9 @@
                   <%= user.country %>
                 </td>
                 <td>
+                  <%= user.role.name%>
+                </td>
+                <td>
                   <%= user.entity_type %>
                 </td>
                 <td>
@@ -73,14 +81,15 @@
                 </td>
                 <td>
                   <button onclick="displayEditUserModal('<%= user.id %>')">Modifier</button>
-                  <button>Supprimer</button>
+                  <button onclick="deleteUser('<%= user.id %>')">Supprimer</button>
                 </td>
               </tr>
 
               <!-- Inclure la modale pour chaque utilisateur -->
-              <%- include('./partials/modals-updateUser.ejs', { user }) %>
+              <%- include('./partials/modals-updateUser.ejs', { user, roles }) %>
                 <% }) %>
           </tbody>
         </table>
       </div>
+      <%- include('./partials/modals-createUser.ejs') %>
     </main>

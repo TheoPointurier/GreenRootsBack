@@ -1,4 +1,4 @@
-<div id="editUserModal-<%= user.id %>" class="modal hidden modalUser modal-form">
+<div id="editUserModal-<%= user.id %>" class="modal hidden modalUser modal-form modal-user">
   <div class="modal-content modal-content-user">
     <h2>Modifier l'Utilisateur #<%= user.id %>
     </h2>
@@ -42,9 +42,17 @@
         <input type="text" name="country" value="<%= user.country %>">
       </div>
       <div>
-        <label>Type d'entité :</label>
-        <input type="text" name="entity_type" value="<%= user.entity_type %>">
+        <label>Rôle :</label>
+        <select name="id_role">
+          <% roles.forEach(role=> { %>
+            <option value="<%= role.id %>" <%=user.role && user.role.id===role.id ? 'selected' : '' %>>
+              <%= role.name %>
+            </option>
+            <% }) %>
+        </select>
       </div>
+
+
       <div>
         <label>Nom de l'entité :</label>
         <input type="text" name="entity_name" value="<%= user.entity_name %>">

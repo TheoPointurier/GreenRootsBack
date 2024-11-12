@@ -271,7 +271,8 @@ table thead tr th {
   margin-bottom: 2rem;
 }
 
-.modalOrder {
+.modalOrder,
+.modal-user {
   z-index: 5;
   position: fixed;
   top: 5%;
@@ -281,6 +282,10 @@ table thead tr th {
   overflow-y: scroll;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
   max-height: 90vh;
+}
+
+.modal-user {
+  padding: 0.5rem;
 }
 
 .modal-orderLines {
