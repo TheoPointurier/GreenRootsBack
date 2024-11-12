@@ -1,0 +1,66 @@
+<div id="createUserModal" class="modal hidden modalUser modal-form modal-user">
+  <div class="modal-content modal-content-user">
+    <h2>Création d'un Utilisateur
+    </h2>
+    <form id="createUserForm" onsubmit="createUser(event)">
+
+      <div>
+        <label>Prénom :</label>
+        <input type="text" name="firstname">
+      </div>
+      <div>
+        <label>Nom :</label>
+        <input type="text" name="lastname">
+      </div>
+      <div>
+        <label>Email :</label>
+        <input type="email" name="email">
+      </div>
+      <div>
+        <label>Téléphone :</label>
+        <input type="text" name="phone_number">
+      </div>
+      <div>
+        <label>Numéro de rue :</label>
+        <input type="text" name="street_number">
+      </div>
+      <div>
+        <label>Rue :</label>
+        <input type="text" name="street">
+      </div>
+      <div>
+        <label>Ville :</label>
+        <input type="text" name="city">
+      </div>
+      <div>
+        <label>Code postal :</label>
+        <input type="text" name="postal_code">
+      </div>
+      <div>
+        <label>Pays :</label>
+        <input type="text" name="country">
+      </div>
+      <div>
+        <label>Type d'entité :</label>
+        <input type="text" name="entity_type">
+      </div>
+      <div>
+        <label>Nom de l'entité :</label>
+        <input type="text" name="entity_name">
+      </div>
+      <div>
+        <label>SIRET :</label>
+        <input type="text" name="entity_siret">
+      </div>
+      <div>
+        <label>Administrateur :</label>
+        <input type="checkbox" name="is_admin">
+      </div>
+
+      <div class="edit_modal_button">
+        <button class="save" type="submit" onclick="editUser">Valider la création</button>
+        <button onclick="hideCreateUserModal()" class="cancel" type="button">Annuler</button>
+      </div>
+    </form>
+  </div>
+</div>

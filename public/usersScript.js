@@ -91,3 +91,11 @@ async function editUser(event, userId) {
     );
   }
 }
+
+function displayCreateUserModal() {
+  document.getElementById('createUserModal').classList.remove('hidden');
+}
+
+function hideCreateUserModal() {
+  document.getElementById('createUserModal').classList.add('hidden');
+}

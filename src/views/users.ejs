@@ -3,8 +3,7 @@
     <script src='/usersScript.js'></script>
 
     <main>
-      <h1>Gestion des Utilisateurs</h1>
-
+      <button class="create_button" onclick="displayCreateUserModal()">Créer un nouvel utilisateur</button>
       <div class="table_container table_container-users">
         <table>
           <thead>
@@ -83,4 +82,5 @@
           </tbody>
         </table>
       </div>
+      <%- include('./partials/modals-createUser.ejs') %>
     </main>
