@@ -54,14 +54,14 @@ async function editTree(event) {
 
   const body = JSON.stringify({
     name,
-    price_ht,
-    quantity,
-    age,
+    price_ht: Number.parseInt(price_ht),
+    quantity: Number.parseInt(quantity),
+    age: Number.parseInt(age),
     species: {
       species_name,
       description,
-      co2_absorption,
-      average_lifespan,
+      co2_absorption: Number.parseInt(co2_absorption),
+      average_lifespan: Number.parseInt(average_lifespan),
     },
   });
 
@@ -73,18 +73,7 @@ async function editTree(event) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        name,
-        price_ht,
-        quantity,
-        age,
-        species: {
-          species_name,
-          description,
-          co2_absorption,
-          average_lifespan,
-        },
-      }),
+      body: body,
     });
 
     if (response.ok) {
@@ -167,16 +156,7 @@ async function createTree(event) {
       console.log('Arbre créé avec succès');
       window.location.reload();
     } else {
-      // console.error("Erreur lors de la création de l'arbre");
-      const errorData = await response.json();
-      console.log("Détails de l'erreur reçue:", errorData); // Ajoutez cette ligne pour inspecter l'erreur complète
-      console.error(
-        "Erreur lors de la création de l'arbre:",
-        errorData.message || 'Une erreur est survenue',
-      );
-      alert(
-        `Erreur lors de la création de l'arbre: ${errorData.message || JSON.stringify(errorData)}`,
-      );
+      console.error("Erreur lors de la création de l'arbre");
     }
   } catch (error) {
     console.error("Erreur réseau lors de la création de l'arbre", error);
