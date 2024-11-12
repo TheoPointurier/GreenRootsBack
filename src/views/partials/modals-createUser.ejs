@@ -1,20 +1,23 @@
 <div id="createUserModal" class="modal hidden modalUser modal-form modal-user">
   <div class="modal-content modal-content-user">
-    <h2>Création d'un Utilisateur
-    </h2>
+    <h2>Création d'un Utilisateur</h2>
     <form id="createUserForm" onsubmit="createUser(event)">
 
       <div>
         <label>Prénom :</label>
-        <input type="text" name="firstname">
+        <input type="text" name="firstname" required>
       </div>
       <div>
         <label>Nom :</label>
-        <input type="text" name="lastname">
+        <input type="text" name="lastname" required>
       </div>
       <div>
         <label>Email :</label>
-        <input type="email" name="email">
+        <input type="email" name="email" required>
+      </div>
+      <div>
+        <label>Mot de passe :</label>
+        <input type="password" name="password" required>
       </div>
       <div>
         <label>Téléphone :</label>
@@ -40,10 +43,18 @@
         <label>Pays :</label>
         <input type="text" name="country">
       </div>
+
       <div>
-        <label>Type d'entité :</label>
-        <input type="text" name="entity_type">
+        <label>Rôle :</label>
+        <select name="id_role">
+          <% roles.forEach(role=> { %>
+            <option value="<%= role.id %>">
+              <%= role.name %>
+            </option>
+            <% }) %>
+        </select>
       </div>
+
       <div>
         <label>Nom de l'entité :</label>
         <input type="text" name="entity_name">
@@ -58,7 +69,7 @@
       </div>
 
       <div class="edit_modal_button">
-        <button class="save" type="submit" onclick="editUser">Valider la création</button>
+        <button class="save" type="submit">Valider la création</button>
         <button onclick="hideCreateUserModal()" class="cancel" type="button">Annuler</button>
       </div>
     </form>
