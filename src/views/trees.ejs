@@ -2,7 +2,10 @@
   <%- include('./partials/header.ejs') %>
     <script src="/treesScript.js"></script>
     <main>
+
       <button class="create_button" onclick="displayCreateTreeModal()">Ajouter un nouvel arbre</button>
+
+      <input type="text" class="searchInput" placeholder="Filtrer..." onkeyup="filterSearchBar()">
       <div class="table_container">
         <table>
           <thead>
@@ -20,7 +23,7 @@
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody class="treeTableBody">
             <% trees.forEach(tree=> { %>
               <tr>
                 <td>
