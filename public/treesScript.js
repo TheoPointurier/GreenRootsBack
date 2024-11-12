@@ -114,3 +114,71 @@ async function deleteTree(id) {
     console.error("Erreur réseau lors de la suppression de l'arbre", error);
   }
 }
+
+function displayCreateTreeModal() {
+  document.getElementById('createTreeModal').classList.remove('hidden');
+}
+
+function hideCreateTreeModal() {
+  document.getElementById('createTreeModal').classList.add('hidden');
+}
+
+async function createTree(event) {
+  event.preventDefault();
+
+  const name = document.getElementById('createTreeName').value;
+  const price_ht = document.getElementById('createTreePriceHt').value;
+  const quantity = document.getElementById('createTreeQuantity').value;
+  const age = document.getElementById('createTreeAge').value;
+  const species_name = document.getElementById('createTreeSpecies').value;
+  const description = document.getElementById('createTreeDescription').value;
+  const co2_absorption = document.getElementById(
+    'createTreeCo2Absorption',
+  ).value;
+  const average_lifespan = document.getElementById(
+    'createTreeAverageLifespan',
+  ).value;
+
+  const body = JSON.stringify({
+    name,
+    price_ht: Number.parseInt(price_ht),
+    quantity: Number.parseInt(quantity),
+    age: Number.parseInt(age),
+    species: {
+      species_name,
+      description,
+      co2_absorption: Number.parseInt(co2_absorption),
+      average_lifespan: Number.parseInt(average_lifespan),
+    },
+  });
+
+  console.log(body);
+
+  try {
+    const response = await fetch('/admin/trees', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: body,
+    });
+
+    if (response.ok) {
+      console.log('Arbre créé avec succès');
+      window.location.reload();
+    } else {
+      // console.error("Erreur lors de la création de l'arbre");
+      const errorData = await response.json();
+      console.log("Détails de l'erreur reçue:", errorData); // Ajoutez cette ligne pour inspecter l'erreur complète
+      console.error(
+        "Erreur lors de la création de l'arbre:",
+        errorData.message || 'Une erreur est survenue',
+      );
+      alert(
+        `Erreur lors de la création de l'arbre: ${errorData.message || JSON.stringify(errorData)}`,
+      );
+    }
+  } catch (error) {
+    console.error("Erreur réseau lors de la création de l'arbre", error);
+  }
+}

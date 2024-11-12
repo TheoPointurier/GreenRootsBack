@@ -4,7 +4,7 @@
 
     <main>
       <h1>Gestion des Arbres</h1>
-
+      <button class="create_button" onclick="displayCreateTreeModal()">Ajouter un nouvel arbre</button>
       <div class="table_container">
         <table>
           <thead>
@@ -85,4 +85,5 @@
         </table>
       </div>
       <%- include('./partials/modals-updateTree.ejs') %>
+        <%- include('./partials/modals-createTree.ejs') %>
     </main>
