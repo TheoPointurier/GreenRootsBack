@@ -267,6 +267,19 @@ table thead tr th {
   border: none;
   margin-bottom: 2rem;
 }
+
+.modalOrder {
+  z-index: 5;
+  position: fixed;
+  top: 20%;
+  left: 22%;
+  width: 70%;
+  background-color: white;
+  overflow-y: scroll;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  max-height: 80vh;
+}
+
 .save {
   background-color: #cd5c08;
 }

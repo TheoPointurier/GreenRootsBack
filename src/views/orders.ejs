@@ -43,6 +43,7 @@
                         <th>Campagne</th>
                         <th>Quantité</th>
                         <th>Prix Unitaire</th>
+                        <th>Total</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -60,6 +61,8 @@
                           <td>
                             <%= orderLine.price_ht_at_order %> €
                           </td>
+                          <td>
+                            <%= orderLine.total_amount %> €
                         </tr>
                         <% }) %>
                     </tbody>
@@ -68,7 +71,7 @@
                 <td>
                   <!-- Pass `order` as context to the modal template -->
                   <button onclick="displayEditOrderModal('<%= order.id %>')">Modifier</button>
-                  <button>Supprimer</button>
+                  <button onclick="deleteOrder('<%= order.id %>')" class="cancel">Supprimer</button>
                 </td>
               </tr>
 

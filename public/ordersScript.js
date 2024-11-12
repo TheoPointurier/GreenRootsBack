@@ -147,3 +147,25 @@ async function editOrder(event, orderId) {
     console.error('Erreur réseau lors de la mise à jour de la commande', error);
   }
 }
+
+async function deleteOrder(orderId) {
+  if (!orderId) {
+    console.error("Impossible de récupérer l'identifiant de la commande");
+    return;
+  }
+
+  try {
+    const response = await fetch(`/admin/orders/${orderId}`, {
+      method: 'DELETE',
+    });
+
+    if (response.ok) {
+      console.log('Commande supprimée avec succès');
+      window.location.reload();
+    } else {
+      console.error('Erreur lors de la suppression de la commande');
+    }
+  } catch (error) {
+    console.error('Erreur réseau lors de la suppression de la commande', error);
+  }
+}

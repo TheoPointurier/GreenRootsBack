@@ -1,22 +1,22 @@
-<div id="editOrderModal-<%= order.id %>" class="modal hidden">
+<div id="editOrderModal-<%= order.id %>" class="modal hidden modalOrder">
   <div class="modal-content">
     <h2>Modifier la Commande #<%= order.id %>
     </h2>
-    <form id="editOrderForm" onsubmit="editOrder(event)">
+    <form id="editOrderForm" onsubmit="editOrder(event)" class="modal-form">
       <input type="hidden" name="id" value="<%= order.id %>">
       <div>
         <label>Utilisateur :</label>
-        <input type="text" value="<%= order.user ? order.user.firstname + ' ' + order.user.lastname : 'N/A' %>"
+        <input disabled type="text" value="<%= order.user ? order.user.firstname + ' ' + order.user.lastname : 'N/A' %>"
           readonly>
       </div>
       <div>
         <label>Date :</label>
-        <input type="date" name="date" value="<%= new Date(order.created_at).toISOString().split('T')[0] %>">
+        <input disabled type="date" name="date" value="<%= new Date(order.created_at).toISOString().split('T')[0] %>">
       </div>
       <div>
         <label>Montant total :</label>
-        <input type="number" id="orderTotalAmount-<%= order.id %>" name="total_amount" value="<%= order.total_amount %>"
-          readonly>
+        <input disabled type="number" id="orderTotalAmount-<%= order.id %>" name="total_amount"
+          value="<%= order.total_amount %>" readonly>
       </div>
       <div>
         <label>Status :</label>
@@ -24,18 +24,19 @@
       </div>
 
       <!-- Section des lignes de commande -->
-      <div>
+      <div class="modal-form_trees">
         <label>Détail de la commande :</label>
         <div id="editOrderLinesContainer">
           <% order.orderLines.forEach((orderLine, index)=> { %>
             <div class="order-line">
               <div>
                 <label>Arbre :</label>
-                <input type="text" value="<%= orderLine.tree ? orderLine.tree.name : 'N/A' %>" readonly>
+                <input disabled type="text" value="<%= orderLine.tree ? orderLine.tree.name : 'N/A' %>" readonly>
               </div>
               <div>
                 <label>Campagne :</label>
-                <input type="text" value="<%= orderLine.campaign ? orderLine.campaign.name : 'N/A' %>" readonly>
+                <input disabled type="text" value="<%= orderLine.campaign ? orderLine.campaign.name : 'N/A' %>"
+                  readonly>
               </div>
               <div>
                 <label>Quantité :</label>
@@ -45,11 +46,11 @@
               </div>
               <div>
                 <label>Prix Unitaire :</label>
-                <input type="text" value="<%= orderLine.price_ht_at_order %> €" readonly>
+                <input disabled type="text" value="<%= orderLine.price_ht_at_order %> €" readonly>
               </div>
               <div>
                 <label>Total :</label>
-                <input type="text" id="lineTotal-<%= order.id %>-<%= orderLine.id %>"
+                <input disabled type="text" id="lineTotal-<%= order.id %>-<%= orderLine.id %>"
                   value="<%= orderLine.total_amount %> €" readonly>
               </div>
             </div>
