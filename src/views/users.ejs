@@ -3,7 +3,12 @@
     <script src='/usersScript.js'></script>
 
     <main>
+
       <button class="create_button" onclick="displayCreateUserModal()">Créer un nouvel utilisateur</button>
+
+
+      <input type="text" class="searchInput" placeholder="Filtrer..." onkeyup="filterSearchBar()">
+
       <div class="table_container table_container-users">
         <table>
           <thead>
@@ -26,7 +31,7 @@
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody class="treeTableBody">
             <% users.forEach(user=> { %>
               <tr>
                 <td>
