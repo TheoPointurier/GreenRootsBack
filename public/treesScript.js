@@ -97,3 +97,20 @@ async function editTree(event) {
     console.error("Erreur réseau lors de la mise à jour de l'arbre", error);
   }
 }
+
+async function deleteTree(id) {
+  try {
+    const response = await fetch(`/admin/trees/${id}`, {
+      method: 'DELETE',
+    });
+
+    if (response.ok) {
+      console.log('Arbre supprimé avec succès');
+      window.location.reload();
+    } else {
+      console.error("Erreur lors de la suppression de l'arbre");
+    }
+  } catch (error) {
+    console.error("Erreur réseau lors de la suppression de l'arbre", error);
+  }
+}
