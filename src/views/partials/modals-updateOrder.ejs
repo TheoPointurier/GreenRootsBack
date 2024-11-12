@@ -15,7 +15,8 @@
       </div>
       <div>
         <label>Montant total :</label>
-        <input type="number" name="total_amount" value="<%= order.total_amount %>" readonly>
+        <input type="number" id="orderTotalAmount-<%= order.id %>" name="total_amount" value="<%= order.total_amount %>"
+          readonly>
       </div>
       <div>
         <label>Status :</label>
@@ -38,12 +39,18 @@
               </div>
               <div>
                 <label>Quantité :</label>
-                <input type="number" name="orderLines[<%= index %>][quantity]" value="<%= orderLine.quantity %>"
-                  min="1">
+                <input type="number" name="orderLines[<%= orderLine.id %>][quantity]" value="<%= orderLine.quantity %>"
+                  min="1"
+                  oninput="updateLineTotal('<%= order.id %>', '<%= orderLine.id %>', '<%= orderLine.price_ht_at_order %>')">
               </div>
               <div>
                 <label>Prix Unitaire :</label>
                 <input type="text" value="<%= orderLine.price_ht_at_order %> €" readonly>
+              </div>
+              <div>
+                <label>Total :</label>
+                <input type="text" id="lineTotal-<%= order.id %>-<%= orderLine.id %>"
+                  value="<%= orderLine.total_amount %> €" readonly>
               </div>
             </div>
             <% }) %>
@@ -51,8 +58,9 @@
       </div>
 
       <div class="edit_modal_button">
-        <button class="save" type="submit">Enregistrer les modifications</button>
-        <button onclick="hideEditOrderModal('<%= order.id %>')" class="cancel" type="button">Annuler</button>
+        <button class="save" type="submit" onclick="editOrder(event,'<%= order.id %>' )">Enregistrer les
+          modifications</button>
+        <button onclick="hideEditOrderModal(`<%= order.id %>`)" class="cancel" type="button">Annuler</button>
       </div>
     </form>
   </div>
