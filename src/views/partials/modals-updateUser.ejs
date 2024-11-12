@@ -1,0 +1,67 @@
+<div id="editUserModal-<%= user.id %>" class="modal hidden modalUser modal-form">
+  <div class="modal-content modal-content-user">
+    <h2>Modifier l'Utilisateur #<%= user.id %>
+    </h2>
+    <form id="editUserForm" onsubmit="editUser(event, '<%= user.id %>')">
+      <input type="hidden" name="id" value="<%= user.id %>">
+
+      <div>
+        <label>Prénom :</label>
+        <input type="text" name="firstname" value="<%= user.firstname %>">
+      </div>
+      <div>
+        <label>Nom :</label>
+        <input type="text" name="lastname" value="<%= user.lastname %>">
+      </div>
+      <div>
+        <label>Email :</label>
+        <input type="email" name="email" value="<%= user.email %>">
+      </div>
+      <div>
+        <label>Téléphone :</label>
+        <input type="text" name="phone_number" value="<%= user.phone_number %>">
+      </div>
+      <div>
+        <label>Numéro de rue :</label>
+        <input type="text" name="street_number" value="<%= user.street_number %>">
+      </div>
+      <div>
+        <label>Rue :</label>
+        <input type="text" name="street" value="<%= user.street %>">
+      </div>
+      <div>
+        <label>Ville :</label>
+        <input type="text" name="city" value="<%= user.city %>">
+      </div>
+      <div>
+        <label>Code postal :</label>
+        <input type="text" name="postal_code" value="<%= user.postal_code %>">
+      </div>
+      <div>
+        <label>Pays :</label>
+        <input type="text" name="country" value="<%= user.country %>">
+      </div>
+      <div>
+        <label>Type d'entité :</label>
+        <input type="text" name="entity_type" value="<%= user.entity_type %>">
+      </div>
+      <div>
+        <label>Nom de l'entité :</label>
+        <input type="text" name="entity_name" value="<%= user.entity_name %>">
+      </div>
+      <div>
+        <label>SIRET :</label>
+        <input type="text" name="entity_siret" value="<%= user.entity_siret %>">
+      </div>
+      <div>
+        <label>Administrateur :</label>
+        <input type="checkbox" name="is_admin" <%=user.is_admin ? 'checked' : '' %>>
+      </div>
+
+      <div class="edit_modal_button">
+        <button class="save" type="submit" onclick="editUser">Enregistrer les modifications</button>
+        <button onclick="hideEditUserModal('<%= user.id %>')" class="cancel" type="button">Annuler</button>
+      </div>
+    </form>
+  </div>
+</div>

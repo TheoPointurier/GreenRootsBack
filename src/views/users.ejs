@@ -1,5 +1,6 @@
 <%- include('./partials/head.ejs') %>
   <%- include('./partials/header.ejs') %>
+    <script src='/usersScript.js'></script>
 
     <main>
       <h1>Gestion des Utilisateurs</h1>
@@ -71,15 +72,15 @@
                   <%= user.is_admin %>
                 </td>
                 <td>
-                  <button>Modifier</button>
+                  <button onclick="displayEditUserModal('<%= user.id %>')">Modifier</button>
                   <button>Supprimer</button>
                 </td>
               </tr>
-              <% }) %>
 
+              <!-- Inclure la modale pour chaque utilisateur -->
+              <%- include('./partials/modals-updateUser.ejs', { user }) %>
+                <% }) %>
           </tbody>
-
         </table>
       </div>
-
     </main>
