@@ -45,13 +45,9 @@ export async function updateOrderBackOffice(req, res) {
 
   // Schéma Joi pour la validation
   const updateOrderSchema = Joi.object({
-    status: Joi.string()
-      .valid('pending', 'completed', 'canceled')
-      .required()
-      .messages({
-        'string.base': 'Le statut doit être une chaîne de caractères.',
-        'any.only': 'Le statut doit être "pending", "completed" ou "canceled".',
-      }),
+    status: Joi.string().required().messages({
+      'string.base': 'Le statut doit être une chaîne de caractères.',
+    }),
     order_number: Joi.string().required().messages({
       'string.base':
         'Le numéro de commande doit être une chaîne de caractères.',
