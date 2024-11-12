@@ -16,7 +16,6 @@ export async function getAllUsersBackOffice(req, res) {
       ],
       order: [['id', 'ASC']],
     });
-    console.log(users);
     res.render('users', { users });
   } catch (error) {
     console.error(error);
@@ -127,7 +126,6 @@ export async function updateUserBackOffice(req, res) {
 
     const createUserSchema = Joi.object({
       email: Joi.string().email().required(),
-      password: Joi.string().required(),
       firstname: Joi.string().required(),
       lastname: Joi.string().required(),
       city: Joi.string().required(),
@@ -136,10 +134,11 @@ export async function updateUserBackOffice(req, res) {
       street_number: Joi.number().required(),
       country: Joi.string().required(),
       phone_number: Joi.number(),
-      entity_name: Joi.string(),
+      entity_name: Joi.string().allow(''),
       entity_type: Joi.string(),
-      entity_siret: Joi.string(),
+      entity_siret: Joi.string().allow(''),
       id_role: Joi.number().required(),
+      is_admin: Joi.boolean(), // Ajout de is_admin
     });
 
     const { error } = createUserSchema.validate(req.body);
@@ -169,6 +168,7 @@ export async function updateUserBackOffice(req, res) {
       entity_name,
       entity_type,
       entity_siret,
+      is_admin,
     } = req.body;
 
     // Vérifier si l'email existe déjà dans la base de données pour un autre utilisateur
@@ -194,6 +194,7 @@ export async function updateUserBackOffice(req, res) {
     user.entity_name = entity_name || user.entity_name;
     user.entity_type = entity_type || user.entity_type;
     user.entity_siret = entity_siret || user.entity_siret;
+    user.is_admin = is_admin || user.is_admin;
 
     // on hash le password
     if (password) {

@@ -9,7 +9,6 @@ function hideEditUserModal(userId) {
 async function editUser(event, userId) {
   event.preventDefault();
 
-  // Récupérer les valeurs des champs
   const firstname = document.querySelector(
     `#editUserModal-${userId} input[name="firstname"]`,
   ).value;
@@ -49,8 +48,8 @@ async function editUser(event, userId) {
   const is_admin = document.querySelector(
     `#editUserModal-${userId} input[name="is_admin"]`,
   ).checked;
+  const id_role = 1; // Remplacez par la valeur appropriée ou récupérez-la du formulaire
 
-  // Envoi de la requête PATCH avec les données mises à jour
   try {
     const response = await fetch(`/admin/users/${userId}`, {
       method: 'PATCH',
@@ -58,9 +57,9 @@ async function editUser(event, userId) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        email,
         firstname,
         lastname,
-        email,
         phone_number,
         street_number,
         street,
@@ -71,6 +70,7 @@ async function editUser(event, userId) {
         entity_name,
         entity_siret,
         is_admin,
+        id_role, // Ajout de id_role ici
       }),
     });
 
@@ -78,7 +78,11 @@ async function editUser(event, userId) {
       console.log('Utilisateur mis à jour avec succès');
       window.location.reload();
     } else {
-      console.error("Erreur lors de la mise à jour de l'utilisateur");
+      const errorMessage = await response.json();
+      console.error(
+        "Erreur lors de la mise à jour de l'utilisateur",
+        errorMessage,
+      );
     }
   } catch (error) {
     console.error(
