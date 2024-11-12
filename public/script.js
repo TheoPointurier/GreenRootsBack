@@ -13,6 +13,9 @@ function displayEditCampaignModal(
 
   const parsedTreeCampaign = JSON.parse(treeCampaign);
 
+  console.log(name);
+  console.log(parsedTreeCampaign);
+
   document.getElementById('editId').value = id;
   document.getElementById('editName').value = name;
   document.getElementById('editDescription').value = description;
@@ -80,29 +83,31 @@ async function editCampaign(event) {
       treesCampaign.push({ id: Number.parseInt(treeId) });
     }
   }
-  console.log(JSON.stringify(treesCampaign, null, 2));
+
+  const body = JSON.stringify({
+    name,
+    description,
+    start_campaign,
+    end_campaign,
+    location,
+    treesCampaign,
+  });
+
   try {
     const response = await fetch(`/admin/campaigns/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        name,
-        description,
-        start_campaign,
-        end_campaign,
-        location,
-        treesCampaign,
-      }),
-    });
-    console.log(treesCampaign);
-    console.log(JSON.stringify(treesCampaign, null, 2));
 
+      body: body,
+    });
     if (response.ok) {
       console.log('Campagne mise à jour avec succès');
       window.location.reload();
     } else {
+      const error = await response.json();
+      console.error('Erreur lors de la mise à jour de la campagne', error);
       console.error('Erreur lors de la mise à jour de la campagne');
     }
   } catch (error) {
