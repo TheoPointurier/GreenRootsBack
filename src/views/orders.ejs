@@ -1,8 +1,10 @@
 <%- include('./partials/head.ejs') %>
   <%- include('./partials/header.ejs') %>
     <script src='/ordersScript.js'></script>
+    <script src='/searchBar.js'></script>
 
     <main>
+      <input type="text" class="searchInput" placeholder="Filtrer..." onkeyup="filterSearchBar()">
       <h1>Commandes :</h1>
       <div class="table_container">
         <table>
@@ -17,7 +19,7 @@
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody class="treeTableBody">
             <% orders.forEach(order=> { %>
               <tr>
                 <td>
