@@ -8,6 +8,29 @@ import {
 import Joi from 'joi';
 import { sequelize } from '../../models/index.js';
 
+const idSchema = Joi.number().integer().positive().required();
+
+const campaignSchema = Joi.object({
+  name: Joi.string().required(),
+  description: Joi.string().allow(null, ''),
+  start_campaign: Joi.date().iso().allow(null),
+  end_campaign: Joi.date().iso().allow(null),
+  treesCampaign: Joi.array().items(
+    Joi.object({
+      id: Joi.number().integer().required(),
+    }),
+  ),
+  location: Joi.object({
+    id: Joi.number().integer(),
+    name_location: Joi.string(),
+    id_country: Joi.number().integer(),
+    country: Joi.object({
+      id: Joi.number().integer(),
+      name: Joi.string(),
+    }),
+  }),
+});
+
 export async function getAllCampaignBackofice(req, res) {
   try {
     const campaigns = await Campaign.findAll({
@@ -45,34 +68,11 @@ export async function getAllCampaignBackofice(req, res) {
 
 export async function createCampaignBackoffice(req, res) {
   try {
-    // Schéma de validation pour la création de la campagne
-    const schema = Joi.object({
-      name: Joi.string().required(),
-      description: Joi.string().allow(null, ''),
-      start_campaign: Joi.date().iso().allow(null),
-      end_campaign: Joi.date().iso().allow(null),
-      treesCampaign: Joi.array().items(
-        Joi.object({
-          id: Joi.number().integer().required(),
-        }),
-      ),
-      location: Joi.object({
-        id: Joi.number().integer(),
-        name_location: Joi.string(),
-        id_country: Joi.number().integer(),
-        country: Joi.object({
-          id: Joi.number().integer(),
-          name: Joi.string(),
-        }),
-      }),
-    });
-
     // Validation de la requête avec Joi
-    const { error } = schema.validate(req.body);
+    const { error } = campaignSchema.validate(req.body);
     if (error) {
       return res.status(400).send({ message: error.message });
     }
-
     // Extraire les données de la requête
     const {
       name,
@@ -164,37 +164,21 @@ export async function createCampaignBackoffice(req, res) {
 }
 
 export async function updateCampaignBackOffice(req, res) {
-  console.log(req.body);
   try {
-    // Schéma de validation pour la mise à jour de la campagne
-    const schema = Joi.object({
-      name: Joi.string(),
-      description: Joi.string().allow(null, ''),
-      start_campaign: Joi.date().iso().allow(null),
-      end_campaign: Joi.date().iso().allow(null),
-      treesCampaign: Joi.array().items(
-        Joi.object({
-          id: Joi.number().integer().required(),
-        }),
-      ),
-      location: Joi.object({
-        id: Joi.number().integer(),
-        name_location: Joi.string(),
-        id_country: Joi.number().integer(),
-        country: Joi.object({
-          id: Joi.number().integer(),
-          name: Joi.string(),
-        }),
-      }),
-    });
+    // Schéma de validation de l'ID
+    const { errorId } = idSchema.validate({ id: req.params.id });
+    if (errorId) {
+      return res.status(400).json({ message: errorId.message });
+    }
+
+    const campaignId = Number.parseInt(req.params.id, 10);
 
     // Validation de la requête avec Joi
-    const { error } = schema.validate(req.body);
+    const { error } = campaignSchema.validate(req.body);
     if (error) {
       return res.status(400).json({ message: error.message });
     }
 
-    const campaignId = Number.parseInt(req.params.id, 10);
     const campaign = await Campaign.findByPk(campaignId);
 
     if (!campaign) {
@@ -343,12 +327,13 @@ export async function updateCampaignBackOffice(req, res) {
 export async function deleteCampaignBackOffice(req, res) {
   const transaction = await sequelize.transaction(); // Démarrer une transaction
   try {
+    // Schéma de validation de l'ID
+    const { errorId } = idSchema.validate({ id: req.params.id });
+    if (errorId) {
+      return res.status(400).json({ message: errorId.message });
+    }
     // Vérification de l'ID
     const campaignId = Number.parseInt(req.params.id, 10);
-    if (Number.isNaN(campaignId)) {
-      await transaction.rollback();
-      return res.status(400).json({ message: 'ID de campagne invalide' });
-    }
 
     const campaign = await Campaign.findByPk(campaignId, {
       include: [
