@@ -1,6 +1,8 @@
 import { Review, User } from '../../models/index.js';
 import Joi from 'joi';
 
+const idSchema = Joi.number().integer().positive().required();
+
 export async function getAllReviewsBackOffice(req, res) {
   try {
     const reviews = await Review.findAll({
@@ -8,7 +10,7 @@ export async function getAllReviewsBackOffice(req, res) {
       include: [
         {
           model: User,
-          as: 'user', // Assurez-vous que l'alias correspond à votre association Sequelize
+          as: 'user',
           attributes: ['firstname', 'lastname', 'email'], // Sélectionne uniquement les champs nécessaires
         },
       ],
@@ -28,12 +30,12 @@ export async function getAllReviewsBackOffice(req, res) {
 
 export async function updateReviewBackOffice(req, res) {
   try {
-    const reviewId = Number.parseInt(req.params.id);
-
-    if (!reviewId) {
-      res.status(400).send('ID manquant');
-      return;
+    // Schéma de validation de l'ID
+    const { errorId } = idSchema.validate({ id: req.params.id });
+    if (errorId) {
+      return res.status(400).json({ message: errorId.message });
     }
+    const reviewId = Number.parseInt(req.params.id);
 
     const review = await Review.findByPk(reviewId);
 
@@ -81,12 +83,12 @@ export async function updateReviewBackOffice(req, res) {
 
 export async function deleteReviewBackOffice(req, res) {
   try {
-    const reviewId = Number.parseInt(req.params.id);
-
-    if (!reviewId) {
-      res.status(400).send('ID manquant');
-      return;
+    // Schéma de validation de l'ID
+    const { errorId } = idSchema.validate({ id: req.params.id });
+    if (errorId) {
+      return res.status(400).json({ message: errorId.message });
     }
+    const reviewId = Number.parseInt(req.params.id);
 
     const review = await Review.findByPk(reviewId);
 
