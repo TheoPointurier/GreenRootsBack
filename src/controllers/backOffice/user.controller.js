@@ -2,7 +2,7 @@ import { User, Review, Role } from '../../models/index.js';
 import bcrypt from 'bcrypt';
 import Joi from 'joi';
 
-const UserSchema = Joi.object({
+const createUserSchema = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().required(),
   firstname: Joi.string().required(),
@@ -17,6 +17,23 @@ const UserSchema = Joi.object({
   entity_siret: Joi.string().allow(''),
   id_role: Joi.number().required(),
   is_admin: Joi.boolean().required(),
+});
+
+const updateUserSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().optional(),
+  firstname: Joi.string().optional(),
+  lastname: Joi.string().optional(),
+  city: Joi.string().optional(),
+  postal_code: Joi.string().optional(),
+  street: Joi.string().optional(),
+  street_number: Joi.number().optional(),
+  country: Joi.string().optional(),
+  phone_number: Joi.number().optional(),
+  entity_name: Joi.string().allow('').optional(),
+  entity_siret: Joi.string().allow('').optional(),
+  id_role: Joi.number().optional(),
+  is_admin: Joi.boolean().optional(),
 });
 
 const idSchema = Joi.object({
@@ -68,7 +85,7 @@ export async function createUserBackOffice(req, res) {
       is_admin,
     } = req.body;
 
-    const { error } = UserSchema.validate(req.body);
+    const { error } = createUserSchema.validate(req.body);
     if (error) {
       return res.status(400).json({ error: error.message });
     }
@@ -116,17 +133,16 @@ export async function createUserBackOffice(req, res) {
 export async function updateUserBackOffice(req, res) {
   try {
     // Schéma de validation de l'ID
-    const { errorId } = idSchema.validate({ id: req.params.id });
-    if (errorId) {
-      return res.status(400).json({ message: errorId.message });
+    const { error: idError } = idSchema.validate({ id: req.params.id });
+    if (idError) {
+      return res.status(400).json({ message: idError.message });
     }
     //récupérer l'id de l'utilisateur à modifier
     const userId = Number.parseInt(req.params.id);
 
-    const { error } = UserSchema.validate(req.body);
-    console.log(req.body); // Debug
-    if (error) {
-      return res.status(400).json({ error: error.message });
+    const { error: userError } = updateUserSchema.validate(req.body);
+    if (userError) {
+      return res.status(400).json({ error: userError.message });
     }
 
     const user = await User.findByPk(userId);
@@ -164,7 +180,6 @@ export async function updateUserBackOffice(req, res) {
     }
 
     user.email = email || user.email;
-    user.password = password || user.password;
     user.firstname = firstname || user.firstname;
     user.lastname = lastname || user.lastname;
     user.city = city || user.city;
@@ -190,8 +205,7 @@ export async function updateUserBackOffice(req, res) {
 
     // on hash le password
     if (password) {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      user.password = hashedPassword;
+      user.password = await bcrypt.hash(password, 10);
     }
 
     await user.save();
