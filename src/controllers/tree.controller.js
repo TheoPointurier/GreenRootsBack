@@ -1,4 +1,5 @@
 import { Tree, TreeSpecies } from '../models/index.js';
+import Joi from 'joi';
 
 export async function getAllTrees(req, res) {
   try {
@@ -19,12 +20,18 @@ export async function getAllTrees(req, res) {
 
 export async function getOneTree(req, res) {
   try {
+    const schema = Joi.object({
+      id: Joi.number().integer().positive().required(),
+    });
+
+    // Validation de l'ID avec Joi
+    const { error } = schema.validate({ id: req.params.id });
+    if (error) {
+      return res.status(400).json({ message: error.message });
+    }
+
     const treeId = Number.parseInt(req.params.id);
 
-    if (Number.isNaN(treeId) || treeId <= 0) {
-      res.status(400).send("L'id doit être un nombre entier positif");
-      return;
-    }
     const tree = await Tree.findByPk(treeId, {
       include: [
         {
@@ -33,13 +40,14 @@ export async function getOneTree(req, res) {
         },
       ],
     });
-    if (!tree) {
-      res.status(404).send('Arbre non trouvé');
-      return;
+    if (tree === null) {
+      res.status(404).json({
+        message: `L'arbre avec l'id ${req.params.id} n'a pas été trouvé`,
+      });
+    } else {
+      res.json(tree);
     }
-    res.json(tree);
   } catch (error) {
-    console.error(error);
-    res.status(500).send("Une erreur s'est produite");
+    res.status(500).json({ message: error.message });
   }
 }
