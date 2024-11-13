@@ -32,10 +32,19 @@ function displayEditCampaignModal(
 
   // Sélectionner tous les boutons radio
 
-  const allRadioButtons = document.querySelectorAll('input[type="radio"]');
+  const allRadioButtons = document.querySelectorAll(
+    '#editModal input[type="radio"]',
+  );
 
   // Mapper les IDs des arbres dans la campagne pour une vérification plus rapide
   const treeIdsInCampaign = parsedTreeCampaign.map((tree) => tree.id);
+
+  console.log('treeIdsInCampaign:', treeIdsInCampaign);
+  console.log('allRadioButtons:', allRadioButtons);
+  console.log(
+    'Filtered Radio Buttons:',
+    document.querySelectorAll('#editModal input[type="radio"]'),
+  );
 
   // Réinitialiser tous les boutons radio à "exclude" par défaut
   for (const radio of allRadioButtons) {
@@ -45,7 +54,7 @@ function displayEditCampaignModal(
   // Cocher les boutons radio "include" pour les arbres dans `treeIdsInCampaign`
   for (const treeId of treeIdsInCampaign) {
     const includeRadio = document.querySelector(
-      `input[type="radio"][name="tree_${treeId}"][value="include"]`,
+      `#editModal input[type="radio"][name="tree_${treeId}"][value="include"]`,
     );
     if (includeRadio) {
       includeRadio.checked = true;
@@ -158,7 +167,9 @@ async function createCampaign(event) {
 
   const treesCampaign = [];
 
-  const allRadioButtons = document.querySelectorAll('input[type="radio"]');
+  const allRadioButtons = document.querySelectorAll(
+    '#createModal input[type="radio"]',
+  );
 
   for (const radio of allRadioButtons) {
     const treeId = radio.name.split('_')[1];
