@@ -2,163 +2,76 @@ import { User, Review } from '../models/index.js';
 import Joi from 'joi';
 import bcrypt from 'bcrypt';
 
+const idSchema = Joi.object({
+  id: Joi.number().integer().positive().required(),
+});
+
+const userSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string()
+    .min(12)
+    .pattern(
+      /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{12,}/,
+    )
+    .required(),
+  firstname: Joi.string().required(),
+  lastname: Joi.string().required(),
+  city: Joi.string().required(),
+  postal_code: Joi.string().required(),
+  street: Joi.string().required(),
+  street_number: Joi.number().required(),
+  country: Joi.string().required(),
+  phone_number: Joi.number(),
+  entity_name: Joi.string(),
+  entity_type: Joi.string(),
+  entity_siret: Joi.string(),
+  id_role: Joi.number().required(),
+});
+
 export async function getOneUser(req, res) {
   try {
+    // Validation de l'ID avec Joi
+    const { error } = idSchema.validate({ id: req.params.id });
+    if (error) {
+      return res.status(400).json({ message: error.message });
+    }
+
     const userId = Number.parseInt(req.params.id);
 
     // Comparer l'id de user et req.userId du token
     if (userId !== req.userId) {
-      console.log('dégage');
       res.status(403).send('Accès refusé');
       return;
     }
 
-    if (Number.isNaN(userId)) {
-      res.status(400).send("L'id doit être un nombre");
-      return;
-    }
     const user = await User.findByPk(userId, {
       attributes: {
         exclude: ['password', 'is_admin'],
       },
-      include: [
-        {
-          model: Review,
-          as: 'reviews',
-        },
-      ],
     });
 
     if (!user) {
       res.status(404).send('Utilisateur non trouvé');
       return;
     }
-
     res.json(user);
   } catch (error) {
     console.error(error);
     res.status(500).send("Une erreur s'est produite");
   }
 }
-
-//todo sécuriser le password
-export async function createUser(req, res) {
-  try {
-    const {
-      email,
-      password,
-      firstname,
-      lastname,
-      city,
-      postal_code,
-      street,
-      street_number,
-      country,
-      id_role,
-      phone_number,
-      entity_name,
-      entity_type,
-      entity_siret,
-    } = req.body;
-
-    //todo  ajouter un minimum de caractère ou de chiffre pour le password ??
-
-    //todo limiter le nombre de caracaères pour les champs (ex siret)
-    //todo vérifier que l'email n'existe pas déjà => find by email ?
-    //todo vérifier que le role existe
-    //todo vérifier que le siret est unique ?
-    //todo vérifier que le siret est valide
-    //todo vérifier que le téléphone est valide (nb de chiffres ?)
-    //todo vérifier que le code postal est valide ?
-
-    const createUserSchema = Joi.object({
-      email: Joi.string().email().required(),
-      password: Joi.string().required(),
-      firstname: Joi.string().required(),
-      lastname: Joi.string().required(),
-      city: Joi.string().required(),
-      postal_code: Joi.string().required(),
-      street: Joi.string().required(),
-      street_number: Joi.number().required(),
-      country: Joi.string().required(),
-      phone_number: Joi.number(),
-      entity_name: Joi.string(),
-      entity_type: Joi.string(),
-      entity_siret: Joi.string(),
-      id_role: Joi.number().required(),
-    });
-
-    const { error } = createUserSchema.validate(req.body);
-    if (error) {
-      return res.status(400).json({ error: error.message });
-    }
-
-    // Vérifier si l'email existe déjà
-    const existingUser = await User.findOne({ where: { email } });
-    if (existingUser) {
-      return res
-        .status(400)
-        .json({ error: 'Cet email est déjà utilisé par un autre utilisateur' });
-    }
-
-    // on hash le password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const user = await User.create({
-      email,
-      password: hashedPassword,
-      firstname,
-      lastname,
-      city,
-      postal_code,
-      street,
-      street_number,
-      country,
-      id_role,
-      phone_number,
-      entity_name,
-      entity_type,
-      entity_siret,
-    });
-
-    res.status(201).json({
-      message: 'Utilisateur créé',
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Une erreur s'est produite");
-  }
-}
-
 export async function updateUser(req, res) {
   try {
+    // Schéma de validation de l'ID
+    const { errorId } = idSchema.validate({ id: req.params.id });
+    if (errorId) {
+      return res.status(400).json({ message: errorId.message });
+    }
     //récupérer l'id de l'utilisateur à modifier
     const userId = Number.parseInt(req.params.id);
-    console.log(userId);
 
-    if (Number.isNaN(userId)) {
-      res.status(400).send("L'id doit être un nombre");
-      return;
-    }
-
-    const createUserSchema = Joi.object({
-      email: Joi.string().email().required(),
-      password: Joi.string().required(),
-      firstname: Joi.string().required(),
-      lastname: Joi.string().required(),
-      city: Joi.string().required(),
-      postal_code: Joi.string().required(),
-      street: Joi.string().required(),
-      street_number: Joi.number().required(),
-      country: Joi.string().required(),
-      phone_number: Joi.number(),
-      entity_name: Joi.string(),
-      entity_type: Joi.string(),
-      entity_siret: Joi.string(),
-      id_role: Joi.number().required(),
-    });
-
-    const { error } = createUserSchema.validate(req.body);
+    // On valide les infos reçues avant la requête
+    const { error } = userSchema.validate(req.body);
     if (error) {
       return res.status(400).json({ error: error.message });
     }
@@ -187,13 +100,14 @@ export async function updateUser(req, res) {
       entity_siret,
     } = req.body;
 
-    // Vérifier si l'email existe déjà dans la base de données pour un autre utilisateur
-    const existingUser = await User.findOne({ where: { email } });
-    if (existingUser && existingUser.id !== userId) {
-      console.log('Email déjà utilisé par un autre utilisateur'); // Debug
-      return res
-        .status(400)
-        .json({ error: 'Cet email est déjà utilisé par un autre utilisateur' });
+    // Vérifier si l'email existe déjà dans la base de données pour un autre utilisateur (et si pas modifié)
+    if (email && email !== user.email) {
+      const existingUser = await User.findOne({ where: { email } });
+      if (existingUser && existingUser.id !== userId) {
+        return res.status(400).json({
+          error: 'Cet email est déjà utilisé par un autre utilisateur',
+        });
+      }
     }
 
     user.email = email || user.email;
@@ -213,8 +127,7 @@ export async function updateUser(req, res) {
 
     // on hash le password
     if (password) {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      user.password = hashedPassword;
+      user.password = await bcrypt.hash(password, 10);
     }
 
     await user.save();
@@ -224,18 +137,17 @@ export async function updateUser(req, res) {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).send("Une erreur s'est produite");
+    res.status(500).json("Une erreur s'est produite");
   }
 }
-
 export async function deleteUser(req, res) {
   try {
-    const userId = Number.parseInt(req.params.id);
-
-    if (Number.isNaN(userId)) {
-      res.status(400).send("L'id doit être un nombre");
-      return;
+    // Schéma de validation de l'ID
+    const { errorId } = idSchema.validate({ id: req.params.id });
+    if (errorId) {
+      return res.status(400).json({ message: errorId.message });
     }
+    const userId = Number.parseInt(req.params.id);
 
     const user = await User.findByPk(userId);
 
@@ -246,13 +158,12 @@ export async function deleteUser(req, res) {
 
     await user.destroy();
 
-    res.status(204).send();
+    res.status(204);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Une erreur s'est produite");
+    res.status(500).json("Une erreur s'est produite");
   }
 }
-
 export async function getAllReviews(req, res) {
   try {
     const reviews = await Review.findAll({
@@ -267,6 +178,6 @@ export async function getAllReviews(req, res) {
     res.json(reviews);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Une erreur s'est produite");
+    res.status(500).json("Une erreur s'est produite");
   }
 }
