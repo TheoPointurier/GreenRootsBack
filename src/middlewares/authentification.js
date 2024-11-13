@@ -5,7 +5,6 @@ export default function verifyToken(req, res, next) {
   if (!req.header('Authorization')) {
     return res.status(401).send('Accès refusé');
   }
-
   // On sépare le token du mot Bearer (car le token est de la forme "Bearer token)
   const token = req.header('Authorization').split(' ');
 

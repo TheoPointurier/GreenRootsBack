@@ -60,6 +60,7 @@ export async function getOneUser(req, res) {
     res.status(500).send("Une erreur s'est produite");
   }
 }
+
 export async function updateUser(req, res) {
   try {
     // Schéma de validation de l'ID
@@ -140,6 +141,7 @@ export async function updateUser(req, res) {
     res.status(500).json("Une erreur s'est produite");
   }
 }
+
 export async function deleteUser(req, res) {
   try {
     // Schéma de validation de l'ID
@@ -164,6 +166,7 @@ export async function deleteUser(req, res) {
     res.status(500).json("Une erreur s'est produite");
   }
 }
+
 export async function getAllReviews(req, res) {
   try {
     const reviews = await Review.findAll({
