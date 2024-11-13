@@ -1,7 +1,5 @@
-import Joi from 'joi';
 import { Tree, TreeSpecies } from '../models/index.js';
 
-//todo limiter le nombre d'arbres envoyé ?
 export async function getAllTrees(req, res) {
   try {
     const trees = await Tree.findAll({
@@ -22,10 +20,9 @@ export async function getAllTrees(req, res) {
 export async function getOneTree(req, res) {
   try {
     const treeId = Number.parseInt(req.params.id);
-    console.log(treeId);
 
-    if (Number.isNaN(treeId)) {
-      res.status(400).send("L'id doit être un nombre");
+    if (Number.isNaN(treeId) || treeId <= 0) {
+      res.status(400).send("L'id doit être un nombre entier positif");
       return;
     }
     const tree = await Tree.findByPk(treeId, {
