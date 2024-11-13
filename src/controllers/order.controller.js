@@ -1,5 +1,13 @@
 import Joi from 'joi';
-import { Campaign, Order, OrderLine, Tree, User } from '../models/index.js';
+import {
+  Campaign,
+  Order,
+  OrderLine,
+  Tree,
+  User,
+  CampaignLocation,
+  Country,
+} from '../models/index.js';
 import { or } from 'sequelize';
 
 //todo changer message si !userId
@@ -11,29 +19,46 @@ export async function getAllOrdersByUser(req, res) {
     return res.status(400).json({ error: 'User ID is missing in the request' });
   }
 
-  const orders = await Order.findAll({
-    where: {
-      id_user: userId,
-    },
-    include: [
-      {
-        model: OrderLine,
-        as: 'orderLines',
-        include: [
-          {
-            model: Tree,
-            as: 'tree',
-          },
-          {
-            model: Campaign,
-            as: 'campaign',
-          },
-        ],
-      },
-    ],
-  });
+  try {
+    const orders = await Order.findAll({
+      where: { id_user: userId },
+      include: [
+        {
+          model: OrderLine,
+          as: 'orderLines',
+          include: [
+            {
+              model: Tree,
+              as: 'tree',
+            },
+            {
+              model: Campaign,
+              as: 'campaign',
+              include: [
+                {
+                  model: CampaignLocation,
+                  as: 'location',
+                  include: [
+                    {
+                      model: Country,
+                      as: 'country',
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
 
-  res.json(orders);
+    res.json(orders);
+  } catch (error) {
+    console.error('Erreur lors de la récupération des commandes :', error);
+    res.status(500).json({
+      error: 'Une erreur est survenue lors de la récupération des commandes.',
+    });
+  }
 }
 
 //todo changer message si !userId
