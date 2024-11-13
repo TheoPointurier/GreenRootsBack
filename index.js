@@ -65,7 +65,6 @@ app.use('/admin', backOfficeRouter);
 // Route racine
 app.use('/', (req, res) => {
   res.send("<h1>Bienvenue sur l'API de GreenRoots</h1>");
-  // TODO : Mettre la documentation de l'API à la place
 });
 
 const PORT = process.env.PORT || 3000;
