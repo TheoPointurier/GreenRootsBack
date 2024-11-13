@@ -12,10 +12,6 @@ function displayEditCampaignModal(
   document.getElementById('editModal').classList.remove('hidden');
 
   const parsedTreeCampaign = JSON.parse(treeCampaign);
-
-  console.log(name);
-  console.log(parsedTreeCampaign);
-
   document.getElementById('editId').value = id;
   document.getElementById('editName').value = name;
   document.getElementById('editDescription').value = description;
