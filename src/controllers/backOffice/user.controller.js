@@ -2,6 +2,27 @@ import { User, Review, Role } from '../../models/index.js';
 import bcrypt from 'bcrypt';
 import Joi from 'joi';
 
+const UserSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().required(),
+  firstname: Joi.string().required(),
+  lastname: Joi.string().required(),
+  city: Joi.string().required(),
+  postal_code: Joi.string().required(),
+  street: Joi.string().required(),
+  street_number: Joi.number().required(),
+  country: Joi.string().required(),
+  phone_number: Joi.number(),
+  entity_name: Joi.string().allow(''),
+  entity_siret: Joi.string().allow(''),
+  id_role: Joi.number().required(),
+  is_admin: Joi.boolean().required(),
+});
+
+const idSchema = Joi.object({
+  id: Joi.number().integer().positive().required(),
+});
+
 export async function getAllUsersBackOffice(req, res) {
   try {
     const users = await User.findAll({
@@ -28,7 +49,6 @@ export async function getAllUsersBackOffice(req, res) {
   }
 }
 
-//todo sécuriser le password
 export async function createUserBackOffice(req, res) {
   try {
     const {
@@ -48,24 +68,7 @@ export async function createUserBackOffice(req, res) {
       is_admin,
     } = req.body;
 
-    const createUserSchema = Joi.object({
-      email: Joi.string().email().required(),
-      password: Joi.string().required(),
-      firstname: Joi.string().required(),
-      lastname: Joi.string().required(),
-      city: Joi.string().required(),
-      postal_code: Joi.string().required(),
-      street: Joi.string().required(),
-      street_number: Joi.number().required(),
-      country: Joi.string().required(),
-      phone_number: Joi.number(),
-      entity_name: Joi.string().allow(''),
-      entity_siret: Joi.string().allow(''),
-      id_role: Joi.number().required(),
-      is_admin: Joi.boolean().required(),
-    });
-
-    const { error } = createUserSchema.validate(req.body);
+    const { error } = UserSchema.validate(req.body);
     if (error) {
       return res.status(400).json({ error: error.message });
     }
@@ -112,32 +115,15 @@ export async function createUserBackOffice(req, res) {
 
 export async function updateUserBackOffice(req, res) {
   try {
+    // Schéma de validation de l'ID
+    const { errorId } = idSchema.validate({ id: req.params.id });
+    if (errorId) {
+      return res.status(400).json({ message: errorId.message });
+    }
     //récupérer l'id de l'utilisateur à modifier
     const userId = Number.parseInt(req.params.id);
 
-    if (Number.isNaN(userId)) {
-      res.status(400).send("L'id doit être un nombre");
-      return;
-    }
-
-    const createUserSchema = Joi.object({
-      email: Joi.string().email().required(),
-      firstname: Joi.string().required(),
-      lastname: Joi.string().required(),
-      city: Joi.string().required(),
-      postal_code: Joi.string().required(),
-      street: Joi.string().required(),
-      street_number: Joi.number().required(),
-      country: Joi.string().required(),
-      phone_number: Joi.number(),
-      entity_name: Joi.string().allow(''),
-      entity_type: Joi.string(),
-      entity_siret: Joi.string().allow(''),
-      id_role: Joi.number().required(),
-      is_admin: Joi.boolean(), // Ajout de is_admin
-    });
-
-    const { error } = createUserSchema.validate(req.body);
+    const { error } = UserSchema.validate(req.body);
     console.log(req.body); // Debug
     if (error) {
       return res.status(400).json({ error: error.message });
@@ -220,12 +206,12 @@ export async function updateUserBackOffice(req, res) {
 
 export async function deleteUserBackOffice(req, res) {
   try {
-    const userId = Number.parseInt(req.params.id);
-
-    if (Number.isNaN(userId)) {
-      res.status(400).send("L'id doit être un nombre");
-      return;
+    // Schéma de validation de l'ID
+    const { errorId } = idSchema.validate({ id: req.params.id });
+    if (errorId) {
+      return res.status(400).json({ message: errorId.message });
     }
+    const userId = Number.parseInt(req.params.id);
 
     const user = await User.findByPk(userId);
 
