@@ -4,19 +4,18 @@ import {
   Order,
   OrderLine,
   Tree,
-  User,
   CampaignLocation,
   Country,
 } from '../models/index.js';
-import { or } from 'sequelize';
 
-//todo changer message si !userId
 export async function getAllOrdersByUser(req, res) {
   //récupérer l'id de l'utilisateur connecté
   const userId = req.userId;
 
   if (!userId) {
-    return res.status(400).json({ error: 'User ID is missing in the request' });
+    return res
+      .status(400)
+      .json({ error: 'Accès non autorisé. Veuillez vous connecter.' });
   }
 
   try {
@@ -61,13 +60,14 @@ export async function getAllOrdersByUser(req, res) {
   }
 }
 
-//todo changer message si !userId
 export async function createOrder(req, res) {
   //Méthode pour valider son panier
   const userId = req.userId;
 
   if (!userId) {
-    return res.status(400).json({ error: 'User ID is missing in the request' });
+    return res
+      .status(400)
+      .json({ error: 'Accès non autorisé. Veuillez vous connecter.' });
   }
 
   const createOrderSchema = Joi.object({

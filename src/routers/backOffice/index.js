@@ -13,9 +13,9 @@ export const router = Router();
 
 // Route racine
 // Evolutions possibles : Ajouter une page doc Swagger
-router.use('/', (req, res) => {
-  res.send("<h1>Bienvenue sur l'API de GreenRoots</h1>");
-});
+// router.use('/', (req, res) => {
+//   res.send("<h1>Bienvenue sur l'API de GreenRoots</h1>");
+// });
 
 // Brancher les routers secondaires :
 router.use(authentificationRouterBackOffice);
