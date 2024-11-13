@@ -120,6 +120,16 @@ async function editCampaign(event) {
   }
 }
 
+function displayDeleteCampaignModal(id) {
+  document.getElementById('deleteCampaignModal').classList.remove('hidden');
+  document.getElementById('confirmDeleteButton').onclick = () =>
+    deleteCampaign(id);
+}
+
+function hideDeleteCampaignModal() {
+  document.getElementById('deleteCampaignModal').classList.add('hidden');
+}
+
 async function deleteCampaign(id) {
   try {
     const response = await fetch(`/admin/campaigns/${id}`, {
