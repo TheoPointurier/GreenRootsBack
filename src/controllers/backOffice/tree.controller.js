@@ -9,16 +9,16 @@ const treeSchema = Joi.object({
   name: Joi.string()
     .pattern(/^[\w\s'À-ÿ-]+$/) // Autorise les lettres, espaces, apostrophes, caractères accentués et traits d'union
     .required(),
-  price_ht: Joi.number().precision(2).positive().optional(),
-  quantity: Joi.number().optional(),
-  age: Joi.number().positive().optional(),
-  id_species: Joi.number().optional(),
+  price_ht: Joi.number().precision(2).allow(null),
+  quantity: Joi.number().allow(null),
+  age: Joi.number().positive().allow(null),
+  id_species: Joi.number(),
   species: Joi.object({
     species_name: Joi.string().required(),
-    description: Joi.string().optional(),
-    co2_absorption: Joi.number().positive().optional(),
-    average_lifespan: Joi.number().positive().optional(),
-  }).optional(),
+    description: Joi.string().allow(null),
+    co2_absorption: Joi.number().positive().allow(null),
+    average_lifespan: Joi.number().positive().allow(null),
+  }),
 });
 
 export async function getAllTreesBackOffice(req, res) {
