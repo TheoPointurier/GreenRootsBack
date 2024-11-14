@@ -4,7 +4,6 @@
     </h2>
     <form id="editUserForm-<%= user.id %> " onsubmit="editUser(event, '<%= user.id %>')">
       <input type="hidden" name="id" value="<%= user.id %>">
-
       <div>
         <label>Prénom :</label>
         <input type="text" name="firstname" value="<%= user.firstname %>" required>
@@ -21,25 +20,27 @@
         <label>Téléphone :</label>
         <input type="text" name="phone_number" value="<%= user.phone_number %>">
       </div>
-      <div>
-        <label>Numéro de rue :</label>
-        <input type="text" name="street_number" value="<%= user.street_number %>" required>
-      </div>
-      <div>
-        <label>Rue :</label>
-        <input type="text" name="street" value="<%= user.street %>" required>
-      </div>
-      <div>
-        <label>Ville :</label>
-        <input type="text" name="city" value="<%= user.city %>" required>
-      </div>
-      <div>
-        <label>Code postal :</label>
-        <input type="text" name="postal_code" value="<%= user.postal_code %>" required>
-      </div>
-      <div>
-        <label>Pays :</label>
-        <input type="text" name="country" value="<%= user.country %>" required>
+      <div class="adress-container">
+        <div>
+          <label>Numéro de rue :</label>
+          <input type="text" name="street_number" value="<%= user.street_number %>" required>
+        </div>
+        <div>
+          <label>Rue :</label>
+          <input type="text" name="street" value="<%= user.street %>" required>
+        </div>
+        <div>
+          <label>Ville :</label>
+          <input type="text" name="city" value="<%= user.city %>" required>
+        </div>
+        <div>
+          <label>Code postal :</label>
+          <input type="text" name="postal_code" value="<%= user.postal_code %>" required>
+        </div>
+        <div>
+          <label>Pays :</label>
+          <input type="text" name="country" value="<%= user.country %>" required>
+        </div>
       </div>
       <div>
         <label>Rôle :</label>

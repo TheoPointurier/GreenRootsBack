@@ -38,20 +38,20 @@
               </span>
               <label>
                 <input type="radio" data-tree-id="<%= tree.id %>" name="tree_<%= tree.id %>" value="include">
-                Inclus
+                <span class="choiceTree">Inclus</span>
               </label>
               <label>
                 <input type="radio" data-tree-id="<%= tree.id %>" name="tree_<%= tree.id %>" value="exclude" checked>
-                Exclus
+                <span class="choiceTree">Exclus</span>
               </label>
             </div>
             <% }) %>
         </div>
-        <div class="create_modal_button">
+      </div>
+      <div class="create_modal_button">
 
-          <button class="save" type="submit">Créer la campagne</button>
-          <button type="button" onclick="hideCreateCampaignModal()" class="cancel">Annuler</button>
-        </div>
+        <button class="save" type="submit">Créer la campagne</button>
+        <button type="button" onclick="hideCreateCampaignModal()" class="cancel">Annuler</button>
       </div>
     </form>
   </div>

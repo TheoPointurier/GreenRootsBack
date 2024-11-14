@@ -2,7 +2,6 @@
   <div class="modal-content modal-content-user">
     <h2>Création d'un Utilisateur</h2>
     <form id="createUserForm" onsubmit="createUser(event)">
-
       <div>
         <label>Prénom :</label>
         <input type="text" name="firstname" required>
@@ -29,25 +28,27 @@
         <label>Téléphone :</label>
         <input type="text" name="phone_number">
       </div>
-      <div>
-        <label>Numéro de rue :</label>
-        <input type="text" name="street_number" required>
-      </div>
-      <div>
-        <label>Rue :</label>
-        <input type="text" name="street" required>
-      </div>
-      <div>
-        <label>Ville :</label>
-        <input type="text" name="city" required>
-      </div>
-      <div>
-        <label>Code postal :</label>
-        <input type="text" name="postal_code" required>
-      </div>
-      <div>
-        <label>Pays :</label>
-        <input type="text" name="country" required>
+      <div class="adress-container">
+        <div>
+          <label>Numéro de rue :</label>
+          <input type="text" name="street_number" required>
+        </div>
+        <div>
+          <label>Rue :</label>
+          <input type="text" name="street" required>
+        </div>
+        <div>
+          <label>Ville :</label>
+          <input type="text" name="city" required>
+        </div>
+        <div>
+          <label>Code postal :</label>
+          <input type="text" name="postal_code" required>
+        </div>
+        <div>
+          <label>Pays :</label>
+          <input type="text" name="country" required>
+        </div>
       </div>
 
       <div>
