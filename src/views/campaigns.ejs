@@ -3,8 +3,11 @@
     <script src='/campaignScript.js'></script>
     <script src='/searchBar.js'></script>
     <main>
-      <button class="create_button button" onclick="displayCreateCampaignModal()">Créer une nouvelle campagne</button>
-      <input type="text" class="searchInput" placeholder="Filtrer..." onkeyup="filterSearchBar()">
+      <div class="searchAddBar">
+
+        <button class="create_button button" onclick="displayCreateCampaignModal()">Créer une nouvelle campagne</button>
+        <input type="text" class="searchInput" placeholder="Filtrer..." onkeyup="filterSearchBar()">
+      </div>
       <div class="table_container">
         <table>
           <thead>

@@ -4,12 +4,10 @@
     <script src='/searchBar.js'></script>
 
     <main>
-
-      <button class="create_button button" onclick="displayCreateUserModal()">Créer un nouvel utilisateur</button>
-
-
-      <input type="text" class="searchInput" placeholder="Filtrer..." onkeyup="filterSearchBar()">
-
+      <div class="searchAddBar">
+        <button class="create_button button" onclick="displayCreateUserModal()">Créer un nouvel utilisateur</button>
+        <input type="text" class="searchInput" placeholder="Filtrer..." onkeyup="filterSearchBar()">
+      </div>
       <div class="table_container table_container-users">
         <table>
           <thead>

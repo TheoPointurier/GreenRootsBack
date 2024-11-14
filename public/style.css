@@ -95,6 +95,12 @@ nav {
   align-items: center;
 }
 
+.searchAddBar {
+  display: flex;
+  height: 10%;
+  align-items: center;
+}
+
 ul {
   padding: 0;
 }

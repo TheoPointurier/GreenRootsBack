@@ -20,7 +20,6 @@ export async function getAllReviewsBackOffice(req, res) {
       res.status(404).send('Aucun avis trouvé');
       return;
     }
-    console.log(reviews);
     res.render('reviews', { reviews });
   } catch (error) {
     console.error(error);
@@ -73,7 +72,6 @@ export async function updateReviewBackOffice(req, res) {
     // Sauvegarder les modifications
     await review.save();
 
-    console.log(review);
     res.status(200).redirect('/admin/reviews');
   } catch (error) {
     console.error(error);
