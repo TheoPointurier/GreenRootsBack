@@ -3,35 +3,36 @@
     <h2>Modifier la campagne</h2>
 
     <form id="editForm" onsubmit="editCampaign(event)" class="modal-form">
+      <div class="modal-form_campaign">
+        <div>
+          <label for="editId">ID :</label>
+          <input type="number" id="editId" name="id" disabled>
+        </div>
 
-      <div>
-        <label for="editId">ID :</label>
-        <input type="number" id="editId" name="id" disabled>
-      </div>
-
-      <div>
-        <label for="editName">Nom :</label>
-        <input type="text" id="editName" name="name">
-      </div>
-      <div>
-        <label for="editDescription">Description :</label>
-        <input type="text" id="editDescription" name="description">
-      </div>
-      <div>
-        <label for="editStartCampain">Date de début :</label>
-        <input type="date" id="editStartCampain" name="start_campaign">
-      </div>
-      <div>
-        <label for="editEndCampain">Date de fin :</label>
-        <input type="date" id="editEndCampain" name="end_campaign">
-      </div>
-      <div>
-        <label for="editLocation">Emplacement</label>
-        <input type="text" id="editLocation" name="campaign.location.name_location">
-      </div>
-      <div>
-        <label for="editCountry">Pays</label>
-        <input type="text" id="editCountry" name="campaign.location.country_name">
+        <div>
+          <label for="editName">Nom :</label>
+          <input type="text" id="editName" name="name">
+        </div>
+        <div>
+          <label for="editDescription">Description :</label>
+          <input type="text" id="editDescription" name="description">
+        </div>
+        <div>
+          <label for="editStartCampain">Date de début :</label>
+          <input type="date" id="editStartCampain" name="start_campaign">
+        </div>
+        <div>
+          <label for="editEndCampain">Date de fin :</label>
+          <input type="date" id="editEndCampain" name="end_campaign">
+        </div>
+        <div>
+          <label for="editLocation">Emplacement</label>
+          <input type="text" id="editLocation" name="campaign.location.name_location">
+        </div>
+        <div>
+          <label for="editCountry">Pays</label>
+          <input type="text" id="editCountry" name="campaign.location.country_name">
+        </div>
       </div>
 
       <div class="modal-form_trees">

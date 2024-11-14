@@ -138,7 +138,6 @@ nav > ul > li {
 }
 
 tr {
-  padding: 0.5rem;
   background-color: #fff9f3;
   color: rgb(0, 0, 0);
 }
@@ -179,6 +178,8 @@ table {
   width: 99%;
   margin: 0 auto;
   overflow-wrap: anywhere; /*Permet de casser les mots */
+  display: grid;
+  grid-template-columns: repeat(auto, 1fr);
 }
 
 table thead tr th {
@@ -190,7 +191,7 @@ table thead tr th {
 
 .modal-form {
   width: 90%;
-  display: grid;
+
   margin: 0 auto;
   height: 100%;
   gap: 0.5rem;
@@ -206,13 +207,17 @@ table thead tr th {
 }
 
 .modal-form_trees {
-  grid-column: 1 / 4;
-  justify-content: space-around;
   margin: 1rem 0;
 }
 
 .modal-form_trees-title {
   margin-bottom: 1rem;
+}
+
+.modal-form_campaign {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
 }
 
 .trees-options {
@@ -262,17 +267,12 @@ table thead tr th {
   max-height: 90vh;
 }
 
-.create-campaign-modal,
+.create-campaign-modal .modal-content,
 .edit-campaign-modal .modal-content {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   height: 100%;
-}
-
-.create-campaign-modal,
-.edit-campaign-modal .modal-content h2 {
-  margin-bottom: 1rem;
 }
 
 .edit-tree-modal,
@@ -333,6 +333,7 @@ table thead tr th {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  height: 100%;
 }
 
 .modal-content-user .userNames-container {
@@ -400,6 +401,7 @@ table thead tr th {
 
 h2 {
   text-align: center;
+  margin-bottom: 1rem;
 }
 
 .create_button {
@@ -414,4 +416,10 @@ h2 {
 
 .hidden {
   display: none;
+}
+
+.line-container-button {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }

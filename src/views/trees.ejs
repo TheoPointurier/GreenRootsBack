@@ -63,7 +63,7 @@
                       <% }) %>
                 </td>
 
-                <td>
+                <td class="line-container-button">
                   <button onclick="displayEditTreeModal(
                     `<%= tree.id %>`,
                     `<%= tree.name %>`,
@@ -75,9 +75,9 @@
                     `<%= tree.species.co2_absorption %>`,
                     `<%= tree.species.average_lifespan%>`
 
-                  )">Modifier</button>
+                  )" class="button save">Modifier</button>
 
-                  <button onclick="displayDeleteTreeModal('<%= tree.id %>')" class="delete">Supprimer</button>
+                  <button onclick="displayDeleteTreeModal('<%= tree.id %>')" class="delete button">Supprimer</button>
 
                 </td>
               </tr>

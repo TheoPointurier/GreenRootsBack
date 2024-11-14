@@ -78,10 +78,10 @@
                 <td>
                   <%= user.is_admin %>
                 </td>
-                <td>
-                  <button onclick="displayEditUserModal('<%= user.id %>')">Modifier</button>
+                <td class="line-container-button">
+                  <button onclick="displayEditUserModal('<%= user.id %>')" class="button save">Modifier</button>
 
-                  <button onclick="displayDeleteUserModal('<%= user.id %>')" class="delete">Supprimer</button>
+                  <button onclick="displayDeleteUserModal('<%= user.id %>')" class="delete button">Supprimer</button>
                 </td>
               </tr>
 
