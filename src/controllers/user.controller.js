@@ -184,3 +184,48 @@ export async function getAllReviews(req, res) {
     res.status(500).json("Une erreur s'est produite");
   }
 }
+
+export async function createReview(req, res) {
+  //validation de l'id de l'utilisateur
+  const { errorId } = idSchema.validate({ id: req.params.id });
+  if (errorId) {
+    return res.status(400).json({ message: errorId.message });
+  }
+
+  //récupérer l'id de l'utilisateur
+  const userId = Number.parseInt(req.params.id);
+
+  //validation des données de la review
+  const reviewSchema = Joi.object({
+    content: Joi.string().required(),
+    rating: Joi.number().required().min(0).max(5),
+    id_user: Joi.number().required().positive().integer(),
+  });
+
+  const { error } = reviewSchema.validate(req.body);
+  if (error) {
+    return res.status(400).json({ message: error.message });
+  }
+
+  const { content, rating, id_user } = req.body;
+
+  //vérifier si l'utilisateur existe
+  const user = await User.findByPk(userId);
+  if (!user) {
+    return res.status(404).send('Utilisateur non trouvé');
+  }
+
+  //créer la review
+  try {
+    const review = await Review.create({
+      content,
+      rating,
+      id_user: user,
+    });
+
+    res.status(201).json(review);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json("Une erreur s'est produite");
+  }
+}
