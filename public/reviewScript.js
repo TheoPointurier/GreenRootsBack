@@ -1,5 +1,3 @@
-const { func } = require('joi');
-
 function displayEditReviewModal(
   id,
   content,
