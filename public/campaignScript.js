@@ -35,13 +35,6 @@ function displayEditCampaignModal(
   // Mapper les IDs des arbres dans la campagne pour une vérification plus rapide
   const treeIdsInCampaign = parsedTreeCampaign.map((tree) => tree.id);
 
-  console.log('treeIdsInCampaign:', treeIdsInCampaign);
-  console.log('allRadioButtons:', allRadioButtons);
-  console.log(
-    'Filtered Radio Buttons:',
-    document.querySelectorAll('#editModal input[type="radio"]'),
-  );
-
   // Réinitialiser tous les boutons radio à "exclude" par défaut
   for (const radio of allRadioButtons) {
     radio.checked = radio.value === 'exclude';
@@ -178,27 +171,11 @@ async function createCampaign(event) {
   );
 
   for (const radio of allRadioButtons) {
-    const treeId = radio.name.split('_')[1];
+    const treeId = radio.getAttribute('data-tree-id');
     if (radio.value === 'include' && radio.checked) {
-      // Ajoute chaque arbre sous forme d'objet { id: <treeId> }
       treesCampaign.push({ id: Number.parseInt(treeId) });
     }
   }
-  console.log(
-    'Création de la campagne avec :',
-    JSON.stringify(
-      {
-        name,
-        description,
-        start_campaign,
-        end_campaign,
-        location,
-        treesCampaign,
-      },
-      null,
-      2,
-    ),
-  );
 
   try {
     const response = await fetch('/admin/campaigns', {
