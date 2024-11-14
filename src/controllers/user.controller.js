@@ -186,20 +186,19 @@ export async function getAllReviews(req, res) {
 }
 
 export async function createReview(req, res) {
-  //validation de l'id de l'utilisateur
-  const { errorId } = idSchema.validate({ id: req.params.id });
-  if (errorId) {
-    return res.status(400).json({ message: errorId.message });
-  }
-
   //récupérer l'id de l'utilisateur
-  const userId = Number.parseInt(req.params.id);
+  const userId = req.userId;
+
+  if (!userId) {
+    return res
+      .status(400)
+      .json({ error: 'Accès non autorisé. Veuillez vous connecter.' });
+  }
 
   //validation des données de la review
   const reviewSchema = Joi.object({
     content: Joi.string().required(),
     rating: Joi.number().required().min(0).max(5),
-    id_user: Joi.number().required().positive().integer(),
   });
 
   const { error } = reviewSchema.validate(req.body);
@@ -207,7 +206,7 @@ export async function createReview(req, res) {
     return res.status(400).json({ message: error.message });
   }
 
-  const { content, rating, id_user } = req.body;
+  const { content, rating } = req.body;
 
   //vérifier si l'utilisateur existe
   const user = await User.findByPk(userId);
@@ -220,7 +219,7 @@ export async function createReview(req, res) {
     const review = await Review.create({
       content,
       rating,
-      id_user: user,
+      id_user: userId,
     });
 
     res.status(201).json(review);
