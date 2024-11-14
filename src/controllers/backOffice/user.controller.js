@@ -4,7 +4,12 @@ import Joi from 'joi';
 
 const createUserSchema = Joi.object({
   email: Joi.string().email().required(),
-  password: Joi.string().required(),
+  password: Joi.string()
+    .min(12)
+    .pattern(
+      /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*À-ÿ])[A-Za-z\d!@#$%^&*À-ÿ]{12,}/,
+    )
+    .required(),
   firstname: Joi.string().required(),
   lastname: Joi.string().required(),
   city: Joi.string().required(),
@@ -12,7 +17,7 @@ const createUserSchema = Joi.object({
   street: Joi.string().required(),
   street_number: Joi.number().required(),
   country: Joi.string().required(),
-  phone_number: Joi.number(),
+  phone_number: Joi.number().allow(null),
   entity_name: Joi.string().allow(''),
   entity_siret: Joi.string().allow(''),
   id_role: Joi.number().required(),
@@ -21,7 +26,12 @@ const createUserSchema = Joi.object({
 
 const updateUserSchema = Joi.object({
   email: Joi.string().email().required(),
-  password: Joi.string().optional(),
+  password: Joi.string()
+    .min(12)
+    .pattern(
+      /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*À-ÿ])[A-Za-z\d!@#$%^&*À-ÿ]{12,}/,
+    )
+    .required(),
   firstname: Joi.string().optional(),
   lastname: Joi.string().optional(),
   city: Joi.string().optional(),
@@ -29,7 +39,7 @@ const updateUserSchema = Joi.object({
   street: Joi.string().optional(),
   street_number: Joi.number().optional(),
   country: Joi.string().optional(),
-  phone_number: Joi.number().optional(),
+  phone_number: Joi.number().allow(null),
   entity_name: Joi.string().allow('').optional(),
   entity_siret: Joi.string().allow('').optional(),
   id_role: Joi.number().optional(),
