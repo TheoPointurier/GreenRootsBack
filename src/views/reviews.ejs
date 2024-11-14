@@ -15,6 +15,7 @@
               <th>Id</th>
               <th>Avis</th>
               <th>Note</th>
+              <th>Id_Utilisateur</th>
               <th>Utilisateur</th>
               <th>Email</th>
               <th>Date</th>
@@ -34,6 +35,9 @@
                   <%= review.rating %>
                 </td>
                 <td>
+                  <%= review.id_user %>
+                </td>
+                <td>
                   <%= review.user.firstname + ' ' + review.user.lastname %>
                 </td>
                 <td>
@@ -47,6 +51,7 @@
                     `<%= review.id %>`,
                     `<%= review.content %>`,
                     `<%= review.rating %>`,
+                    `<%= review.id_user %>`,
                     `<%= review.user.firstname %>`,
                     `<%= review.user.lastname %>`,
                     `<%= review.user.email %>`
