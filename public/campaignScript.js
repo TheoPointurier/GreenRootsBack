@@ -17,8 +17,12 @@ function displayEditCampaignModal(
   document.getElementById('editDescription').value = description;
 
   // Convertir la date au format YYYY-MM-DD pour les champs de type date
-  const startDate = new Date(start_campaign).toISOString().split('T')[0];
-  const endDate = new Date(end_campaign).toISOString().split('T')[0];
+  const startDate = start_campaign
+    ? new Date(start_campaign).toISOString().split('T')[0]
+    : '';
+  const endDate = end_campaign
+    ? new Date(end_campaign).toISOString().split('T')[0]
+    : '';
 
   // Affecter les valeurs de date formatées
   document.getElementById('editStartCampain').value = startDate;
@@ -72,12 +76,13 @@ async function editCampaign(event) {
 
   const treesCampaign = [];
 
-  const allRadioButtons = document.querySelectorAll('input[type="radio"]');
+  const allRadioButtons = document.querySelectorAll(
+    ' #editModal input[type="radio"]',
+  );
 
   for (const radio of allRadioButtons) {
-    const treeId = radio.name.split('_')[1];
+    const treeId = radio.getAttribute('data-tree-id');
     if (radio.value === 'include' && radio.checked) {
-      // Ajoute chaque arbre sous forme d'objet { id: <treeId> }
       treesCampaign.push({ id: Number.parseInt(treeId) });
     }
   }

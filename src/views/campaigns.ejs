@@ -36,7 +36,8 @@
                   <%= new Date(campaign.start_campaign).toLocaleDateString('fr-FR') %>
                 </td>
                 <td>
-                  <%= new Date(campaign.end_campaign).toLocaleDateString('fr-FR') %>
+                  <%= (campaign.end_campaign) ? new Date(campaign.end_campaign).toLocaleDateString('fr-FR') : "" %>
+
                 </td>
                 <td>
                   <%= campaign.location.name_location %>
