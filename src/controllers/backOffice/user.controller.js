@@ -31,7 +31,7 @@ const updateUserSchema = Joi.object({
     .pattern(
       /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*À-ÿ])[A-Za-z\d!@#$%^&*À-ÿ]{12,}/,
     )
-    .required(),
+    .optional(),
   firstname: Joi.string().optional(),
   lastname: Joi.string().optional(),
   city: Joi.string().optional(),
