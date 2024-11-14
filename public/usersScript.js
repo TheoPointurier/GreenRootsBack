@@ -18,9 +18,10 @@ async function editUser(event, userId) {
   const email = document.querySelector(
     `#editUserModal-${userId} input[name="email"]`,
   ).value;
-  const phone_number = document.querySelector(
-    `#editUserModal-${userId} input[name="phone_number"]`,
-  ).value;
+  const phone_number =
+    document.querySelector(
+      `#editUserModal-${userId} input[name="phone_number"]`,
+    ).value || null;
   const street_number = document.querySelector(
     `#editUserModal-${userId} input[name="street_number"]`,
   ).value;
@@ -68,7 +69,7 @@ async function editUser(event, userId) {
         entity_name,
         entity_siret,
         is_admin,
-        id_role, // Ajout de id_role ici
+        id_role,
       }),
     });
 
@@ -113,9 +114,9 @@ async function createUser(event) {
   const password = document.querySelector(
     `#createUserModal input[name="password"]`,
   ).value;
-  const phone_number = document.querySelector(
-    `#createUserModal input[name="phone_number"]`,
-  ).value;
+  const phone_number =
+    document.querySelector(`#createUserModal input[name="phone_number"]`)
+      .value || null;
   const street_number = document.querySelector(
     `#createUserModal input[name="street_number"]`,
   ).value;

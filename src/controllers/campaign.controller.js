@@ -44,7 +44,7 @@ export async function getCampaign(req, res) {
   try {
     // Schéma de validation pour l'ID de la campagne
     const schema = Joi.object({
-      id: Joi.number().integer().required(),
+      id: Joi.number().integer().positive().required(),
     });
 
     // Validation de l'ID avec Joi
@@ -84,7 +84,7 @@ export async function getCampaign(req, res) {
 
     if (campaign === null) {
       res.status(404).json({
-        message: `La Campagne avec l'id ${req.params.id} n'a pas été trouvé`,
+        message: `La Campagne avec l'id ${req.params.id} n'a pas été trouvée`,
       });
     } else {
       res.json(campaign);

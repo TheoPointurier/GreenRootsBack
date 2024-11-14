@@ -2,20 +2,20 @@
   <div class="modal-content modal-content-user">
     <h2>Modifier l'Utilisateur #<%= user.id %>
     </h2>
-    <form id="editUserForm" onsubmit="editUser(event, '<%= user.id %>')">
+    <form id="editUserForm-<%= user.id %> " onsubmit="editUser(event, '<%= user.id %>')">
       <input type="hidden" name="id" value="<%= user.id %>">
 
       <div>
         <label>Prénom :</label>
-        <input type="text" name="firstname" value="<%= user.firstname %>">
+        <input type="text" name="firstname" value="<%= user.firstname %>" required>
       </div>
       <div>
         <label>Nom :</label>
-        <input type="text" name="lastname" value="<%= user.lastname %>">
+        <input type="text" name="lastname" value="<%= user.lastname %>" required>
       </div>
       <div>
         <label>Email :</label>
-        <input type="email" name="email" value="<%= user.email %>">
+        <input type="email" name="email" value="<%= user.email %>" required>
       </div>
       <div>
         <label>Téléphone :</label>
@@ -23,23 +23,23 @@
       </div>
       <div>
         <label>Numéro de rue :</label>
-        <input type="text" name="street_number" value="<%= user.street_number %>">
+        <input type="text" name="street_number" value="<%= user.street_number %>" required>
       </div>
       <div>
         <label>Rue :</label>
-        <input type="text" name="street" value="<%= user.street %>">
+        <input type="text" name="street" value="<%= user.street %>" required>
       </div>
       <div>
         <label>Ville :</label>
-        <input type="text" name="city" value="<%= user.city %>">
+        <input type="text" name="city" value="<%= user.city %>" required>
       </div>
       <div>
         <label>Code postal :</label>
-        <input type="text" name="postal_code" value="<%= user.postal_code %>">
+        <input type="text" name="postal_code" value="<%= user.postal_code %>" required>
       </div>
       <div>
         <label>Pays :</label>
-        <input type="text" name="country" value="<%= user.country %>">
+        <input type="text" name="country" value="<%= user.country %>" required>
       </div>
       <div>
         <label>Rôle :</label>

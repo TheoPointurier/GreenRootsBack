@@ -1,6 +1,26 @@
 import Joi from 'joi';
 import { Tree, TreeSpecies, Campaign } from '../../models/index.js';
 
+const idSchema = Joi.object({
+  id: Joi.number().integer().positive().required(),
+});
+
+const treeSchema = Joi.object({
+  name: Joi.string()
+    .pattern(/^[\w\s'À-ÿ-]+$/) // Autorise les lettres, espaces, apostrophes, caractères accentués et traits d'union
+    .required(),
+  price_ht: Joi.number().precision(2).allow(null),
+  quantity: Joi.number().allow(null),
+  age: Joi.number().positive().allow(null),
+  id_species: Joi.number(),
+  species: Joi.object({
+    species_name: Joi.string().required(),
+    description: Joi.string().allow(null),
+    co2_absorption: Joi.number().positive().allow(null),
+    average_lifespan: Joi.number().positive().allow(null),
+  }),
+});
+
 export async function getAllTreesBackOffice(req, res) {
   try {
     const trees = await Tree.findAll({
@@ -29,21 +49,7 @@ export async function createTreeBackOffice(req, res) {
   try {
     const { name, price_ht, quantity, age, species } = req.body;
 
-    //todo gérer le cas ou le champ name comprends ("toto11")
-
-    const createTreeSchema = Joi.object({
-      name: Joi.string().required(),
-      price_ht: Joi.number().precision(2).positive(),
-      quantity: Joi.number(),
-      age: Joi.number().required().positive(),
-      species: Joi.object({
-        species_name: Joi.string().required(),
-        description: Joi.string().optional(),
-        co2_absorption: Joi.number().positive().optional(),
-        average_lifespan: Joi.number().positive().optional(),
-      }).optional(),
-    });
-    const { error } = createTreeSchema.validate(req.body);
+    const { error } = treeSchema.validate(req.body);
     if (error) {
       return res.status(400).json({ error: error.message });
     }
@@ -70,8 +76,6 @@ export async function createTreeBackOffice(req, res) {
       age,
       id_species: treeSpecies.id,
     });
-    console.log(createdTree);
-
     res.status(201).redirect('/admin/trees');
   } catch (error) {
     console.error(error);
@@ -81,35 +85,15 @@ export async function createTreeBackOffice(req, res) {
 
 export async function updateTreeBackOffice(req, res) {
   try {
+    const { errorId } = idSchema.validate({ id: req.params.id });
+    if (errorId) {
+      return res.status(400).json({ message: errorId.message });
+    }
     // Récupérer l'id de l'arbre à modifier
     const treeId = Number.parseInt(req.params.id);
 
-    if (Number.isNaN(treeId)) {
-      return res.status(400).json({ error: "L'id doit être un nombre" });
-    }
-
-    // Schéma de validation pour la mise à jour
-    const updateTreeSchema = Joi.object({
-      name: Joi.string()
-        .pattern(/^[\w\s'À-ÿ-]+$/) // Autorise les lettres, espaces, apostrophes, caractères accentués et traits d'union
-        .required(),
-      price_ht: Joi.number().precision(2).positive().optional(),
-      quantity: Joi.number().optional(),
-      age: Joi.number().positive().optional(),
-      id_species: Joi.number().optional(),
-      species: Joi.object({
-        species_name: Joi.string().required(),
-        description: Joi.string().optional(),
-        co2_absorption: Joi.number().positive().optional(),
-        average_lifespan: Joi.number().positive().optional(),
-      }).optional(),
-    });
-
-    // Afficher les données reçues
-    console.log('Données reçues pour la mise à jour:', req.body);
-
     // Valider les données
-    const { error } = updateTreeSchema.validate(req.body);
+    const { error } = treeSchema.validate(req.body);
     if (error) {
       console.error('Erreur de validation:', error.details);
       return res
@@ -154,12 +138,11 @@ export async function updateTreeBackOffice(req, res) {
 
 export async function deleteTreeBackOffice(req, res) {
   try {
-    const treeId = Number.parseInt(req.params.id);
-
-    if (Number.isNaN(treeId)) {
-      res.status(400).send("L'id doit être un nombre");
-      return;
+    const { errorId } = idSchema.validate({ id: req.params.id });
+    if (errorId) {
+      return res.status(400).json({ message: errorId.message });
     }
+    const treeId = Number.parseInt(req.params.id);
 
     const tree = await Tree.findByPk(treeId);
 

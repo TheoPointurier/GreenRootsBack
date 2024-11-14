@@ -37,12 +37,11 @@
                 <%= tree.name %>
               </span>
               <label>
-                <input type="radio" id="includeTree_<%= tree.id %>" name="tree_<%= tree.id %>" value="include">
+                <input type="radio" data-tree-id="<%= tree.id %>" name="tree_<%= tree.id %>" value="include">
                 Inclus
               </label>
-
               <label>
-                <input type="radio" id="excludeTree_<%= tree.id %>" name="tree_<%= tree.id %>" value="exclude" checked>
+                <input type="radio" data-tree-id="<%= tree.id %>" name="tree_<%= tree.id %>" value="exclude" checked>
                 Exclus
               </label>
             </div>

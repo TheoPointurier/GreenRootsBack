@@ -8,7 +8,7 @@ function hideEditOrderModal(orderId) {
   document.getElementById(`editOrderModal-${orderId}`).classList.add('hidden');
 }
 
-// permet de mettre à jour le contenu de la ligne de commande en front
+// permet de mettre à jour le contenu de la ligne de commande en front de manière dynamique
 function updateLineTotal(orderId, lineId, unitPrice) {
   // Cibler le champ de quantité avec `orderLine.id` comme identifiant unique
   const quantityInput = document.querySelector(
@@ -21,7 +21,9 @@ function updateLineTotal(orderId, lineId, unitPrice) {
       `lineTotal-${orderId}-${lineId}`,
     );
     const quantity = Number.parseInt(quantityInput.value) || 0;
-    const lineTotal = (quantity * unitPrice).toFixed(2);
+    const lineTotal = !Number.isNaN(quantity)
+      ? (quantity * unitPrice).toFixed(2)
+      : '0.00';
 
     // Mise à jour du champ de total de la ligne
     if (lineTotalField) {
@@ -63,9 +65,9 @@ async function editOrder(event, orderId) {
   }
 
   // Cibler les éléments de la modale pour récupérer les valeurs
-  const status =
-    document.querySelector(`#editOrderModal-${orderId} input[name="status"]`)
-      .value || 'pending';
+  const status = document.querySelector(
+    `#editOrderModal-${orderId} input[name="status"]`,
+  ).value;
   const date = document.querySelector(
     `#editOrderModal-${orderId} input[name="date"]`,
   ).value;

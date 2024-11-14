@@ -12,17 +12,17 @@ function displayEditCampaignModal(
   document.getElementById('editModal').classList.remove('hidden');
 
   const parsedTreeCampaign = JSON.parse(treeCampaign);
-
-  console.log(name);
-  console.log(parsedTreeCampaign);
-
   document.getElementById('editId').value = id;
   document.getElementById('editName').value = name;
   document.getElementById('editDescription').value = description;
 
   // Convertir la date au format YYYY-MM-DD pour les champs de type date
-  const startDate = new Date(start_campaign).toISOString().split('T')[0];
-  const endDate = new Date(end_campaign).toISOString().split('T')[0];
+  const startDate = start_campaign
+    ? new Date(start_campaign).toISOString().split('T')[0]
+    : '';
+  const endDate = end_campaign
+    ? new Date(end_campaign).toISOString().split('T')[0]
+    : '';
 
   // Affecter les valeurs de date formatées
   document.getElementById('editStartCampain').value = startDate;
@@ -38,13 +38,6 @@ function displayEditCampaignModal(
 
   // Mapper les IDs des arbres dans la campagne pour une vérification plus rapide
   const treeIdsInCampaign = parsedTreeCampaign.map((tree) => tree.id);
-
-  console.log('treeIdsInCampaign:', treeIdsInCampaign);
-  console.log('allRadioButtons:', allRadioButtons);
-  console.log(
-    'Filtered Radio Buttons:',
-    document.querySelectorAll('#editModal input[type="radio"]'),
-  );
 
   // Réinitialiser tous les boutons radio à "exclude" par défaut
   for (const radio of allRadioButtons) {
@@ -83,12 +76,13 @@ async function editCampaign(event) {
 
   const treesCampaign = [];
 
-  const allRadioButtons = document.querySelectorAll('input[type="radio"]');
+  const allRadioButtons = document.querySelectorAll(
+    ' #editModal input[type="radio"]',
+  );
 
   for (const radio of allRadioButtons) {
-    const treeId = radio.name.split('_')[1];
+    const treeId = radio.getAttribute('data-tree-id');
     if (radio.value === 'include' && radio.checked) {
-      // Ajoute chaque arbre sous forme d'objet { id: <treeId> }
       treesCampaign.push({ id: Number.parseInt(treeId) });
     }
   }
@@ -122,6 +116,16 @@ async function editCampaign(event) {
   } catch (error) {
     console.error('Erreur réseau lors de la mise à jour de la campagne', error);
   }
+}
+
+function displayDeleteCampaignModal(id) {
+  document.getElementById('deleteCampaignModal').classList.remove('hidden');
+  document.getElementById('confirmDeleteButton').onclick = () =>
+    deleteCampaign(id);
+}
+
+function hideDeleteCampaignModal() {
+  document.getElementById('deleteCampaignModal').classList.add('hidden');
 }
 
 async function deleteCampaign(id) {
@@ -172,27 +176,11 @@ async function createCampaign(event) {
   );
 
   for (const radio of allRadioButtons) {
-    const treeId = radio.name.split('_')[1];
+    const treeId = radio.getAttribute('data-tree-id');
     if (radio.value === 'include' && radio.checked) {
-      // Ajoute chaque arbre sous forme d'objet { id: <treeId> }
       treesCampaign.push({ id: Number.parseInt(treeId) });
     }
   }
-  console.log(
-    'Création de la campagne avec :',
-    JSON.stringify(
-      {
-        name,
-        description,
-        start_campaign,
-        end_campaign,
-        location,
-        treesCampaign,
-      },
-      null,
-      2,
-    ),
-  );
 
   try {
     const response = await fetch('/admin/campaigns', {

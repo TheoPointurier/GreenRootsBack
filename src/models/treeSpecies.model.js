@@ -1,29 +1,30 @@
-import { DataTypes, Model } from "sequelize";
-import { sequelize } from "./sequelize-client.js";
-
+import { DataTypes, Model } from 'sequelize';
+import { sequelize } from './sequelize-client.js';
 
 export class TreeSpecies extends Model {}
 
-TreeSpecies.init({
+TreeSpecies.init(
+  {
     description: {
-     type: DataTypes.TEXT,
-     allowNull: true
+      type: DataTypes.TEXT,
+      allowNull: true,
     },
     species_name: {
       type: DataTypes.STRING,
       allowNull: true,
-      unique: true
+      unique: true,
     },
     co2_absorption: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: true,
     },
     average_lifespan: {
       type: DataTypes.INTEGER,
-      allowNull: false
-    }
-    
-},{
-  sequelize,
-  tableName: "tree_species"
-});
+      allowNull: true,
+    },
+  },
+  {
+    sequelize,
+    tableName: 'tree_species',
+  },
+);

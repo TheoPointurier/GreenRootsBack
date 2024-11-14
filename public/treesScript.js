@@ -42,15 +42,16 @@ async function editTree(event) {
 
   const id = document.getElementById('editTreeId').value;
   const name = document.getElementById('editTreeName').value;
-  const price_ht = document.getElementById('editTreePriceHt').value;
-  const quantity = document.getElementById('editTreeQuantity').value;
-  const age = document.getElementById('editTreeAge').value;
+  const price_ht = document.getElementById('editTreePriceHt').value || null;
+  const quantity = document.getElementById('editTreeQuantity').value || null;
+  const age = document.getElementById('editTreeAge').value || null;
   const species_name = document.getElementById('editTreeSpecies').value;
-  const description = document.getElementById('editTreeDescription').value;
-  const co2_absorption = document.getElementById('editTreeCo2Absorption').value;
-  const average_lifespan = document.getElementById(
-    'editTreeAverageLifespan',
-  ).value;
+  const description =
+    document.getElementById('editTreeDescription').value || null;
+  const co2_absorption =
+    document.getElementById('editTreeCo2Absorption').value || null;
+  const average_lifespan =
+    document.getElementById('editTreeAverageLifespan').value || null;
 
   const body = JSON.stringify({
     name,
@@ -64,8 +65,6 @@ async function editTree(event) {
       average_lifespan: Number.parseInt(average_lifespan),
     },
   });
-
-  console.log(body);
 
   try {
     const response = await fetch(`/admin/trees/${id}`, {
@@ -116,17 +115,16 @@ async function createTree(event) {
   event.preventDefault();
 
   const name = document.getElementById('createTreeName').value;
-  const price_ht = document.getElementById('createTreePriceHt').value;
-  const quantity = document.getElementById('createTreeQuantity').value;
-  const age = document.getElementById('createTreeAge').value;
+  const price_ht = document.getElementById('createTreePriceHt').value || null;
+  const quantity = document.getElementById('createTreeQuantity').value || null;
+  const age = document.getElementById('createTreeAge').value || null;
   const species_name = document.getElementById('createTreeSpecies').value;
-  const description = document.getElementById('createTreeDescription').value;
-  const co2_absorption = document.getElementById(
-    'createTreeCo2Absorption',
-  ).value;
-  const average_lifespan = document.getElementById(
-    'createTreeAverageLifespan',
-  ).value;
+  const description =
+    document.getElementById('createTreeDescription').value || null;
+  const co2_absorption =
+    document.getElementById('createTreeCo2Absorption').value || null;
+  const average_lifespan =
+    document.getElementById('createTreeAverageLifespan').value || null;
 
   const body = JSON.stringify({
     name,
@@ -140,9 +138,6 @@ async function createTree(event) {
       average_lifespan: Number.parseInt(average_lifespan),
     },
   });
-
-  console.log(body);
-
   try {
     const response = await fetch('/admin/trees', {
       method: 'POST',
@@ -156,6 +151,8 @@ async function createTree(event) {
       console.log('Arbre créé avec succès');
       window.location.reload();
     } else {
+      const error = await response.json();
+      console.error("Erreur lors de la création de l'arbre", error);
       console.error("Erreur lors de la création de l'arbre");
     }
   } catch (error) {

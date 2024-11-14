@@ -1,6 +1,32 @@
 import Joi from 'joi';
 import { Campaign, Order, OrderLine, Tree, User } from '../../models/index.js';
 
+const idSchema = Joi.object({
+  id: Joi.number().integer().positive().required(),
+});
+
+const orderSchema = Joi.object({
+  status: Joi.string().required().messages({
+    'string.base': 'Le statut doit être une chaîne de caractères.',
+  }),
+  order_number: Joi.string().required().messages({
+    'string.base': 'Le numéro de commande doit être une chaîne de caractères.',
+    'any.required': 'Le numéro de commande est requis.',
+  }),
+  orderLines: Joi.array()
+    .items(
+      Joi.object({
+        id: Joi.number().positive().required(),
+        quantity: Joi.number().positive().required(),
+        total_amount: Joi.number().positive().required(),
+      }),
+    )
+    .required()
+    .messages({
+      'array.base': 'Les lignes de commande doivent être un tableau.',
+    }),
+});
+
 export async function getAllOrdersBackOffice(req, res) {
   const orders = await Order.findAll({
     order: [['id', 'ASC']],
@@ -31,46 +57,17 @@ export async function getAllOrdersBackOffice(req, res) {
 }
 
 export async function updateOrderBackOffice(req, res) {
-  const orderId = Number.parseInt(req.params.id);
-
-  if (Number.isNaN(orderId)) {
-    console.log(
-      "Échec de la mise à jour : L'ID de la commande n'est pas un nombre",
-    );
-    res.status(400).send("L'id doit être un nombre");
-    return;
+  // Schéma de validation de l'ID
+  const { errorId } = idSchema.validate({ id: req.params.id });
+  if (errorId) {
+    return res.status(400).json({ message: errorId.message });
   }
-
-  console.log('Requête reçue avec le corps:', req.body);
-
-  // Schéma Joi pour la validation
-  const updateOrderSchema = Joi.object({
-    status: Joi.string().required().messages({
-      'string.base': 'Le statut doit être une chaîne de caractères.',
-    }),
-    order_number: Joi.string().required().messages({
-      'string.base':
-        'Le numéro de commande doit être une chaîne de caractères.',
-      'any.required': 'Le numéro de commande est requis.',
-    }),
-    orderLines: Joi.array()
-      .items(
-        Joi.object({
-          id: Joi.number().required(),
-          quantity: Joi.number().positive().required(),
-          total_amount: Joi.number().positive().required(),
-        }),
-      )
-      .required()
-      .messages({
-        'array.base': 'Les lignes de commande doivent être un tableau.',
-      }),
-  });
+  const orderId = Number.parseInt(req.params.id);
 
   const { status, order_number, orderLines } = req.body;
 
   // Validation Joi
-  const { error } = updateOrderSchema.validate({
+  const { error } = orderSchema.validate({
     status,
     order_number,
     orderLines,
@@ -162,8 +159,6 @@ export async function updateOrderBackOffice(req, res) {
       order_number: order.order_number,
     });
 
-    // res.status(200).redirect('/admin/orders');
-
     // Envoyer une réponse JSON au lieu de rediriger
     res.status(200).json({
       message: 'Commande mise à jour avec succès',
@@ -182,12 +177,12 @@ export async function updateOrderBackOffice(req, res) {
 
 export async function deleteOrderBackOffice(req, res) {
   try {
-    const orderId = Number.parseInt(req.params.id);
-
-    if (Number.isNaN(orderId)) {
-      res.status(400).send("L'id doit être un nombre");
-      return;
+    // Schéma de validation de l'ID
+    const { errorId } = idSchema.validate({ id: req.params.id });
+    if (errorId) {
+      return res.status(400).json({ message: errorId.message });
     }
+    const orderId = Number.parseInt(req.params.id);
 
     const order = await Order.findByPk(orderId);
 
@@ -205,11 +200,12 @@ export async function deleteOrderBackOffice(req, res) {
   }
 }
 
-// todo à faire ?
-export async function getOneOrder(req, res) {}
-
-// todo changer message si !userId
 export async function createOrder(req, res) {
+  // Schéma de validation de l'ID
+  const { errorId } = idSchema.validate({ id: req.params.id });
+  if (errorId) {
+    return res.status(400).json({ message: errorId.message });
+  }
   //Méthode pour valider son panier
   const userId = req.userId;
 
@@ -217,22 +213,7 @@ export async function createOrder(req, res) {
     return res.status(400).json({ error: 'User ID is missing in the request' });
   }
 
-  const createOrderSchema = Joi.object({
-    total_amount: Joi.number().precision(2).required(),
-    status: Joi.string().required(),
-    order_number: Joi.string().required(),
-    orderLines: Joi.array().items(
-      Joi.object({
-        price_ht_at_order: Joi.number().precision(2).required(),
-        quantity: Joi.number().required(),
-        total_amount: Joi.number().precision(2).required(),
-        id_campaign: Joi.number().required(),
-        id_tree: Joi.number().required(),
-      }),
-    ),
-  });
-
-  const { error } = createOrderSchema.validate(req.body);
+  const { error } = orderSchema.validate(req.body);
   if (error) {
     return res.status(400).json({ error: error.message });
   }

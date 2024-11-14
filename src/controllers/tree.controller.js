@@ -1,7 +1,6 @@
-import Joi from 'joi';
 import { Tree, TreeSpecies } from '../models/index.js';
+import Joi from 'joi';
 
-//todo limiter le nombre d'arbres envoyé ?
 export async function getAllTrees(req, res) {
   try {
     const trees = await Tree.findAll({
@@ -21,13 +20,18 @@ export async function getAllTrees(req, res) {
 
 export async function getOneTree(req, res) {
   try {
-    const treeId = Number.parseInt(req.params.id);
-    console.log(treeId);
+    const schema = Joi.object({
+      id: Joi.number().integer().positive().required(),
+    });
 
-    if (Number.isNaN(treeId)) {
-      res.status(400).send("L'id doit être un nombre");
-      return;
+    // Validation de l'ID avec Joi
+    const { error } = schema.validate({ id: req.params.id });
+    if (error) {
+      return res.status(400).json({ message: error.message });
     }
+
+    const treeId = Number.parseInt(req.params.id);
+
     const tree = await Tree.findByPk(treeId, {
       include: [
         {
@@ -36,13 +40,14 @@ export async function getOneTree(req, res) {
         },
       ],
     });
-    if (!tree) {
-      res.status(404).send('Arbre non trouvé');
-      return;
+    if (tree === null) {
+      res.status(404).json({
+        message: `L'arbre avec l'id ${req.params.id} n'a pas été trouvé`,
+      });
+    } else {
+      res.json(tree);
     }
-    res.json(tree);
   } catch (error) {
-    console.error(error);
-    res.status(500).send("Une erreur s'est produite");
+    res.status(500).json({ message: error.message });
   }
 }

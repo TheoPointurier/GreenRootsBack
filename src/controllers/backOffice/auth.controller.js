@@ -6,7 +6,7 @@ export async function loginVerify(req, res) {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    res.status(401).send('Email et mot de passe requis');
+    res.status(401).json('Email et mot de passe requis');
     return;
   }
 
@@ -34,7 +34,7 @@ export async function loginVerify(req, res) {
     }
 
     if (user.is_admin === false) {
-      res.status(401).send('dégage');
+      res.status(401).send('Accès refusé');
       return;
     }
 
@@ -66,8 +66,6 @@ export function adminPage(req, res) {
 }
 
 export function logout(req, res) {
-  console.log('Déconnexion ok');
-
   // Suppression du cookie 'jwt'
   res.clearCookie('token', {
     httpOnly: true,

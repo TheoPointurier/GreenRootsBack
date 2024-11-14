@@ -2,6 +2,54 @@ import { User, Review, Role } from '../../models/index.js';
 import bcrypt from 'bcrypt';
 import Joi from 'joi';
 
+const createUserSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string()
+    .min(12)
+    .pattern(
+      /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*À-ÿ])[A-Za-z\d!@#$%^&*À-ÿ]{12,}/,
+    )
+    .required(),
+  firstname: Joi.string().required(),
+  lastname: Joi.string().required(),
+  city: Joi.string().required(),
+  postal_code: Joi.string().required(),
+  street: Joi.string().required(),
+  street_number: Joi.number().required(),
+  country: Joi.string().required(),
+  phone_number: Joi.number().allow(null),
+  entity_name: Joi.string().allow(''),
+  entity_siret: Joi.string().allow(''),
+  id_role: Joi.number().required(),
+  is_admin: Joi.boolean().required(),
+});
+
+const updateUserSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string()
+    .min(12)
+    .pattern(
+      /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*À-ÿ])[A-Za-z\d!@#$%^&*À-ÿ]{12,}/,
+    )
+    .optional(),
+  firstname: Joi.string().optional(),
+  lastname: Joi.string().optional(),
+  city: Joi.string().optional(),
+  postal_code: Joi.string().optional(),
+  street: Joi.string().optional(),
+  street_number: Joi.number().optional(),
+  country: Joi.string().optional(),
+  phone_number: Joi.number().allow(null),
+  entity_name: Joi.string().allow('').optional(),
+  entity_siret: Joi.string().allow('').optional(),
+  id_role: Joi.number().optional(),
+  is_admin: Joi.boolean().optional(),
+});
+
+const idSchema = Joi.object({
+  id: Joi.number().integer().positive().required(),
+});
+
 export async function getAllUsersBackOffice(req, res) {
   try {
     const users = await User.findAll({
@@ -28,7 +76,6 @@ export async function getAllUsersBackOffice(req, res) {
   }
 }
 
-//todo sécuriser le password
 export async function createUserBackOffice(req, res) {
   try {
     const {
@@ -47,23 +94,6 @@ export async function createUserBackOffice(req, res) {
       entity_siret,
       is_admin,
     } = req.body;
-
-    const createUserSchema = Joi.object({
-      email: Joi.string().email().required(),
-      password: Joi.string().required(),
-      firstname: Joi.string().required(),
-      lastname: Joi.string().required(),
-      city: Joi.string().required(),
-      postal_code: Joi.string().required(),
-      street: Joi.string().required(),
-      street_number: Joi.number().required(),
-      country: Joi.string().required(),
-      phone_number: Joi.number(),
-      entity_name: Joi.string().allow(''),
-      entity_siret: Joi.string().allow(''),
-      id_role: Joi.number().required(),
-      is_admin: Joi.boolean().required(),
-    });
 
     const { error } = createUserSchema.validate(req.body);
     if (error) {
@@ -112,35 +142,17 @@ export async function createUserBackOffice(req, res) {
 
 export async function updateUserBackOffice(req, res) {
   try {
+    // Schéma de validation de l'ID
+    const { error: idError } = idSchema.validate({ id: req.params.id });
+    if (idError) {
+      return res.status(400).json({ message: idError.message });
+    }
     //récupérer l'id de l'utilisateur à modifier
     const userId = Number.parseInt(req.params.id);
 
-    if (Number.isNaN(userId)) {
-      res.status(400).send("L'id doit être un nombre");
-      return;
-    }
-
-    const createUserSchema = Joi.object({
-      email: Joi.string().email().required(),
-      firstname: Joi.string().required(),
-      lastname: Joi.string().required(),
-      city: Joi.string().required(),
-      postal_code: Joi.string().required(),
-      street: Joi.string().required(),
-      street_number: Joi.number().required(),
-      country: Joi.string().required(),
-      phone_number: Joi.number(),
-      entity_name: Joi.string().allow(''),
-      entity_type: Joi.string(),
-      entity_siret: Joi.string().allow(''),
-      id_role: Joi.number().required(),
-      is_admin: Joi.boolean(), // Ajout de is_admin
-    });
-
-    const { error } = createUserSchema.validate(req.body);
-    console.log(req.body); // Debug
-    if (error) {
-      return res.status(400).json({ error: error.message });
+    const { error: userError } = updateUserSchema.validate(req.body);
+    if (userError) {
+      return res.status(400).json({ error: userError.message });
     }
 
     const user = await User.findByPk(userId);
@@ -178,7 +190,6 @@ export async function updateUserBackOffice(req, res) {
     }
 
     user.email = email || user.email;
-    user.password = password || user.password;
     user.firstname = firstname || user.firstname;
     user.lastname = lastname || user.lastname;
     user.city = city || user.city;
@@ -204,8 +215,7 @@ export async function updateUserBackOffice(req, res) {
 
     // on hash le password
     if (password) {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      user.password = hashedPassword;
+      user.password = await bcrypt.hash(password, 10);
     }
 
     await user.save();
@@ -220,12 +230,12 @@ export async function updateUserBackOffice(req, res) {
 
 export async function deleteUserBackOffice(req, res) {
   try {
-    const userId = Number.parseInt(req.params.id);
-
-    if (Number.isNaN(userId)) {
-      res.status(400).send("L'id doit être un nombre");
-      return;
+    // Schéma de validation de l'ID
+    const { errorId } = idSchema.validate({ id: req.params.id });
+    if (errorId) {
+      return res.status(400).json({ message: errorId.message });
     }
+    const userId = Number.parseInt(req.params.id);
 
     const user = await User.findByPk(userId);
 

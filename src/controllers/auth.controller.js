@@ -20,6 +20,11 @@ export async function login(req, res) {
       },
     });
 
+    if (!user) {
+      res.status(401).send('Email ou mot de passe incorrect');
+      return;
+    }
+
     // Comparaison du mot de passe entre saisie et bdd
     const passwordMatch = await bcrypt.compare(password, user.password);
 
@@ -28,7 +33,7 @@ export async function login(req, res) {
       return;
     }
 
-    //
+    // permet de renvoyer les données pour le front
     const userSafe = {
       ...user.dataValues,
     };
@@ -39,12 +44,12 @@ export async function login(req, res) {
     delete userSafe.is_admin;
 
     // Création du token d'authentification qui expire au bout d'une heure
-    const accesstoken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
+    const accessToken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
       expiresIn: '1h',
     });
 
     // Envoi du token
-    return res.json({ accesstoken, user: userSafe });
+    return res.json({ accessToken, user: userSafe });
   } catch (error) {
     console.error(error);
     res.status(500).send("Une erreur s'est produite");
@@ -70,19 +75,14 @@ export async function register(req, res) {
       entity_siret,
     } = req.body;
 
-    //todo  ajouter un minimum de caractère ou de chiffre pour le password ??
-
-    //todo limiter le nombre de caracaères pour les champs (ex siret)
-    //todo vérifier que l'email n'existe pas déjà => find by email ?
-    //todo vérifier que le role existe
-    //todo vérifier que le siret est unique ?
-    //todo vérifier que le siret est valide
-    //todo vérifier que le téléphone est valide (nb de chiffres ?)
-    //todo vérifier que le code postal est valide ?
-
     const createUserSchema = Joi.object({
       email: Joi.string().email().required(),
-      password: Joi.string().required(),
+      password: Joi.string()
+        .min(12)
+        .pattern(
+          /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{12,}/,
+        )
+        .required(),
       firstname: Joi.string().required(),
       lastname: Joi.string().required(),
       city: Joi.string().required(),
@@ -100,6 +100,14 @@ export async function register(req, res) {
     const { error } = createUserSchema.validate(req.body);
     if (error) {
       return res.status(400).json({ error: error.message });
+    }
+
+    // Vérifier si l'email existe déjà
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser) {
+      return res
+        .status(400)
+        .json({ error: 'Cet email est déjà utilisé par un autre utilisateur' });
     }
 
     // on hash le password

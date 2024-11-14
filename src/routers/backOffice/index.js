@@ -13,7 +13,6 @@ export const router = Router();
 
 // Brancher les routers secondaires :
 router.use(authentificationRouterBackOffice);
-
 router.use(verifyTokenAdmin, treeRouterBackOffice);
 router.use(verifyTokenAdmin, campaignRouterBackOffice);
 router.use(verifyTokenAdmin, userRouterBackOffice);

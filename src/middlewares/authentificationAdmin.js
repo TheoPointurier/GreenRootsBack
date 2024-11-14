@@ -6,11 +6,7 @@ export default function verifyTokenAdmin(req, res, next) {
 
   // Vérifier que le token est présent et qu'il suit le format "Bearer <token>"
   if (!token) {
-    return res
-      .status(401)
-      .send(
-        'Accès refusé : token manquant ou incorrect<br><a href="/admin">Se connecter</a>',
-      );
+    return res.redirect('/admin');
   }
 
   try {
@@ -21,6 +17,6 @@ export default function verifyTokenAdmin(req, res, next) {
     next();
   } catch (error) {
     // Si le token est invalide ou a expiré
-    res.status(401).send('Token invalide');
+    return res.redirect('/admin');
   }
 }

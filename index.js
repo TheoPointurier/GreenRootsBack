@@ -15,16 +15,6 @@ app.disable('x-powered-by');
 // Adresses autorisées pour CORS
 const allowedOrigins = process.env.CORS_ORIGIN.split(','); // Remplace par l'origine autorisée
 
-// Middleware de vérification d'origine
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  if (!origin || allowedOrigins.includes(origin)) {
-    next(); // L'origine est autorisée, passer au middleware suivant
-  } else {
-    res.status(403).json({ message: 'Accès refusé' }); // Réponse générique sans information CORS
-  }
-});
-
 // Configuration CORS
 const corsOptions = {
   origin: (origin, callback) => {
@@ -59,7 +49,7 @@ app.use(limiter);
 
 // Ajout du body parser
 app.use(express.urlencoded({ extended: true })); // Body parser pour les body des <form> (mettre true pour permettre la lecture de form en HTML)
-app.use(express.json({ limit: '10kb' })); // Body parser pour les body de type "JSON"
+app.use(express.json({ limit: '10kb' })); // Body parser pour routes API pour les body de type "JSON"
 
 // Routes API
 app.use('/api', apiRouter);
@@ -75,7 +65,6 @@ app.use('/admin', backOfficeRouter);
 // Route racine
 app.use('/', (req, res) => {
   res.send("<h1>Bienvenue sur l'API de GreenRoots</h1>");
-  // TODO : Mettre la documentation de l'API à la place
 });
 
 const PORT = process.env.PORT || 3000;

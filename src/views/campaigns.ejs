@@ -1,6 +1,6 @@
 <%- include('./partials/head.ejs') %>
   <%- include('./partials/header.ejs') %>
-    <script src='/script.js'></script>
+    <script src='/campaignScript.js'></script>
     <script src='/searchBar.js'></script>
     <main>
       <button class="create_button" onclick="displayCreateCampaignModal()">Créer une nouvelle campagne</button>
@@ -36,7 +36,8 @@
                   <%= new Date(campaign.start_campaign).toLocaleDateString('fr-FR') %>
                 </td>
                 <td>
-                  <%= new Date(campaign.end_campaign).toLocaleDateString('fr-FR') %>
+                  <%= (campaign.end_campaign) ? new Date(campaign.end_campaign).toLocaleDateString('fr-FR') : "" %>
+
                 </td>
                 <td>
                   <%= campaign.location.name_location %>
@@ -66,7 +67,7 @@
                 `<%= campaign.location.country.name %>`,
                 this.dataset.trees
               )" data-trees='<%= JSON.stringify(campaign.treesCampaign) %>'>Modifier</button>
-                  <button onclick="deleteCampaign('<%= campaign.id %>')">Supprimer</button>
+                  <button onclick="displayDeleteCampaignModal('<%= campaign.id %>')">Supprimer</button>
                 </td>
               </tr>
 
@@ -76,6 +77,7 @@
 
         </table>
       </div>
-      <%- include('./partials/modals-create.ejs') %>
-        <%- include('./partials/modals-update.ejs') %>
+      <%- include('./partials/modals-createCampaign.ejs') %>
+        <%- include('./partials/modals-updateCampaign.ejs') %>
+          <%- include('./partials/modals-deleteCampaign.ejs') %>
     </main>
