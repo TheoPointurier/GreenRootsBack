@@ -76,7 +76,9 @@
                     `<%= tree.species.average_lifespan%>`
 
                   )">Modifier</button>
-                  <button onclick="deleteTree('<%= tree.id %>')" class="delete">Supprimer</button>
+
+                  <button onclick="displayDeleteTreeModal('<%= tree.id %>')" class="delete">Supprimer</button>
+
                 </td>
               </tr>
 
@@ -88,6 +90,7 @@
       </div>
       <%- include('./partials/modals-updateTree.ejs') %>
         <%- include('./partials/modals-createTree.ejs') %>
+          <%- include('./partials/modals-deleteTree.ejs') %>
     </main>
 
     <%- include('./partials/footer.ejs') %>

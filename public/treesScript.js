@@ -86,6 +86,15 @@ async function editTree(event) {
   }
 }
 
+function displayDeleteTreeModal(id) {
+  document.getElementById('deleteTreeModal').classList.remove('hidden');
+  document.getElementById('confirmDeleteButton').onclick = () => deleteTree(id);
+}
+
+function hideDeleteTreeModal() {
+  document.getElementById('deleteTreeModal').classList.add('hidden');
+}
+
 async function deleteTree(id) {
   try {
     const response = await fetch(`/admin/trees/${id}`, {

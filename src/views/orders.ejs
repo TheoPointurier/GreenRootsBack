@@ -68,19 +68,24 @@
                           </td>
                           <td>
                             <%= orderLine.total_amount %> €
+                          </td>
                         </tr>
                         <% }) %>
                     </tbody>
                   </table>
                 </td>
                 <td>
-                  <!-- Pass `order` as context to the modal template -->
                   <button onclick="displayEditOrderModal('<%= order.id %>')">Modifier</button>
-                  <button onclick="deleteOrder('<%= order.id %>')" class="delete">Supprimer</button>
+
+                  <button onclick="displayDeleteOrderModal('<%= order.id %>')" class="delete">Supprimer</button>
                 </td>
               </tr>
 
-              <!-- Include the modal with the specific order details -->
               <%- include('./partials/modals-updateOrder.ejs', { order }) %>
-                <% }) %>
+                <%- include('./partials/modals-deleteOrder.ejs', {order}) %>
+                  <% }) %>
+          </tbody>
+        </table>
+      </div>
     </main>
+    <%- include('./partials/footer.ejs') %>

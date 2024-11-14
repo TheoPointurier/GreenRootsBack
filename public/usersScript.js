@@ -184,6 +184,18 @@ async function createUser(event) {
   }
 }
 
+function displayDeleteUserModal(userId) {
+  document
+    .getElementById(`deleteUserModal-${userId}`)
+    .classList.remove('hidden');
+  document.getElementById(`confirmDeleteButton-${userId}`).onclick = () =>
+    deleteUser(userId);
+}
+
+function hideDeleteUserModal(userId) {
+  document.getElementById(`deleteUserModal-${userId}`).classList.add('hidden');
+}
+
 async function deleteUser(userId) {
   try {
     const response = await fetch(`/admin/users/${userId}`, {
