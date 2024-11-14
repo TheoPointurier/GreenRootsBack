@@ -14,11 +14,12 @@
               <th>Date</th>
               <th>Montant</th>
               <th>État</th>
+              <th>n°</th>
               <th>Détails de la Commande</th>
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody class="treeTableBody">
+          <tbody>
             <% orders.forEach(order=> { %>
               <tr>
                 <td>
@@ -35,6 +36,9 @@
                 </td>
                 <td>
                   <%= order.status %>
+                </td>
+                <td>
+                  <%= order.order_number %>
                 </td>
                 <td>
                   <table>
@@ -72,7 +76,7 @@
                 <td>
                   <!-- Pass `order` as context to the modal template -->
                   <button onclick="displayEditOrderModal('<%= order.id %>')">Modifier</button>
-                  <button onclick="deleteOrder('<%= order.id %>')" class="cancel">Supprimer</button>
+                  <button onclick="deleteOrder('<%= order.id %>')" class="delete">Supprimer</button>
                 </td>
               </tr>
 

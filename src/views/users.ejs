@@ -5,7 +5,7 @@
 
     <main>
 
-      <button class="create_button" onclick="displayCreateUserModal()">Créer un nouvel utilisateur</button>
+      <button class="create_button button" onclick="displayCreateUserModal()">Créer un nouvel utilisateur</button>
 
 
       <input type="text" class="searchInput" placeholder="Filtrer..." onkeyup="filterSearchBar()">
@@ -32,7 +32,7 @@
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody class="treeTableBody">
+          <tbody>
             <% users.forEach(user=> { %>
               <tr>
                 <td>
@@ -82,7 +82,7 @@
                 </td>
                 <td>
                   <button onclick="displayEditUserModal('<%= user.id %>')">Modifier</button>
-                  <button onclick="deleteUser('<%= user.id %>')">Supprimer</button>
+                  <button onclick="deleteUser('<%= user.id %>')" class="delete">Supprimer</button>
                 </td>
               </tr>
 
