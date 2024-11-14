@@ -1,5 +1,6 @@
 <%- include('./partials/head.ejs') %>
   <%- include('./partials/header.ejs') %>
+    <script src='/reviewScript.js'></script>
     <script src='/searchBar.js'></script>
 
     <main>
@@ -42,7 +43,14 @@
                   <%= new Date(review.created_at).toLocaleDateString('fr-FR') %>
                 </td>
                 <td>
-                  <button class="button">Modifier</button>
+                  <button onclick="displayEditReviewModal(
+                    `<%= review.id %>`,
+                    `<%= review.content %>`,
+                    `<%= review.rating %>`,
+                    `<%= review.user.firstname %>`,
+                    `<%= review.user.lastname %>`,
+                    `<%= review.user.email %>`
+                    )">Modifier</button>
                   <button class="button delete">Supprimer</button>
                 </td>
               </tr>
@@ -50,5 +58,8 @@
           </tbody>
         </table>
       </div>
+
+      <%- include('./partials/modals-updateReview.ejs') %>
+        <%- include('./partials/modals-deleteReview.ejs') %>
     </main>
     <%- include('./partials/footer.ejs') %>
