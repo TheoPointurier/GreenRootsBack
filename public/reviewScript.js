@@ -1,3 +1,5 @@
+const { func } = require('joi');
+
 function displayEditReviewModal(
   id,
   content,
@@ -65,5 +67,32 @@ async function editReview(event) {
     }
   } catch (error) {
     console.error('Erreur réseau lors de la mise à jour de la review', error);
+  }
+}
+
+function displayDeleteReviewModal(id) {
+  document.getElementById('deleteReviewModal').classList.remove('hidden');
+  document.getElementById('confirmDeleteButton').onclick = () =>
+    deleteReview(id);
+}
+
+function hideDeleteReviewModal() {
+  document.getElementById('deleteReviewModal').classList.add('hidden');
+}
+
+async function deleteReview(id) {
+  try {
+    const response = await fetch(`/admin/reviews/${id}`, {
+      method: 'DELETE',
+    });
+
+    if (response.ok) {
+      console.log('Review supprimée avec succès');
+      window.location.reload();
+    } else {
+      console.error('Erreur lors de la suppression de la review');
+    }
+  } catch (error) {
+    console.error('Erreur réseau lors de la suppression de la review', error);
   }
 }

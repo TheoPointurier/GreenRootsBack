@@ -56,7 +56,7 @@
                     `<%= review.user.lastname %>`,
                     `<%= review.user.email %>`
                     )">Modifier</button>
-                  <button class="button delete">Supprimer</button>
+                  <button onclick="displayDeleteReviewModal(`<%= review.id %>`)" class="delete">Supprimer</button>
                 </td>
               </tr>
               <% }) %>
@@ -66,5 +66,6 @@
 
       <%- include('./partials/modals-updateReview.ejs') %>
         <%- include('./partials/modals-deleteReview.ejs') %>
+
     </main>
     <%- include('./partials/footer.ejs') %>
