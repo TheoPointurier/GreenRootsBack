@@ -7,5 +7,6 @@ export const router = Router();
 router.get('/users/:id', verifyToken, userController.getOneUser);
 router.patch('/users/:id', verifyToken, userController.updateUser);
 router.delete('/users/:id', verifyToken, userController.deleteUser);
+router.post('/reviews', verifyToken, userController.createReview);
 
 router.get('/reviews', userController.getAllReviews);

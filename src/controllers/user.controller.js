@@ -184,3 +184,47 @@ export async function getAllReviews(req, res) {
     res.status(500).json("Une erreur s'est produite");
   }
 }
+
+export async function createReview(req, res) {
+  //récupérer l'id de l'utilisateur
+  const userId = req.userId;
+
+  if (!userId) {
+    return res
+      .status(400)
+      .json({ error: 'Accès non autorisé. Veuillez vous connecter.' });
+  }
+
+  //validation des données de la review
+  const reviewSchema = Joi.object({
+    content: Joi.string().required(),
+    rating: Joi.number().required().min(0).max(5),
+  });
+
+  const { error } = reviewSchema.validate(req.body);
+  if (error) {
+    return res.status(400).json({ message: error.message });
+  }
+
+  const { content, rating } = req.body;
+
+  //vérifier si l'utilisateur existe
+  const user = await User.findByPk(userId);
+  if (!user) {
+    return res.status(404).send('Utilisateur non trouvé');
+  }
+
+  //créer la review
+  try {
+    const review = await Review.create({
+      content,
+      rating,
+      id_user: userId,
+    });
+
+    res.status(201).json(review);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json("Une erreur s'est produite");
+  }
+}
