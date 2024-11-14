@@ -29,13 +29,15 @@
       </div>
 
       <div class="modal-form_trees">
-        <label>Arbres disponibles</label>
+        <label>
+          <h3 class="modal-form_trees-title">Arbres disponibles</h3>
+        </label>
         <div class="trees-options">
           <% trees.forEach(tree=> { %>
             <div class="tree-option">
-              <span>
+              <h3>
                 <%= tree.name %>
-              </span>
+              </h3>
               <label>
                 <input type="radio" data-tree-id="<%= tree.id %>" name="tree_<%= tree.id %>" value="include">
                 <span class="choiceTree">Inclus</span>
@@ -50,8 +52,8 @@
       </div>
       <div class="create_modal_button">
 
-        <button class="save" type="submit">Créer la campagne</button>
-        <button type="button" onclick="hideCreateCampaignModal()" class="cancel">Annuler</button>
+        <button class="save button" type="submit">Créer la campagne</button>
+        <button type="button" onclick="hideCreateCampaignModal()" class="cancel button">Annuler</button>
       </div>
     </form>
   </div>

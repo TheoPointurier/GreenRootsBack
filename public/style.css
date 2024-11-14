@@ -25,10 +25,6 @@ header {
   width: 16%;
 }
 
-span {
-  font-weight: bold;
-}
-
 h1 {
   text-align: center;
 }
@@ -214,8 +210,9 @@ table thead tr th {
   justify-content: space-around;
   margin: 1rem 0;
 }
-.modal-form_trees > label {
-  grid-column: 1 / 4;
+
+.modal-form_trees-title {
+  margin-bottom: 1rem;
 }
 
 .trees-options {
@@ -265,14 +262,16 @@ table thead tr th {
   max-height: 90vh;
 }
 
-.create-campaign-modal .modal-content {
+.create-campaign-modal,
+.edit-campaign-modal .modal-content {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   height: 100%;
 }
 
-.create-campaign-modal .modal-content h2 {
+.create-campaign-modal,
+.edit-campaign-modal .modal-content h2 {
   margin-bottom: 1rem;
 }
 
@@ -292,9 +291,11 @@ table thead tr th {
   justify-content: center;
   flex-wrap: wrap;
   gap: 5rem;
+  margin-bottom: 2rem;
 }
 
-.create_modal_button {
+.create_modal_button,
+.edit_modal_button {
   grid-column: 1 / 4;
 }
 
@@ -312,15 +313,6 @@ table thead tr th {
   flex-direction: column;
   margin: 0 auto;
   width: 90%;
-}
-
-.create_modal_button > button {
-  border-radius: 20px;
-  color: white;
-  cursor: pointer;
-  padding: 0.3rem 0.6rem;
-  border: none;
-  margin-bottom: 2rem;
 }
 
 .modalOrder,
@@ -365,6 +357,7 @@ table thead tr th {
 
 .save {
   background-color: #cd5c08;
+  font-weight: bold;
 }
 
 .cancel {
