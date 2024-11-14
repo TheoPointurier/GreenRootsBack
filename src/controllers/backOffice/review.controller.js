@@ -51,7 +51,7 @@ export async function updateReviewBackOffice(req, res) {
         .min(1)
         .max(5) // Par exemple, pour une note de 1 à 5
         .required(),
-      id_user: Joi.number().required(),
+      id_user: Joi.number().required().positive().integer(),
     });
 
     // Validation des données de req.body avec Joi
@@ -63,8 +63,15 @@ export async function updateReviewBackOffice(req, res) {
       return;
     }
 
-    // Déstructuration de req.body avec valeurs par défaut
     const { content, rating, id_user } = req.body;
+
+    const user = await User.findByPk(id_user);
+    if (!user) {
+      res.status(404).send('Utilisateur non trouvé');
+      return;
+    }
+
+    // Déstructuration de req.body avec valeurs par défaut
     review.content = content || review.content;
     review.rating = rating || review.rating;
     review.id_user = id_user || review.id_user;
