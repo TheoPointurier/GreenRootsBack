@@ -2,7 +2,7 @@
   <div class="modal-content modal-content-user">
     <h2>Modifier l'Utilisateur #<%= user.id %>
     </h2>
-    <form id="editUserForm" onsubmit="editUser(event, '<%= user.id %>')">
+    <form id="editUserForm-<%= user.id %> " onsubmit="editUser(event, '<%= user.id %>')">
       <input type="hidden" name="id" value="<%= user.id %>">
 
       <div>
