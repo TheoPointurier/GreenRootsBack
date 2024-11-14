@@ -4,13 +4,15 @@
     </h2>
     <form id="editUserForm-<%= user.id %> " onsubmit="editUser(event, '<%= user.id %>')">
       <input type="hidden" name="id" value="<%= user.id %>">
-      <div>
-        <label>Prénom :</label>
-        <input type="text" name="firstname" value="<%= user.firstname %>" required>
-      </div>
-      <div>
-        <label>Nom :</label>
-        <input type="text" name="lastname" value="<%= user.lastname %>" required>
+      <div class="userNames-container">
+        <div>
+          <label>Prénom :</label>
+          <input type="text" name="firstname" value="<%= user.firstname %>" required>
+        </div>
+        <div>
+          <label>Nom :</label>
+          <input type="text" name="lastname" value="<%= user.lastname %>" required>
+        </div>
       </div>
       <div>
         <label>Email :</label>
