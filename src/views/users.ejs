@@ -82,15 +82,20 @@
                 </td>
                 <td>
                   <button onclick="displayEditUserModal('<%= user.id %>')">Modifier</button>
-                  <button onclick="deleteUser('<%= user.id %>')">Supprimer</button>
+                  <button onclick="displayDeleteUserModal('<%= user.id %>')">Supprimer</button>
                 </td>
               </tr>
 
-              <!-- Inclure la modale pour chaque utilisateur -->
+
               <%- include('./partials/modals-updateUser.ejs', { user, roles }) %>
-                <% }) %>
+                <%- include('./partials/modals-deleteUser.ejs', {user}) %>
+                  <% }) %>
+
           </tbody>
         </table>
       </div>
       <%- include('./partials/modals-createUser.ejs') %>
+
     </main>
+
+    <%- include('./partials/footer.ejs') %>

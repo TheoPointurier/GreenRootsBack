@@ -1,0 +1,10 @@
+<div id="deleteUserModal-<%= user.id %>" class=" delete_modal modal hidden">
+  <div class="modal-content">
+    <h2>Confirmer la suppression</h2>
+    <p>Êtes-vous sûr de vouloir supprimer l'utilisateur?</p>
+    <div>
+      <button id="confirmDeleteButton-<%= user.id %>" class="delete">Supprimer</button>
+      <button onclick="hideDeleteUserModal('<%= user.id %>')" class="cancel">Annuler</button>
+    </div>
+  </div>
+</div>
