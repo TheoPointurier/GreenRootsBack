@@ -1,10 +1,11 @@
-<div id="deleteCampaignModal" class=" delete_modal modal hidden">
+
+<div id="deleteCampaignModal" class="modal hidden delete_modal">
   <div class="modal-content">
     <h2>Confirmer la suppression</h2>
-    <p>Êtes-vous sûr de vouloir supprimer la campagne ?</p>
-    <div>
-      <button id="confirmDeleteButton" class="delete">Supprimer</button>
-      <button onclick="hideDeleteCampaignModal()" class="cancel">Annuler</button>
+    <p>Êtes-vous sûr de vouloir supprimer la campagne "<span id="deleteCampaignName"></span>" ?</p>
+    <div class="button-container">
+      <button id="confirmDeleteButton" class="delete button">Supprimer</button>
+      <button onclick="hideDeleteCampaignModal()" class="cancel button">Annuler</button>
     </div>
   </div>
 </div>

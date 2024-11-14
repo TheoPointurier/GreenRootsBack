@@ -4,7 +4,7 @@
     <script src='/searchBar.js'></script>
     <main>
 
-      <button class="create_button" onclick="displayCreateTreeModal()">Ajouter un nouvel arbre</button>
+      <button class="create_button button" onclick="displayCreateTreeModal()">Ajouter un nouvel arbre</button>
 
       <input type="text" class="searchInput" placeholder="Filtrer..." onkeyup="filterSearchBar()">
       <div class="table_container">
@@ -24,7 +24,7 @@
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody class="treeTableBody">
+          <tbody>
             <% trees.forEach(tree=> { %>
               <tr>
                 <td>
@@ -76,7 +76,9 @@
                     `<%= tree.species.average_lifespan%>`
 
                   )">Modifier</button>
-                  <button onclick="displayDeleteTreeModal('<%= tree.id %>')">Supprimer</button>
+
+                  <button onclick="displayDeleteTreeModal('<%= tree.id %>')" class="delete">Supprimer</button>
+
                 </td>
               </tr>
 

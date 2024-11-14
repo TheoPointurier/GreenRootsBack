@@ -3,7 +3,7 @@
     <script src='/campaignScript.js'></script>
     <script src='/searchBar.js'></script>
     <main>
-      <button class="create_button" onclick="displayCreateCampaignModal()">Créer une nouvelle campagne</button>
+      <button class="create_button button" onclick="displayCreateCampaignModal()">Créer une nouvelle campagne</button>
       <input type="text" class="searchInput" placeholder="Filtrer..." onkeyup="filterSearchBar()">
       <div class="table_container">
         <table>
@@ -20,7 +20,7 @@
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody class="treeTableBody">
+          <tbody>
             <% campaigns.forEach(campaign=> { %>
               <tr>
                 <td>
@@ -67,7 +67,7 @@
                 `<%= campaign.location.country.name %>`,
                 this.dataset.trees
               )" data-trees='<%= JSON.stringify(campaign.treesCampaign) %>'>Modifier</button>
-                  <button onclick="displayDeleteCampaignModal('<%= campaign.id %>')">Supprimer</button>
+                  <button onclick="displayDeleteCampaignModal('<%= campaign.id %>')" class="delete">Supprimer</button>
                 </td>
               </tr>
 
