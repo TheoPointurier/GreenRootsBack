@@ -25,10 +25,6 @@ header {
   width: 16%;
 }
 
-span {
-  font-weight: bold;
-}
-
 h1 {
   text-align: center;
 }
@@ -142,7 +138,6 @@ nav > ul > li {
 }
 
 tr {
-  padding: 0.5rem;
   background-color: #fff9f3;
   color: rgb(0, 0, 0);
 }
@@ -183,6 +178,8 @@ table {
   width: 99%;
   margin: 0 auto;
   overflow-wrap: anywhere; /*Permet de casser les mots */
+  display: grid;
+  grid-template-columns: repeat(auto, 1fr);
 }
 
 table thead tr th {
@@ -194,8 +191,9 @@ table thead tr th {
 
 .modal-form {
   width: 90%;
-  display: grid;
+
   margin: 0 auto;
+  height: 100%;
   gap: 0.5rem;
 }
 
@@ -209,19 +207,23 @@ table thead tr th {
 }
 
 .modal-form_trees {
-  grid-column: 1 / 4;
-  display: flex;
-  justify-content: space-around;
   margin: 1rem 0;
 }
-.modal-form_trees > label {
-  grid-column: 1 / 4;
+
+.modal-form_trees-title {
+  margin-bottom: 1rem;
+}
+
+.modal-form_campaign {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
 }
 
 .trees-options {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 1.5rem;
   flex-grow: 1;
   justify-content: space-around;
   padding: 0.5rem;
@@ -235,7 +237,17 @@ table thead tr th {
   padding: 0.5rem;
   border-radius: 5px;
   background-color: #6a9c89;
+  border: 1px solid #47685b;
   cursor: pointer;
+  gap: 0.5rem;
+}
+
+.tree-option .choiceTree:hover {
+  transform: scale(1.05);
+}
+
+.tree-option label {
+  display: flex;
 }
 
 .create-campaign-modal,
@@ -246,13 +258,21 @@ table thead tr th {
   position: fixed;
   top: 3%;
   bottom: 0%;
-  left: 0%;
-  right: 0%;
-
-  background-color: white;
+  left: 1%;
+  right: 1%;
+  padding: 1rem;
+  background-color: #6a9c89;
   overflow-y: scroll;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
   max-height: 90vh;
+}
+
+.create-campaign-modal .modal-content,
+.edit-campaign-modal .modal-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 100%;
 }
 
 .edit-tree-modal,
@@ -260,12 +280,23 @@ table thead tr th {
   width: 50%;
   left: 33%;
 }
+.create-tree-modal > .modal-content > .modal-form {
+  display: flex;
+  flex-direction: column;
+}
 
 .edit_modal_button,
 .create_modal_button {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 5rem;
+  margin-bottom: 2rem;
+}
+
+.create_modal_button,
+.edit_modal_button {
+  grid-column: 1 / 4;
 }
 
 .edit_modal_button > button {
@@ -284,15 +315,6 @@ table thead tr th {
   width: 90%;
 }
 
-.create_modal_button > button {
-  border-radius: 20px;
-  color: white;
-  cursor: pointer;
-  padding: 0.3rem 0.6rem;
-  border: none;
-  margin-bottom: 2rem;
-}
-
 .modalOrder,
 .modal-user {
   z-index: 5;
@@ -300,14 +322,32 @@ table thead tr th {
   top: 1%;
   left: 22%;
   width: 70%;
-  background-color: white;
+  background-color: #6a9c89;
+  padding: 1rem;
   overflow-y: scroll;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
   max-height: 98vh;
 }
 
-.modal-user {
-  padding: 0.5rem;
+.modal-content-user {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.modal-content-user .userNames-container {
+  display: flex;
+  justify-content: flex-start;
+}
+.modal-content-user .userNames-container > div {
+  margin-right: 1rem;
+}
+
+.modal-content-user .adress-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
 }
 
 .modal-orderLines {
@@ -318,6 +358,7 @@ table thead tr th {
 
 .save {
   background-color: #cd5c08;
+  font-weight: bold;
 }
 
 .cancel {
@@ -360,6 +401,7 @@ table thead tr th {
 
 h2 {
   text-align: center;
+  margin-bottom: 1rem;
 }
 
 .create_button {
@@ -374,4 +416,10 @@ h2 {
 
 .hidden {
   display: none;
+}
+
+.line-container-button {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }

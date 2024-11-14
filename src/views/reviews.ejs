@@ -46,7 +46,7 @@
                 <td>
                   <%= new Date(review.created_at).toLocaleDateString('fr-FR') %>
                 </td>
-                <td>
+                <td class="line-container-button">
                   <button onclick="displayEditReviewModal(
                     `<%= review.id %>`,
                     `<%= review.content %>`,
