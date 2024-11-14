@@ -150,6 +150,20 @@ async function editOrder(event, orderId) {
   }
 }
 
+function displayDeleteOrderModal(orderId) {
+  document
+    .getElementById(`deleteOrderModal-${orderId}`)
+    .classList.remove('hidden');
+  document.getElementById(`confirmDeleteButton-${orderId}`).onclick = () =>
+    deleteOrder(orderId);
+}
+
+function hideDeleteOrderModal(orderId) {
+  document
+    .getElementById(`deleteOrderModal-${orderId}`)
+    .classList.add('hidden');
+}
+
 async function deleteOrder(orderId) {
   if (!orderId) {
     console.error("Impossible de récupérer l'identifiant de la commande");
