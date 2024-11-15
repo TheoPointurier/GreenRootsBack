@@ -16,7 +16,9 @@ app.set('trust proxy', 1); // 1 signifie le premier niveau de proxy (comme Railw
 app.disable('x-powered-by');
 
 // Adresses autorisées pour CORS
-const allowedOrigins = process.env.CORS_ORIGIN.split(','); // Remplace par l'origine autorisée
+const allowedOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(',').map((origin) => origin.trim())
+  : [];
 
 const corsOptions = {
   origin: (origin, callback) => {
