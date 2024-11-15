@@ -1,0 +1,94 @@
+<%- include('./partials/head.ejs') %>
+  <%- include('./partials/header.ejs') %>
+    <script src='/ordersScript.js'></script>
+    <script src='/searchBar.js'></script>
+
+    <main>
+      <div class="searchAddBar">
+
+        <input type="text" class="searchInput" placeholder="Filtrer..." onkeyup="filterSearchBar()">
+      </div>
+      <div class="table_container">
+        <table>
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Utilisateur</th>
+              <th>Date</th>
+              <th>Montant</th>
+              <th>État</th>
+              <th>n°</th>
+              <th>Détails de la Commande</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% orders.forEach(order=> { %>
+              <tr>
+                <td>
+                  <%= order.id %>
+                </td>
+                <td>
+                  <%= order.user ? order.user.firstname + ' ' + order.user.lastname : 'N/A' %>
+                </td>
+                <td>
+                  <%= new Date(order.created_at).toLocaleDateString('fr-FR') %>
+                </td>
+                <td>
+                  <%= order.total_amount %> €
+                </td>
+                <td>
+                  <%= order.status %>
+                </td>
+                <td>
+                  <%= order.order_number %>
+                </td>
+                <td>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Arbre</th>
+                        <th>Campagne</th>
+                        <th>Quantité</th>
+                        <th>Prix Unitaire</th>
+                        <th>Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% order.orderLines.forEach(orderLine=> { %>
+                        <tr>
+                          <td>
+                            <%= orderLine.tree ? orderLine.tree.name : 'N/A' %>
+                          </td>
+                          <td>
+                            <%= orderLine.campaign ? orderLine.campaign.name : 'N/A' %>
+                          </td>
+                          <td>
+                            <%= orderLine.quantity %>
+                          </td>
+                          <td>
+                            <%= orderLine.price_ht_at_order %> €
+                          </td>
+                          <td>
+                            <%= orderLine.total_amount %> €
+                          </td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                  </table>
+                </td>
+                <td class="line-container-button">
+                  <button onclick="displayEditOrderModal('<%= order.id %>')" class="button save">Modifier</button>
+
+                  <button onclick="displayDeleteOrderModal('<%= order.id %>')" class="delete button">Supprimer</button>
+                </td>
+              </tr>
+
+              <%- include('./partials/modals-updateOrder.ejs', { order }) %>
+                <%- include('./partials/modals-deleteOrder.ejs', {order}) %>
+                  <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </main>
+    <%- include('./partials/footer.ejs') %>

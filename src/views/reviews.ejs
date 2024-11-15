@@ -1,0 +1,71 @@
+<%- include('./partials/head.ejs') %>
+  <%- include('./partials/header.ejs') %>
+    <script src='/reviewScript.js'></script>
+    <script src='/searchBar.js'></script>
+
+    <main>
+      <div class="searchAddBar">
+
+        <input type="text" class="searchInput" placeholder="Filtrer..." onkeyup="filterSearchBar()">
+      </div>
+      <div class="table_container">
+        <table>
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Avis</th>
+              <th>Note</th>
+              <th>Id_Utilisateur</th>
+              <th>Utilisateur</th>
+              <th>Email</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% reviews.forEach(review=> { %>
+              <tr>
+                <td>
+                  <%= review.id %>
+                </td>
+                <td>
+                  <%= review.content %>
+                </td>
+                <td>
+                  <%= review.rating %>
+                </td>
+                <td>
+                  <%= review.id_user %>
+                </td>
+                <td>
+                  <%= review.user.firstname + ' ' + review.user.lastname %>
+                </td>
+                <td>
+                  <%= review.user.email %>
+                </td>
+                <td>
+                  <%= new Date(review.created_at).toLocaleDateString('fr-FR') %>
+                </td>
+                <td class="line-container-button">
+                  <button onclick="displayEditReviewModal(
+                    `<%= review.id %>`,
+                    `<%= review.content %>`,
+                    `<%= review.rating %>`,
+                    `<%= review.id_user %>`,
+                    `<%= review.user.firstname %>`,
+                    `<%= review.user.lastname %>`,
+                    `<%= review.user.email %>`
+                    )">Modifier</button>
+                  <button onclick="displayDeleteReviewModal(`<%= review.id %>`)" class="delete">Supprimer</button>
+                </td>
+              </tr>
+              <% }) %>
+          </tbody>
+        </table>
+      </div>
+
+      <%- include('./partials/modals-updateReview.ejs') %>
+        <%- include('./partials/modals-deleteReview.ejs') %>
+
+    </main>
+    <%- include('./partials/footer.ejs') %>

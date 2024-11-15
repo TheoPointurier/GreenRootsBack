@@ -1,0 +1,86 @@
+<div id="createUserModal" class="modal hidden modalUser modal-form modal-user">
+  <div class="modal-content modal-content-user">
+    <h2>Création d'un Utilisateur</h2>
+    <form id="createUserForm" onsubmit="createUser(event)" class="modal-content-user-form">
+      <div class="userNames-container">
+        <div>
+          <label>Prénom :</label>
+          <input type="text" name="firstname" required>
+        </div>
+        <div>
+          <label>Nom :</label>
+          <input type="text" name="lastname" required>
+        </div>
+      </div>
+      <div>
+        <label>Email :</label>
+        <input type="email" name="email" required>
+      </div>
+      <div>
+        <label>Mot de passe :</label>
+        <input type="password" name="password" required
+          pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*À-ÿ])[A-Za-z\d!@#$%^&*À-ÿ]{12,}"
+          title="Doit contenir au moins un nombre, une majuscule, une minuscule, et au minimum 12 ou plus caractères">
+        <small>
+          Le mot de passe doit contenir au moins 12 caractères, une majuscule, une minuscule, un chiffre et un caractère
+          spécial (!@#$%^&*).
+        </small>
+      </div>
+      <div>
+        <label>Téléphone :</label>
+        <input type="text" name="phone_number">
+      </div>
+      <div class="adress-container">
+        <div>
+          <label>Numéro de rue :</label>
+          <input type="text" name="street_number" required>
+        </div>
+        <div>
+          <label>Rue :</label>
+          <input type="text" name="street" required>
+        </div>
+        <div>
+          <label>Ville :</label>
+          <input type="text" name="city" required>
+        </div>
+        <div>
+          <label>Code postal :</label>
+          <input type="text" name="postal_code" required>
+        </div>
+        <div>
+          <label>Pays :</label>
+          <input type="text" name="country" required>
+        </div>
+      </div>
+
+      <div>
+        <label>Rôle :</label>
+        <select name="id_role">
+          <% roles.forEach(role=> { %>
+            <option value="<%= role.id %>">
+              <%= role.name %>
+            </option>
+            <% }) %>
+        </select>
+      </div>
+
+      <div>
+        <label>Nom de l'entité :</label>
+        <input type="text" name="entity_name">
+      </div>
+      <div>
+        <label>SIRET :</label>
+        <input type="text" name="entity_siret">
+      </div>
+      <div>
+        <label>Administrateur :</label>
+        <input type="checkbox" name="is_admin">
+      </div>
+
+      <div class="edit_modal_button">
+        <button class="save" type="submit">Valider la création</button>
+        <button onclick="hideCreateUserModal()" class="cancel" type="button">Annuler</button>
+      </div>
+    </form>
+  </div>
+</div>
