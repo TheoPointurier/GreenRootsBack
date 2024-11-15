@@ -9,6 +9,9 @@ import cookieParser from 'cookie-parser';
 dotenv.config();
 const app = express();
 
+// Configure Express pour faire confiance aux proxies
+app.set('trust proxy', 1); // 1 signifie le premier niveau de proxy (comme Railway ou Heroku)
+
 // Désactiver le header x-powered-by Express
 app.disable('x-powered-by');
 
