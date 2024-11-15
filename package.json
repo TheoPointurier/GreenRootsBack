@@ -9,7 +9,7 @@
     "db:create": "psql -U greenroots -d greenroots -f ./data/create_BDD.sql",
     "db:populate": "psql -U greenroots -d greenroots -f ./data/seeding_data.sql",
     "db:reset": "npm run db:create && npm run db:populate && node ./data/hashingPassword.js",
-    "start": "node ./data/hashingPassword.js && node index.js"
+    "start": "node index.js"
   },
   "engines": {
     "node": "18.x"
