@@ -17,13 +17,12 @@ app.set('trust proxy', 2);
 // Désactiver le header x-powered-by Express
 app.disable('x-powered-by');
 
-// Adresses autorisées pour CORS
-const allowedOrigins = process.env.CORS_ORIGIN
-  ? process.env.CORS_ORIGIN.split(',').map((origin) => origin.trim())
-  : [];
-
 const corsOptions = {
   origin: (origin, callback) => {
+    // Adresses autorisées pour CORS
+    const allowedOrigins = process.env.CORS_ORIGIN
+      ? process.env.CORS_ORIGIN.split(',').map((origin) => origin.trim())
+      : [];
     console.log('Request Origin:', origin); // Affiche l'origine de chaque requête
     if (!origin || allowedOrigins.includes(origin)) {
       // Autorise si l'origine est undefined (pour les requêtes internes) ou si elle est dans la liste
