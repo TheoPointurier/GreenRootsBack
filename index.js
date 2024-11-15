@@ -10,7 +10,9 @@ dotenv.config();
 const app = express();
 
 // Configure Express pour faire confiance aux proxies
-app.set('trust proxy', 1); // 1 signifie le premier niveau de proxy (comme Railway ou Heroku)
+// Ici, 1 signifie que le premier niveau de proxy est de confiance
+// Si votre application est derrière plusieurs niveaux de proxy, augmentez ce nombre
+app.set('trust proxy', 1);
 
 // Désactiver le header x-powered-by Express
 app.disable('x-powered-by');
@@ -32,7 +34,18 @@ const corsOptions = {
     }
   },
   methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: [
+    'Content-Type',
+    'Authorization',
+    'X-Requested-With', // Ajoute cet en-tête pour les requêtes AJAX
+    'X-Forwarded-For', // Utilisé pour conserver l'adresse IP d'origine du client
+    'X-Forwarded-Proto', // Utilisé pour indiquer le protocole d'origine (HTTP ou HTTPS)
+  ],
+  exposedHeaders: [
+    'X-RateLimit-Limit',
+    'X-RateLimit-Remaining',
+    'X-RateLimit-Reset', // Expose les en-têtes de limitation de débit
+  ],
   credentials: true,
 };
 
@@ -42,20 +55,19 @@ app.use(cors(corsOptions));
 // Ajout du cookie parser pour le backOffice
 app.use(cookieParser());
 
-//TODO A MODIFIER POUR LA PROD SUR LA LIMITATION
 // Limitation de la fréquence des requêtes
 const limiter = rateLimit({
-  windowMs: 1 * 60 * 1000, // 1 minutes
-  limit: 100, // Limit each IP to 100 requests per `window` (here, per 1 minutes).
-  standardHeaders: true, // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
+  windowMs: 1 * 60 * 1000, // 1 minute
+  limit: 100, // Limite chaque IP à 100 requêtes par fenêtre (ici, 1 minute)
+  standardHeaders: true, // En-têtes `RateLimit-*`
+  legacyHeaders: false, // Désactive les en-têtes `X-RateLimit-*`
 });
 
 // Applique la limitation à toutes les requêtes
 app.use(limiter);
 
 // Ajout du body parser
-app.use(express.urlencoded({ extended: true })); // Body parser pour les body des <form> (mettre true pour permettre la lecture de form en HTML)
+app.use(express.urlencoded({ extended: true })); // Body parser pour les body des <form>
 app.use(express.json({ limit: '10kb' })); // Body parser pour routes API pour les body de type "JSON"
 
 // Routes API
