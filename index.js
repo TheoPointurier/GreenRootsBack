@@ -54,13 +54,20 @@ app.use(cors(corsOptions));
 // Gérer les requêtes préflight (OPTIONS)
 app.options('*', cors(corsOptions));
 
+app.use((req, res, next) => {
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+  next();
+});
+
 // Ajout du cookie parser pour le backOffice
 app.use(cookieParser());
 
 // Limitation de la fréquence des requêtes
 const limiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1 minute
-  limit: 100, // Limite chaque IP à 100 requêtes par fenêtre (ici, 1 minute)
+  limit: 200, // Limite chaque IP à 100 requêtes par fenêtre (ici, 1 minute)
   standardHeaders: true, // En-têtes `RateLimit-*`
   legacyHeaders: false, // Désactive les en-têtes `X-RateLimit-*`
 });
