@@ -12,7 +12,7 @@ const app = express();
 // Configure Express pour faire confiance aux proxies
 // Ici, 1 signifie que le premier niveau de proxy est de confiance
 // Si votre application est derrière plusieurs niveaux de proxy, augmentez ce nombre
-app.set('trust proxy', 2);
+app.set('trust proxy', 3);
 
 // Désactiver le header x-powered-by Express
 app.disable('x-powered-by');
