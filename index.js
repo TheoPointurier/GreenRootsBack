@@ -20,8 +20,9 @@ const allowedOrigins = process.env.CORS_ORIGIN.split(','); // Remplace par l'ori
 
 const corsOptions = {
   origin: (origin, callback) => {
-    console.log('Request Origin:', origin); // Origine de chaque requête
+    console.log('Request Origin:', origin); // Affiche l'origine de chaque requête
     if (!origin || allowedOrigins.includes(origin)) {
+      // Autorise si l'origine est undefined (pour les requêtes internes) ou si elle est dans la liste
       callback(null, true);
     } else {
       console.error(`Origine non autorisée : ${origin}`);
