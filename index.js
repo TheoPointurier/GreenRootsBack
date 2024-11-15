@@ -18,18 +18,19 @@ app.disable('x-powered-by');
 // Adresses autorisées pour CORS
 const allowedOrigins = process.env.CORS_ORIGIN.split(','); // Remplace par l'origine autorisée
 
-// Configuration CORS
 const corsOptions = {
   origin: (origin, callback) => {
+    console.log('Request Origin:', origin); // Origine de chaque requête
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
+      console.error(`Origine non autorisée : ${origin}`);
       callback(new Error('Accès refusé : origine non autorisée.'));
     }
   },
   methods: ['GET', 'POST', 'PATCH', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true, // si tu utilises des cookies ou des tokens sur le frontend
+  credentials: true,
 };
 
 // Ajout du CORS avec les paramètres définis
