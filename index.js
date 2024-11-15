@@ -51,6 +51,9 @@ const corsOptions = {
 // Ajout du CORS avec les paramètres définis
 app.use(cors(corsOptions));
 
+// Gérer les requêtes préflight (OPTIONS)
+app.options('*', cors(corsOptions));
+
 // Ajout du cookie parser pour le backOffice
 app.use(cookieParser());
 
