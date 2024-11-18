@@ -11,7 +11,7 @@ const userSchema = Joi.object({
   password: Joi.string()
     .min(12)
     .pattern(
-      /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*À-ÿ])[A-Za-z\d!@#$%^&*À-ÿ]{12,}/,
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\p{L}\p{N}\p{P}\p{S}])[\p{L}\p{N}\p{P}\p{S}]{12,}$/u
     )
     .required(),
   firstname: Joi.string().required(),
