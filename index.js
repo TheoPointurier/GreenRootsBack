@@ -86,6 +86,7 @@ app.use(express.urlencoded({ extended: true })); // Body parser pour les body de
 app.use(express.json({ limit: '10kb' })); // Body parser pour routes API pour les body de type "JSON"
 
 // Middleware Content Security Policy (CSP)
+// Middleware Content Security Policy (CSP)
 app.use(
   helmet({
     contentSecurityPolicy: {
@@ -93,8 +94,18 @@ app.use(
         defaultSrc: ["'self'"], // Autorise uniquement les ressources du même domaine
         scriptSrc: ["'self'", "'unsafe-inline'"], // Autorise les scripts inline et du même domaine
         styleSrc: ["'self'", "'unsafe-inline'"], // Autorise les styles inline et du même domaine
-        imgSrc: ["'self'", 'http://greenrootsback.codewebyo.com'], // Autorise les images de votre backend
-        connectSrc: ["'self'", 'https://greenrootsback.codewebyo.com'], // Autorise les connexions au backend
+        imgSrc: [
+          "'self'",
+          process.env.NODE_ENV === 'production'
+            ? 'http://greenrootsback.codewebyo.com'
+            : 'http://localhost:3000', // Autorise les images du backend en fonction de l'environnement
+        ],
+        connectSrc: [
+          "'self'",
+          process.env.NODE_ENV === 'production'
+            ? 'https://greenrootsback.codewebyo.com'
+            : 'http://localhost:3000', // Autorise les connexions au backend en fonction de l'environnement
+        ],
       },
     },
   }),
