@@ -97,7 +97,7 @@ app.use(
         imgSrc: [
           "'self'",
           process.env.NODE_ENV === 'production'
-            ? 'http://greenrootsback.codewebyo.com'
+            ? 'https://greenrootsback.codewebyo.com'
             : 'http://localhost:3000', // Autorise les images du backend en fonction de l'environnement
         ],
         connectSrc: [
