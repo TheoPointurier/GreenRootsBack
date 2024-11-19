@@ -9,7 +9,7 @@ function filterSearchBar() {
   );
 
   // Récupère toutes les lignes du tableau
-  const tableRows = document.querySelectorAll('.treeTableBody tr');
+  const tableRows = document.querySelectorAll('.table_container tbody tr');
 
   for (row of tableRows) {
     // Récupère le texte de toutes les cellules de la ligne

@@ -253,4 +253,9 @@ document.addEventListener('DOMContentLoaded', () => {
         console.warn(`Action non gérée : ${action}`);
     }
   });
+
+  // Pour gérer la recherche dans la barre de recherche
+  document
+    .querySelector('.searchInput')
+    ?.addEventListener('keyup', filterSearchBar);
 });
