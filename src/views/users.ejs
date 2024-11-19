@@ -5,7 +5,7 @@
 
     <main>
       <div class="searchAddBar">
-        <button class="create_button button" onclick="displayCreateUserModal()">Créer un nouvel utilisateur</button>
+        <button class="create_button button" data-action="displayCreateUserModal">Créer un nouvel utilisateur</button>
         <input type="text" class="searchInput" placeholder="Filtrer..." onkeyup="filterSearchBar()">
       </div>
       <div class="table_container table_container-users">
@@ -79,9 +79,10 @@
                   <%= user.is_admin %>
                 </td>
                 <td class="line-container-button">
-                  <button onclick="displayEditUserModal('<%= user.id %>')" class="button save">Modifier</button>
-
-                  <button onclick="displayDeleteUserModal('<%= user.id %>')" class="delete button">Supprimer</button>
+                  <button class="button save" data-action="displayEditUserModal"
+                    data-user-id="<%= user.id %>">Modifier</button>
+                  <button class="delete button" data-action="displayDeleteUserModal"
+                    data-user-id="<%= user.id %>">Supprimer</button>
                 </td>
               </tr>
 

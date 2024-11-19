@@ -72,7 +72,9 @@
 
       <div class="edit_modal_button">
         <button class="save" type="submit" onclick="editUser">Enregistrer les modifications</button>
-        <button onclick="hideEditUserModal('<%= user.id %>')" class="cancel" type="button">Annuler</button>
+        <button class="cancel" type="button" data-action="hideEditUserModal"
+          data-user-id="<%= user.id %>">Annuler</button>
+
       </div>
     </form>
   </div>

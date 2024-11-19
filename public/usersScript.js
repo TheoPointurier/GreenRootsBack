@@ -219,3 +219,38 @@ async function deleteUser(userId) {
     );
   }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.body.addEventListener('click', (event) => {
+    const action = event.target.dataset.action;
+    const userId = event.target.dataset.userId;
+
+    if (!action) return; // Ignorer les clics sans data-action
+
+    switch (action) {
+      case 'displayCreateUserModal':
+        displayCreateUserModal();
+        break;
+      case 'hideCreateUserModal':
+        hideCreateUserModal();
+        break;
+      case 'displayEditUserModal':
+        displayEditUserModal(userId);
+        break;
+      case 'hideEditUserModal':
+        hideEditUserModal(userId);
+        break;
+      case 'displayDeleteUserModal':
+        displayDeleteUserModal(userId);
+        break;
+      case 'hideDeleteUserModal':
+        hideDeleteUserModal(userId);
+        break;
+      case 'deleteUser':
+        deleteUser(userId);
+        break;
+      default:
+        console.warn(`Action non gérée : ${action}`);
+    }
+  });
+});

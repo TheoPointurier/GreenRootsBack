@@ -165,29 +165,33 @@ export async function createCampaignBackoffice(req, res) {
 
 export async function updateCampaignBackOffice(req, res) {
   try {
-    // Schéma de validation de l'ID
-    const { errorId } = idSchema.validate({ id: req.params.id });
-    if (errorId) {
-      return res.status(400).json({ message: errorId.message });
+    console.log('Données reçues dans req.body :', req.body);
+
+    const { error } = campaignSchema.validate(req.body);
+    if (error) {
+      console.error('Validation échouée :', error.details);
+      return res.status(400).json({ message: error.message });
     }
 
     const campaignId = Number.parseInt(req.params.id, 10);
 
-    // Validation de la requête avec Joi
-    const { error } = campaignSchema.validate(req.body);
-    if (error) {
-      return res.status(400).json({ message: error.message });
+    if (Number.isNaN(campaignId)) {
+      console.error(
+        "L'ID de la campagne est invalide ou manquant :",
+        req.params.id,
+      );
+      return res.status(400).json({ message: 'ID de campagne invalide' });
     }
+    console.log('Données reçues dans req.body :', req.body);
 
     const campaign = await Campaign.findByPk(campaignId);
-
     if (!campaign) {
       return res.status(404).json({
         message: `La campagne avec l'id ${req.params.id} n'a pas été trouvée`,
       });
     }
 
-    // Extraire les données de la requête
+    // Mettre à jour la campagne
     const {
       name,
       description,
@@ -196,131 +200,18 @@ export async function updateCampaignBackOffice(req, res) {
       treesCampaign,
       location,
     } = req.body;
-
-    // Mettre à jour la campagne
-    if (name !== undefined) campaign.name = name;
-    if (description !== undefined) campaign.description = description;
-    if (start_campaign !== undefined) campaign.start_campaign = start_campaign;
-    if (end_campaign !== undefined) campaign.end_campaign = end_campaign;
+    if (name) campaign.name = name;
+    if (description) campaign.description = description;
+    if (start_campaign) campaign.start_campaign = start_campaign;
+    if (end_campaign) campaign.end_campaign = end_campaign;
     await campaign.save();
 
-    // Gérer les associations d'arbres
-    if (treesCampaign) {
-      if (treesCampaign.length > 0) {
-        // Vérifier que tous les arbres existent
-        const treeIds = treesCampaign.map((tree) => tree.id);
-        const existingTrees = await Tree.findAll({
-          where: { id: treeIds },
-        });
+    console.log('Campagne mise à jour avec succès', campaign);
 
-        if (existingTrees.length !== treeIds.length) {
-          return res
-            .status(400)
-            .json({ message: 'Certains arbres fournis n’existent pas' });
-        }
-
-        // Mettre à jour les associations
-        await campaign.setTreesCampaign(treeIds);
-      } else {
-        await campaign.setTreesCampaign([]);
-      }
-    }
-
-    // Gérer les associations de localisation
-    if (location) {
-      const { id: locationId, name_location, id_country, country } = location;
-      let campaignLocation;
-
-      // Cas où locationId est fourni (mise à jour d'une localisation existante)
-      if (locationId) {
-        campaignLocation = await CampaignLocation.findByPk(locationId);
-        if (!campaignLocation) {
-          return res.status(404).json({
-            message: `La localisation avec l'id ${locationId} n'a pas été trouvée`,
-          });
-        }
-
-        if (name_location !== undefined)
-          campaignLocation.name_location = name_location;
-        if (id_country !== undefined) campaignLocation.id_country = id_country;
-        await campaignLocation.save();
-      } else {
-        // Cas pour la création d'une nouvelle localisation
-
-        // Si `id_country` n'est pas directement fourni, essayez de le trouver ou de le créer à partir de `country`
-        let countryId = id_country;
-        if (!countryId && country) {
-          // Normaliser le nom du pays en minuscule pour éviter les doublons dus à la casse
-          const countryNameLower = country.name.toLowerCase();
-          console.log('countryNameLower:', countryNameLower);
-
-          const [countryRecord] = await Country.findOrCreate({
-            where: sequelize.where(
-              sequelize.fn('LOWER', sequelize.col('name')),
-              countryNameLower,
-            ),
-            defaults: { name: countryNameLower }, // Utiliser la même casse pour l'insertion
-          });
-
-          countryId = countryRecord.id;
-        }
-
-        if (!countryId) {
-          return res.status(400).json({
-            message:
-              'Impossible de créer la localisation sans un id_country valide.',
-          });
-        }
-
-        // Créer la nouvelle localisation avec l'`id_country` résolu
-        campaignLocation = await CampaignLocation.create({
-          name_location,
-          id_country: countryId,
-        });
-      }
-
-      // Associer le pays à la localisation si des détails `country` sont fournis
-      if (country) {
-        let countryRecord;
-        if (country.id) {
-          countryRecord = await Country.findByPk(country.id);
-          if (!countryRecord) {
-            return res.status(404).json({
-              message: `Le pays avec l'id ${country.id} n'a pas été trouvé`,
-            });
-          }
-        } else {
-          // find ou create pour éviter les doublons porte bien son nom
-          [countryRecord] = await Country.findOrCreate({
-            where: sequelize.where(
-              sequelize.fn('LOWER', sequelize.col('name')),
-              country.name.toLowerCase(),
-            ),
-            defaults: { name: country.name.toLowerCase() }, // Utiliser la même casse pour l'insertion
-          });
-        }
-
-        // Mettre à jour le nom du pays si nécessaire
-        if (country.name !== undefined) countryRecord.name = country.name;
-        await countryRecord.save();
-
-        // Associer le pays à la localisation de la campagne
-        await campaignLocation.setCountry(countryRecord);
-      }
-
-      // Associer la localisation à la campagne
-      await campaign.setLocation(campaignLocation);
-    }
-
-    console.log('mise à jour effectué pour la campagne ID:', campaignId);
-
-    res.status(200).redirect('/admin/campaigns');
+    res.status(200).json({ message: 'Campagne mise à jour avec succès' });
   } catch (error) {
-    console.error('Erreur lors de la mise à jour de la campagne:', error);
-    res.status(500).json({
-      message: 'Erreur lors de la mise à jour de la campagne',
-      error: error.message,
-    });
+    console.error('Erreur lors de la mise à jour de la campagne', error);
+    res.status(500).json({ message: 'Erreur interne', error: error.message });
   }
 }
 

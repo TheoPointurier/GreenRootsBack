@@ -8,38 +8,44 @@ function displayEditCampaignModal(
   country,
   treeCampaign,
 ) {
-  // Afficher la modal
-  document.getElementById('editModal').classList.remove('hidden');
+  console.log('Données reçues pour modification : ', {
+    id,
+    name,
+    description,
+    start_campaign,
+    end_campaign,
+    location,
+    country,
+    treeCampaign,
+  });
 
-  const parsedTreeCampaign = JSON.parse(treeCampaign);
-  document.getElementById('editId').value = id;
-  document.getElementById('editName').value = name;
-  document.getElementById('editDescription').value = description;
+  // Étape 1 : Afficher la modal
+  const editModal = document.getElementById('editModal');
+  editModal.classList.remove('hidden');
 
-  // Convertir la date au format YYYY-MM-DD pour les champs de type date
-  const startDate = start_campaign
+  // Étape 2 : Remplir les champs avec les données
+  document.getElementById('editId').value = id || '';
+  document.getElementById('editName').value = name || '';
+  document.getElementById('editDescription').value = description || '';
+  document.getElementById('editStartCampain').value = start_campaign
     ? new Date(start_campaign).toISOString().split('T')[0]
     : '';
-  const endDate = end_campaign
+  document.getElementById('editEndCampain').value = end_campaign
     ? new Date(end_campaign).toISOString().split('T')[0]
     : '';
+  document.getElementById('editLocation').value = location || '';
+  document.getElementById('editCountry').value = country || '';
 
-  // Affecter les valeurs de date formatées
-  document.getElementById('editStartCampain').value = startDate;
-  document.getElementById('editEndCampain').value = endDate;
-  document.getElementById('editLocation').value = location;
-  document.getElementById('editCountry').value = country;
+  // Étape 3 : Gérer les arbres inclus/exclus
+  const parsedTreeCampaign = JSON.parse(treeCampaign); // Convertir la chaîne JSON en objet
+  const treeIdsInCampaign = parsedTreeCampaign.map((tree) => tree.id); // Liste des IDs d'arbres inclus
 
   // Sélectionner tous les boutons radio
-
   const allRadioButtons = document.querySelectorAll(
     '#editModal input[type="radio"]',
   );
 
-  // Mapper les IDs des arbres dans la campagne pour une vérification plus rapide
-  const treeIdsInCampaign = parsedTreeCampaign.map((tree) => tree.id);
-
-  // Réinitialiser tous les boutons radio à "exclude" par défaut
+  // Réinitialiser tous les boutons radio à "exclude"
   for (const radio of allRadioButtons) {
     radio.checked = radio.value === 'exclude';
   }
@@ -53,6 +59,8 @@ function displayEditCampaignModal(
       includeRadio.checked = true;
     }
   }
+
+  console.log('Modal de modification affichée avec succès.');
 }
 
 function hideEditCampaignModal() {
@@ -62,11 +70,13 @@ function hideEditCampaignModal() {
 async function editCampaign(event) {
   event.preventDefault();
 
+  // Récupérer les données du formulaire
   const id = document.getElementById('editId').value;
   const name = document.getElementById('editName').value;
   const description = document.getElementById('editDescription').value;
-  const start_campaign = document.getElementById('editStartCampain').value;
-  const end_campaign = document.getElementById('editEndCampain').value;
+  const start_campaign =
+    document.getElementById('editStartCampain').value || null;
+  const end_campaign = document.getElementById('editEndCampain').value || null;
   const location = {
     name_location: document.getElementById('editLocation').value,
     country: {
@@ -75,18 +85,18 @@ async function editCampaign(event) {
   };
 
   const treesCampaign = [];
-
   const allRadioButtons = document.querySelectorAll(
-    ' #editModal input[type="radio"]',
+    '#editTreesContainer input[type="radio"]',
   );
 
-  for (const radio of allRadioButtons) {
-    const treeId = radio.getAttribute('data-tree-id');
+  // biome-ignore lint/complexity/noForEach: <explanation>
+  allRadioButtons.forEach((radio) => {
     if (radio.value === 'include' && radio.checked) {
-      treesCampaign.push({ id: Number.parseInt(treeId) });
+      treesCampaign.push({ id: Number.parseInt(radio.dataset.treeId, 10) });
     }
-  }
+  });
 
+  // Préparer le corps de la requête
   const body = JSON.stringify({
     name,
     description,
@@ -102,26 +112,36 @@ async function editCampaign(event) {
       headers: {
         'Content-Type': 'application/json',
       },
-
       body: body,
     });
+
     if (response.ok) {
       console.log('Campagne mise à jour avec succès');
       window.location.reload();
     } else {
-      const error = await response.json();
-      console.error('Erreur lors de la mise à jour de la campagne', error);
-      console.error('Erreur lors de la mise à jour de la campagne');
+      console.error('Erreur lors de la mise à jour', await response.json());
     }
   } catch (error) {
     console.error('Erreur réseau lors de la mise à jour de la campagne', error);
   }
 }
 
-function displayDeleteCampaignModal(id) {
-  document.getElementById('deleteCampaignModal').classList.remove('hidden');
-  document.getElementById('confirmDeleteButton').onclick = () =>
-    deleteCampaign(id);
+function displayDeleteCampaignModal(id, name) {
+  console.log('Données reçues pour suppression : ', { id, name });
+
+  // Étape 1 : Afficher la modal
+  const deleteModal = document.getElementById('deleteCampaignModal');
+  deleteModal.classList.remove('hidden');
+
+  // Étape 2 : Afficher le nom de la campagne dans le message de confirmation
+  const campaignNameSpan = document.getElementById('deleteCampaignName');
+  campaignNameSpan.textContent = name;
+
+  // Étape 3 : Configurer le bouton "Confirmer"
+  const confirmDeleteButton = document.getElementById('confirmDeleteButton');
+  confirmDeleteButton.onclick = () => deleteCampaign(id);
+
+  console.log('Modal de suppression affichée avec succès.');
 }
 
 function hideDeleteCampaignModal() {
@@ -208,3 +228,98 @@ async function createCampaign(event) {
     console.error('Erreur réseau lors de la création de la campagne', error);
   }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  const createButton = document.getElementById('create_button-campaign');
+  if (createButton) {
+    createButton.addEventListener('click', () => {
+      displayCreateCampaignModal();
+    });
+  } else {
+    console.warn('Le bouton #create_button est introuvable.');
+  }
+
+  // Boutons de modification
+  // biome-ignore lint/complexity/noForEach: <explanation>
+  document.querySelectorAll('.button.save').forEach((button) => {
+    button.addEventListener('click', () => {
+      const id = button.dataset.id;
+      const name = button.dataset.name;
+      const description = button.dataset.description;
+      const start_campaign = button.dataset.start;
+      const end_campaign = button.dataset.end;
+      const location = button.dataset.location;
+      const country = button.dataset.country;
+      const trees = button.dataset.trees; // Les données des arbres sont au format JSON
+
+      displayEditCampaignModal(
+        id,
+        name,
+        description,
+        start_campaign,
+        end_campaign,
+        location,
+        country,
+        trees,
+      );
+    });
+  });
+
+  // Boutons de suppression
+  // biome-ignore lint/complexity/noForEach: <explanation>
+  document.querySelectorAll('.delete.button').forEach((button) => {
+    button.addEventListener('click', () => {
+      const id = button.dataset.id;
+      const name = button.dataset.name; // Récupération du nom pour affichage
+
+      displayDeleteCampaignModal(id, name);
+    });
+  });
+  // Bouton d'annulation dans le formulaire de modification
+  const cancelEditButton = document.getElementById('cancelEditButton');
+  if (cancelEditButton) {
+    cancelEditButton.addEventListener('click', () => {
+      hideEditCampaignModal();
+    });
+  }
+
+  // Bouton d'annulation dans le formulaire de suppression
+  const cancelDeleteButton = document.getElementById('cancelDeleteButton');
+  if (cancelDeleteButton) {
+    cancelDeleteButton.addEventListener('click', () => {
+      hideDeleteCampaignModal();
+    });
+  }
+
+  // Bouton d'annulation dans le formulaire de création
+  const cancelCreateButton = document.getElementById('cancelCreateButton');
+  if (cancelCreateButton) {
+    cancelCreateButton.addEventListener('click', () => {
+      hideCreateCampaignModal();
+    });
+  }
+
+  // Formulaire de création de campagne
+  const createForm = document.getElementById('createForm');
+  if (createForm) {
+    createForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      createCampaign(event);
+    });
+  }
+
+  // Formulaire de modification de campagne
+  const editForm = document.getElementById('editForm');
+  if (editForm) {
+    editForm.addEventListener('submit', editCampaign);
+  }
+
+  // Bouton de confirmation de suppression
+  const confirmDeleteButton = document.getElementById('confirmDeleteButton');
+  if (confirmDeleteButton) {
+    confirmDeleteButton.addEventListener('click', () => {
+      // Ajoutez ici la logique de suppression
+      console.log('Suppression confirmée');
+    });
+  }
+});

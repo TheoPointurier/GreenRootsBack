@@ -1,67 +1,49 @@
 <div id="editModal" class="modal hidden edit-campaign-modal">
   <div class="modal-content">
     <h2>Modifier la campagne</h2>
+    <form id="editForm" class="modal-form">
+      <input type="hidden" id="editId" name="id" value="<%= campaign.id %>">
 
-    <form id="editForm" onsubmit="editCampaign(event)" class="modal-form">
-      <div class="modal-form_campaign">
-        <div>
-          <label for="editId">ID :</label>
-          <input type="number" id="editId" name="id" disabled>
-        </div>
+      <label for="editName">Nom :</label>
+      <input type="text" id="editName" name="name" value="<%= campaign.name || '' %>">
 
-        <div>
-          <label for="editName">Nom :</label>
-          <input type="text" id="editName" name="name">
-        </div>
-        <div>
-          <label for="editDescription">Description :</label>
-          <input type="text" id="editDescription" name="description">
-        </div>
-        <div>
-          <label for="editStartCampain">Date de début :</label>
-          <input type="date" id="editStartCampain" name="start_campaign">
-        </div>
-        <div>
-          <label for="editEndCampain">Date de fin :</label>
-          <input type="date" id="editEndCampain" name="end_campaign">
-        </div>
-        <div>
-          <label for="editLocation">Emplacement</label>
-          <input type="text" id="editLocation" name="campaign.location.name_location">
-        </div>
-        <div>
-          <label for="editCountry">Pays</label>
-          <input type="text" id="editCountry" name="campaign.location.country_name">
-        </div>
+      <label for="editDescription">Description :</label>
+      <input type="text" id="editDescription" name="description" value="<%= campaign.description || '' %>">
+
+      <label for="editStartCampain">Date de début :</label>
+      <input type="date" id="editStartCampain" name="start_campaign"
+        value="<%= campaign.start_campaign ? new Date(campaign.start_campaign).toISOString().split('T')[0] : '' %>">
+
+      <label for="editEndCampain">Date de fin :</label>
+      <input type="date" id="editEndCampain" name="end_campaign"
+        value="<%= campaign.end_campaign ? new Date(campaign.end_campaign).toISOString().split('T')[0] : '' %>">
+
+      <label for="editLocation">Emplacement :</label>
+      <input type="text" id="editLocation" name="location[name_location]"
+        value="<%= campaign.location.name_location || '' %>">
+
+      <label for="editCountry">Pays :</label>
+      <input type="text" id="editCountry" name="location[country][name]"
+        value="<%= campaign.location.country.name || '' %>">
+
+      <div id="editTreesContainer">
+        <h3>Arbres associés</h3>
+        <% trees.forEach(tree=> { %>
+          <div>
+            <label>
+              <input type="radio" name="tree_<%= tree.id %>" value="include" data-tree-id="<%= tree.id %>">
+              Inclus
+            </label>
+            <label>
+              <input type="radio" name="tree_<%= tree.id %>" value="exclude" checked>
+              Exclus
+            </label>
+          </div>
+          <% }) %>
       </div>
 
-      <div class="modal-form_trees">
-        <label>
-          <h3 class="modal-form_trees-title">Arbres disponibles</h3>
-        </label>
-        <div class="trees-options">
-          <% trees.forEach(tree=> { %>
-            <div class="tree-option">
-              <h3>
-                <%= tree.name %>
-              </h3>
-              <label>
-                <input type="radio" data-tree-id="<%= tree.id %>" name="tree_<%= tree.id %>" value="include">
-                <span class="choiceTree">Inclus</span>
-              </label>
-              <label>
-                <input type="radio" data-tree-id="<%= tree.id %>" name="tree_<%= tree.id %>" value="exclude" checked>
-                <span class="choiceTree">Exclus</span>
-              </label>
-            </div>
-            <% }) %>
-        </div>
-      </div>
-      <div class="edit_modal_button">
-
-        <button class="save button" type="submit">Enregistrer les modifications</button>
-        <button type="button" onclick="hideEditCampaignModal()" class="cancel button">Annuler</button>
-      </div>
+      <button type="submit" class="save button">Enregistrer les modifications</button>
+      <button type="button" id="cancelEditButton" class="cancel button">Annuler</button>
     </form>
   </div>
 </div>

@@ -5,7 +5,8 @@
     <main>
       <div class="searchAddBar">
 
-        <button class="create_button button" onclick="displayCreateCampaignModal()">Créer une nouvelle campagne</button>
+        <button id="create_button-campaign" class="create_button button">Créer
+          une nouvelle campagne</button>
         <input type="text" class="searchInput" placeholder="Filtrer..." onkeyup="filterSearchBar()">
       </div>
       <div class="table_container">
@@ -59,31 +60,29 @@
                 </td>
 
                 <td class="line-container-button">
-                  <button onclick="displayEditCampaignModal(
-                
-                `<%= campaign.id %>`,
-                `<%= campaign.name %>`,
-                `<%= campaign.description %>`,
-                `<%= campaign.start_campaign %>`,
-                `<%= campaign.end_campaign %>`,
-                `<%= campaign.location.name_location %>`,
-                `<%= campaign.location.country.name %>`,
-                this.dataset.trees
-              )" data-trees='<%= JSON.stringify(campaign.treesCampaign) %>' class="button save">Modifier</button>
-                  <button onclick="displayDeleteCampaignModal('<%= campaign.id %>')"
-                    class="delete button">Supprimer</button>
+                  <button id="edit-button-<%= campaign.id %>" class="button save" data-id="<%= campaign.id %>"
+                    data-name="<%= campaign.name %>" data-description="<%= campaign.description %>"
+                    data-start="<%= campaign.start_campaign %>" data-end="<%= campaign.end_campaign %>"
+                    data-location="<%= campaign.location.name_location %>"
+                    data-country="<%= campaign.location.country.name %>"
+                    data-trees='<%= JSON.stringify(campaign.treesCampaign) %>'>
+                    Modifier
+                  </button>
+                  <button id="delete-button-<%= campaign.id %>" class="delete button" data-id="<%= campaign.id %>">
+                    Supprimer
+                  </button>
                 </td>
               </tr>
 
-              <% }) %>
+              <%- include('./partials/modals-updateCampaign.ejs', {campaign }) %>
+                <%- include('./partials/modals-deleteCampaign.ejs') %>
+                  <% }) %>
 
           </tbody>
 
         </table>
       </div>
       <%- include('./partials/modals-createCampaign.ejs') %>
-        <%- include('./partials/modals-updateCampaign.ejs') %>
-          <%- include('./partials/modals-deleteCampaign.ejs') %>
     </main>
 
 

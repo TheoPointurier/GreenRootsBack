@@ -3,8 +3,10 @@
     <h2>Confirmer la suppression</h2>
     <p>Êtes-vous sûr de vouloir supprimer l'utilisateur?</p>
     <div>
-      <button id="confirmDeleteButton-<%= user.id %>" class="delete button">Supprimer</button>
-      <button onclick="hideDeleteUserModal('<%= user.id %>')" class="cancel button">Annuler</button>
+      <button id="confirmDeleteButton-<%= user.id %>" class="delete button" data-action="deleteUser"
+        data-user-id="<%= user.id %>">Supprimer</button>
+      <button class="cancel button" data-action="hideDeleteUserModal" data-user-id="<%= user.id %>">Annuler</button>
+
     </div>
   </div>
 </div>

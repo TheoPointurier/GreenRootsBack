@@ -22,49 +22,49 @@ const allowedOrigins = process.env.CORS_ORIGIN.split(','); // Remplace par l'ori
 app.set('trust proxy', 3);
 
 // Configuration CORS
-const corsOptions = {
-  origin: (origin, callback) => {
-    // Adresses autorisées pour CORS
-    const allowedOrigins = process.env.CORS_ORIGIN
-      ? process.env.CORS_ORIGIN.split(',').map((origin) => origin.trim())
-      : [];
-    console.log('Request Origin:', origin); // Affiche l'origine de chaque requête
-    if (!origin || allowedOrigins.includes(origin) || origin === 'null') {
-      // Autorise si l'origine est undefined (pour les requêtes internes) ou si elle est dans la liste
-      callback(null, true);
-    } else {
-      console.error(`Origine non autorisée : ${origin}`);
-      callback(new Error('Accès refusé : origine non autorisée.'));
-    }
-  },
-  methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-  allowedHeaders: [
-    'Content-Type',
-    'Authorization',
-    'X-Requested-With', // Ajoute cet en-tête pour les requêtes AJAX
-    'X-Forwarded-For', // Utilisé pour conserver l'adresse IP d'origine du client
-    'X-Forwarded-Proto', // Utilisé pour indiquer le protocole d'origine (HTTP ou HTTPS)
-  ],
-  exposedHeaders: [
-    'X-RateLimit-Limit',
-    'X-RateLimit-Remaining',
-    'X-RateLimit-Reset', // Expose les en-têtes de limitation de débit
-  ],
-  credentials: true,
-};
+// const corsOptions = {
+//   origin: (origin, callback) => {
+//     // Adresses autorisées pour CORS
+//     const allowedOrigins = process.env.CORS_ORIGIN
+//       ? process.env.CORS_ORIGIN.split(',').map((origin) => origin.trim())
+//       : [];
+//     console.log('Request Origin:', origin); // Affiche l'origine de chaque requête
+//     if (!origin || allowedOrigins.includes(origin) || origin === 'null') {
+//       // Autorise si l'origine est undefined (pour les requêtes internes) ou si elle est dans la liste
+//       callback(null, true);
+//     } else {
+//       console.error(`Origine non autorisée : ${origin}`);
+//       callback(new Error('Accès refusé : origine non autorisée.'));
+//     }
+//   },
+//   methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+//   allowedHeaders: [
+//     'Content-Type',
+//     'Authorization',
+//     'X-Requested-With', // Ajoute cet en-tête pour les requêtes AJAX
+//     'X-Forwarded-For', // Utilisé pour conserver l'adresse IP d'origine du client
+//     'X-Forwarded-Proto', // Utilisé pour indiquer le protocole d'origine (HTTP ou HTTPS)
+//   ],
+//   exposedHeaders: [
+//     'X-RateLimit-Limit',
+//     'X-RateLimit-Remaining',
+//     'X-RateLimit-Reset', // Expose les en-têtes de limitation de débit
+//   ],
+//   credentials: true,
+// };
 
 // Ajout du CORS avec les paramètres définis
-app.use(cors(corsOptions));
+app.use(cors(process.env.CORS_ORIGIN));
 
 // Gérer les requêtes préflight (OPTIONS)
-app.options('*', cors(corsOptions));
+// app.options('*', cors(corsOptions));
 
-app.use((req, res, next) => {
-  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-  res.setHeader('Pragma', 'no-cache');
-  res.setHeader('Expires', '0');
-  next();
-});
+// app.use((req, res, next) => {
+//   res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+//   res.setHeader('Pragma', 'no-cache');
+//   res.setHeader('Expires', '0');
+//   next();
+// });
 
 // Ajout du cookie parser pour le backOffice
 app.use(cookieParser());
@@ -87,41 +87,41 @@ app.use(express.json({ limit: '10kb' })); // Body parser pour routes API pour le
 
 // Middleware Content Security Policy (CSP)
 // Middleware Content Security Policy (CSP)
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"], // Autorise uniquement les ressources du même domaine
-        scriptSrc: ["'self'", "'unsafe-inline'"], // Autorise les scripts inline et du même domaine
-        styleSrc: ["'self'", "'unsafe-inline'"], // Autorise les styles inline et du même domaine
-        imgSrc: [
-          "'self'",
-          process.env.NODE_ENV === 'production'
-            ? 'https://greenrootsback.codewebyo.com'
-            : 'http://localhost:3000', // Autorise les images du backend en fonction de l'environnement
-        ],
-        connectSrc: [
-          "'self'",
-          process.env.NODE_ENV === 'production'
-            ? 'https://greenrootsback.codewebyo.com'
-            : 'http://localhost:3000', // Autorise les connexions au backend en fonction de l'environnement
-        ],
-      },
-    },
-  }),
-);
+// app.use(
+//   helmet({
+//     contentSecurityPolicy: {
+//       directives: {
+//         defaultSrc: ["'self'"], // Autorise uniquement les ressources du même domaine
+//         scriptSrc: ["'self'", "'unsafe-inline'"], // Autorise les scripts inline et du même domaine
+//         styleSrc: ["'self'", "'unsafe-inline'"], // Autorise les styles inline et du même domaine
+//         imgSrc: [
+//           "'self'",
+//           process.env.NODE_ENV === 'production'
+//             ? 'https://greenrootsback.codewebyo.com'
+//             : 'http://localhost:3000', // Autorise les images du backend en fonction de l'environnement
+//         ],
+//         connectSrc: [
+//           "'self'",
+//           process.env.NODE_ENV === 'production'
+//             ? 'https://greenrootsback.codewebyo.com'
+//             : 'http://localhost:3000', // Autorise les connexions au backend en fonction de l'environnement
+//         ],
+//       },
+//     },
+//   }),
+// );
 
 // Set les Headers
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', process.env.CORS_ORIGIN || '*');
-  res.setHeader(
-    'Access-Control-Allow-Methods',
-    'GET, POST, PATCH, DELETE, OPTIONS',
-  );
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.setHeader('Access-Control-Allow-Credentials', 'true'); // Si vous utilisez des cookies
-  next();
-});
+// app.use((req, res, next) => {
+//   res.setHeader('Access-Control-Allow-Origin', process.env.CORS_ORIGIN || '*');
+//   res.setHeader(
+//     'Access-Control-Allow-Methods',
+//     'GET, POST, PATCH, DELETE, OPTIONS',
+//   );
+//   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+//   res.setHeader('Access-Control-Allow-Credentials', 'true'); // Si vous utilisez des cookies
+//   next();
+// });
 
 // Routes API
 app.use('/api', apiRouter);
