@@ -132,27 +132,6 @@ export async function createCampaignBackoffice(req, res) {
       await campaign.setTreesCampaign(treeIds);
     }
 
-    // Récupérer la campagne créée avec ses associations
-    const newCampaign = await Campaign.findByPk(campaign.id, {
-      include: [
-        {
-          model: Tree,
-          as: 'treesCampaign',
-          through: { attributes: [] }, // Pour exclure les champs de la table pivot
-        },
-        {
-          model: CampaignLocation,
-          as: 'location',
-          include: [
-            {
-              model: Country,
-              as: 'country',
-            },
-          ],
-        },
-      ],
-    });
-
     res.redirect('/admin/campaigns');
   } catch (error) {
     console.error('Erreur lors de la création de la campagne:', error);
@@ -182,16 +161,24 @@ export async function updateCampaignBackOffice(req, res) {
       );
       return res.status(400).json({ message: 'ID de campagne invalide' });
     }
-    console.log('Données reçues dans req.body :', req.body);
 
-    const campaign = await Campaign.findByPk(campaignId);
+    const campaign = await Campaign.findByPk(campaignId, {
+      include: [
+        { model: CampaignLocation, as: 'location' },
+        { model: Tree, as: 'treesCampaign' },
+      ],
+    });
+
     if (!campaign) {
       return res.status(404).json({
         message: `La campagne avec l'id ${req.params.id} n'a pas été trouvée`,
       });
     }
 
-    // Mettre à jour la campagne
+    // Log avant mise à jour
+    console.log('Données actuelles de la campagne :', campaign);
+
+    // Mettre à jour les champs principaux
     const {
       name,
       description,
@@ -200,10 +187,43 @@ export async function updateCampaignBackOffice(req, res) {
       treesCampaign,
       location,
     } = req.body;
+
     if (name) campaign.name = name;
     if (description) campaign.description = description;
     if (start_campaign) campaign.start_campaign = start_campaign;
     if (end_campaign) campaign.end_campaign = end_campaign;
+
+    // Mettre à jour la localisation
+    if (location) {
+      let countryRecord;
+      if (location.country?.name) {
+        const countryNameLower = location.country.name.toLowerCase();
+        [countryRecord] = await Country.findOrCreate({
+          where: sequelize.where(
+            sequelize.fn('LOWER', sequelize.col('name')),
+            countryNameLower,
+          ),
+          defaults: { name: location.country.name },
+        });
+      }
+
+      const [campaignLocation] = await CampaignLocation.findOrCreate({
+        where: { name_location: location.name_location },
+        defaults: {
+          name_location: location.name_location,
+          id_country: countryRecord ? countryRecord.id : null,
+        },
+      });
+
+      await campaign.setLocation(campaignLocation);
+    }
+
+    // Mettre à jour les arbres associés
+    if (treesCampaign) {
+      const treeIds = treesCampaign.map((tree) => tree.id);
+      await campaign.setTreesCampaign(treeIds);
+    }
+
     await campaign.save();
 
     console.log('Campagne mise à jour avec succès', campaign);

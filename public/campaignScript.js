@@ -1,102 +1,54 @@
-function displayEditCampaignModal(
-  id,
-  name,
-  description,
-  start_campaign,
-  end_campaign,
-  location,
-  country,
-  treeCampaign,
-) {
-  console.log('Données reçues pour modification : ', {
-    id,
-    name,
-    description,
-    start_campaign,
-    end_campaign,
-    location,
-    country,
-    treeCampaign,
-  });
-
-  // Étape 1 : Afficher la modal
-  const editModal = document.getElementById('editModal');
-  editModal.classList.remove('hidden');
-
-  // Étape 2 : Remplir les champs avec les données
-  document.getElementById('editId').value = id || '';
-  document.getElementById('editName').value = name || '';
-  document.getElementById('editDescription').value = description || '';
-  document.getElementById('editStartCampain').value = start_campaign
-    ? new Date(start_campaign).toISOString().split('T')[0]
-    : '';
-  document.getElementById('editEndCampain').value = end_campaign
-    ? new Date(end_campaign).toISOString().split('T')[0]
-    : '';
-  document.getElementById('editLocation').value = location || '';
-  document.getElementById('editCountry').value = country || '';
-
-  // Étape 3 : Gérer les arbres inclus/exclus
-  const parsedTreeCampaign = JSON.parse(treeCampaign); // Convertir la chaîne JSON en objet
-  const treeIdsInCampaign = parsedTreeCampaign.map((tree) => tree.id); // Liste des IDs d'arbres inclus
-
-  // Sélectionner tous les boutons radio
-  const allRadioButtons = document.querySelectorAll(
-    '#editModal input[type="radio"]',
-  );
-
-  // Réinitialiser tous les boutons radio à "exclude"
-  for (const radio of allRadioButtons) {
-    radio.checked = radio.value === 'exclude';
+// Afficher la modal d'édition pour une campagne donnée
+function displayEditCampaignModal(campaignId) {
+  const editModal = document.getElementById(`editCampaignModal-${campaignId}`);
+  if (editModal) {
+    editModal.classList.remove('hidden');
+  } else {
+    console.error(`Modal pour la campagne ${campaignId} introuvable.`);
   }
-
-  // Cocher les boutons radio "include" pour les arbres dans `treeIdsInCampaign`
-  for (const treeId of treeIdsInCampaign) {
-    const includeRadio = document.querySelector(
-      `#editModal input[type="radio"][name="tree_${treeId}"][value="include"]`,
-    );
-    if (includeRadio) {
-      includeRadio.checked = true;
-    }
-  }
-
-  console.log('Modal de modification affichée avec succès.');
 }
 
-function hideEditCampaignModal() {
-  document.getElementById('editModal').classList.add('hidden');
+// Masquer la modal d'édition pour une campagne donnée
+function hideEditCampaignModal(campaignId) {
+  const editModal = document.getElementById(`editCampaignModal-${campaignId}`);
+  if (editModal) {
+    editModal.classList.add('hidden');
+  }
 }
 
+// Mettre à jour une campagne
 async function editCampaign(event) {
   event.preventDefault();
 
-  // Récupérer les données du formulaire
-  const id = document.getElementById('editId').value;
-  const name = document.getElementById('editName').value;
-  const description = document.getElementById('editDescription').value;
+  const form = event.target;
+  const campaignId = form.querySelector('input[name="id"]').value;
+
+  const name = form.querySelector(`#editName-${campaignId}`).value;
+  const description = form.querySelector(
+    `#editDescription-${campaignId}`,
+  ).value;
   const start_campaign =
-    document.getElementById('editStartCampain').value || null;
-  const end_campaign = document.getElementById('editEndCampain').value || null;
+    form.querySelector(`#editStartCampain-${campaignId}`).value || null;
+  const end_campaign =
+    form.querySelector(`#editEndCampain-${campaignId}`).value || null;
   const location = {
-    name_location: document.getElementById('editLocation').value,
+    name_location: form.querySelector(`#editLocation-${campaignId}`).value,
     country: {
-      name: document.getElementById('editCountry').value,
+      name: form.querySelector(`#editCountry-${campaignId}`).value,
     },
   };
 
   const treesCampaign = [];
-  const allRadioButtons = document.querySelectorAll(
-    '#editTreesContainer input[type="radio"]',
+  const allRadioButtons = form.querySelectorAll(
+    `#editTreesContainer-${campaignId} input[type="radio"]`,
   );
 
-  // biome-ignore lint/complexity/noForEach: <explanation>
-  allRadioButtons.forEach((radio) => {
+  for (const radio of allRadioButtons) {
     if (radio.value === 'include' && radio.checked) {
       treesCampaign.push({ id: Number.parseInt(radio.dataset.treeId, 10) });
     }
-  });
+  }
 
-  // Préparer le corps de la requête
   const body = JSON.stringify({
     name,
     description,
@@ -106,51 +58,63 @@ async function editCampaign(event) {
     treesCampaign,
   });
 
+  console.log('Données envoyées pour la mise à jour :', body);
+
   try {
-    const response = await fetch(`/admin/campaigns/${id}`, {
+    const response = await fetch(`/admin/campaigns/${campaignId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: body,
+      body,
     });
 
     if (response.ok) {
       console.log('Campagne mise à jour avec succès');
       window.location.reload();
     } else {
-      console.error('Erreur lors de la mise à jour', await response.json());
+      const error = await response.json();
+      console.error('Erreur lors de la mise à jour de la campagne', error);
     }
   } catch (error) {
     console.error('Erreur réseau lors de la mise à jour de la campagne', error);
   }
 }
 
-function displayDeleteCampaignModal(id, name) {
-  console.log('Données reçues pour suppression : ', { id, name });
-
-  // Étape 1 : Afficher la modal
-  const deleteModal = document.getElementById('deleteCampaignModal');
-  deleteModal.classList.remove('hidden');
-
-  // Étape 2 : Afficher le nom de la campagne dans le message de confirmation
-  const campaignNameSpan = document.getElementById('deleteCampaignName');
-  campaignNameSpan.textContent = name;
-
-  // Étape 3 : Configurer le bouton "Confirmer"
-  const confirmDeleteButton = document.getElementById('confirmDeleteButton');
-  confirmDeleteButton.onclick = () => deleteCampaign(id);
-
-  console.log('Modal de suppression affichée avec succès.');
+// Afficher la modal de suppression pour une campagne donnée
+function displayDeleteCampaignModal(campaignId, campaignName) {
+  const deleteModal = document.getElementById(
+    `deleteCampaignModal-${campaignId}`,
+  );
+  if (deleteModal) {
+    deleteModal.classList.remove('hidden');
+    const campaignNameSpan = document.getElementById(
+      `deleteCampaignName-${campaignId}`,
+    );
+    if (campaignNameSpan) {
+      campaignNameSpan.textContent = campaignName;
+    }
+  } else {
+    console.error(
+      `Modal de suppression pour la campagne ${campaignId} introuvable.`,
+    );
+  }
 }
 
-function hideDeleteCampaignModal() {
-  document.getElementById('deleteCampaignModal').classList.add('hidden');
+// Masquer la modal de suppression pour une campagne donnée
+function hideDeleteCampaignModal(campaignId) {
+  const deleteModal = document.getElementById(
+    `deleteCampaignModal-${campaignId}`,
+  );
+  if (deleteModal) {
+    deleteModal.classList.add('hidden');
+  }
 }
 
-async function deleteCampaign(id) {
+// Supprimer une campagne
+async function deleteCampaign(campaignId) {
   try {
-    const response = await fetch(`/admin/campaigns/${id}`, {
+    const response = await fetch(`/admin/campaigns/${campaignId}`, {
       method: 'DELETE',
     });
 
@@ -165,16 +129,24 @@ async function deleteCampaign(id) {
   }
 }
 
+// Afficher la modal de création
 function displayCreateCampaignModal() {
-  document.getElementById('createModal').classList.remove('hidden');
+  document.getElementById('createCampaignModal').classList.remove('hidden');
 }
 
+// Masquer la modal de création
 function hideCreateCampaignModal() {
-  document.getElementById('createModal').classList.add('hidden');
+  document.getElementById('createCampaignModal').classList.add('hidden');
 }
 
+// Créer une campagne
 async function createCampaign(event) {
   event.preventDefault();
+
+  const submitButton = event.target.querySelector('button[type="submit"]');
+  if (submitButton) {
+    submitButton.disabled = true;
+  }
 
   const name = document.getElementById('createName').value;
   const description = document.getElementById('createDescription').value;
@@ -190,15 +162,13 @@ async function createCampaign(event) {
   };
 
   const treesCampaign = [];
-
   const allRadioButtons = document.querySelectorAll(
     '#createModal input[type="radio"]',
   );
 
   for (const radio of allRadioButtons) {
-    const treeId = radio.getAttribute('data-tree-id');
     if (radio.value === 'include' && radio.checked) {
-      treesCampaign.push({ id: Number.parseInt(treeId) });
+      treesCampaign.push({ id: Number.parseInt(radio.dataset.treeId) });
     }
   }
 
@@ -219,107 +189,58 @@ async function createCampaign(event) {
     });
 
     if (response.ok) {
-      console.log('Campagne crée avec succès');
+      console.log('Campagne créée avec succès');
       window.location.reload();
     } else {
-      console.error('Erreur lors de la création de la campagne');
+      const error = await response.json();
+      console.error('Erreur lors de la création de la campagne', error);
     }
   } catch (error) {
     console.error('Erreur réseau lors de la création de la campagne', error);
+  } finally {
+    if (submitButton) {
+      submitButton.disabled = false;
+    }
   }
 }
 
+// Initialisation des événements DOM
 document.addEventListener('DOMContentLoaded', () => {
-  const createButton = document.getElementById('create_button-campaign');
-  if (createButton) {
-    createButton.addEventListener('click', () => {
-      displayCreateCampaignModal();
-    });
-  } else {
-    console.warn('Le bouton #create_button est introuvable.');
-  }
+  document.body.addEventListener('click', (event) => {
+    const action = event.target.dataset.action;
+    const campaignId = event.target.dataset.userId;
 
-  // Boutons de modification
-  // biome-ignore lint/complexity/noForEach: <explanation>
-  document.querySelectorAll('.button.save').forEach((button) => {
-    button.addEventListener('click', () => {
-      const id = button.dataset.id;
-      const name = button.dataset.name;
-      const description = button.dataset.description;
-      const start_campaign = button.dataset.start;
-      const end_campaign = button.dataset.end;
-      const location = button.dataset.location;
-      const country = button.dataset.country;
-      const trees = button.dataset.trees; // Les données des arbres sont au format JSON
+    if (!action) return; // Ignorer les clics sans data-action
 
-      displayEditCampaignModal(
-        id,
-        name,
-        description,
-        start_campaign,
-        end_campaign,
-        location,
-        country,
-        trees,
-      );
-    });
+    switch (action) {
+      case 'displayCreateCampaignModal':
+        displayCreateCampaignModal();
+        break;
+      case 'hideCreateCampaignModal':
+        hideCreateCampaignModal();
+        break;
+      case 'displayEditCampaignModal':
+        displayEditCampaignModal(campaignId);
+        break;
+      case 'hideEditCampaignModal':
+        hideEditCampaignModal(campaignId);
+        break;
+      case 'displayDeleteCampaignModal':
+        displayDeleteCampaignModal(campaignId);
+        break;
+      case 'hideDeleteCampaignModal':
+        hideDeleteCampaignModal(campaignId);
+        break;
+      case 'deleteCampaign':
+        deleteCampaign(campaignId);
+        break;
+      default:
+        console.warn(`Action non gérée : ${action}`);
+    }
   });
 
-  // Boutons de suppression
-  // biome-ignore lint/complexity/noForEach: <explanation>
-  document.querySelectorAll('.delete.button').forEach((button) => {
-    button.addEventListener('click', () => {
-      const id = button.dataset.id;
-      const name = button.dataset.name; // Récupération du nom pour affichage
-
-      displayDeleteCampaignModal(id, name);
-    });
-  });
-  // Bouton d'annulation dans le formulaire de modification
-  const cancelEditButton = document.getElementById('cancelEditButton');
-  if (cancelEditButton) {
-    cancelEditButton.addEventListener('click', () => {
-      hideEditCampaignModal();
-    });
-  }
-
-  // Bouton d'annulation dans le formulaire de suppression
-  const cancelDeleteButton = document.getElementById('cancelDeleteButton');
-  if (cancelDeleteButton) {
-    cancelDeleteButton.addEventListener('click', () => {
-      hideDeleteCampaignModal();
-    });
-  }
-
-  // Bouton d'annulation dans le formulaire de création
-  const cancelCreateButton = document.getElementById('cancelCreateButton');
-  if (cancelCreateButton) {
-    cancelCreateButton.addEventListener('click', () => {
-      hideCreateCampaignModal();
-    });
-  }
-
-  // Formulaire de création de campagne
-  const createForm = document.getElementById('createForm');
-  if (createForm) {
-    createForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      createCampaign(event);
-    });
-  }
-
-  // Formulaire de modification de campagne
-  const editForm = document.getElementById('editForm');
-  if (editForm) {
-    editForm.addEventListener('submit', editCampaign);
-  }
-
-  // Bouton de confirmation de suppression
-  const confirmDeleteButton = document.getElementById('confirmDeleteButton');
-  if (confirmDeleteButton) {
-    confirmDeleteButton.addEventListener('click', () => {
-      // Ajoutez ici la logique de suppression
-      console.log('Suppression confirmée');
-    });
-  }
+  // Pour gérer la recherche dans la barre de recherche
+  document
+    .querySelector('.searchInput')
+    ?.addEventListener('keyup', filterSearchBar);
 });
