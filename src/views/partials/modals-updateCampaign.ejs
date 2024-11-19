@@ -2,9 +2,9 @@
   <div class="modal-content">
     <h2>Modifier la campagne #<%= campaign.id %>
     </h2>
-    <form id="editForm-<%= campaign.id %>" class="modal-form">
+    <form id="editCampaignForm-<%= campaign.id %>" class="modal-form">
       <!-- Champ caché pour l'ID de la campagne -->
-      <input type="hidden" id="editId-<%= campaign.id %>" name="id" value="<%= campaign.id %>">
+      <input type="hidden" name="id" value="<%= campaign.id %>">
 
       <!-- Nom de la campagne -->
       <label for="editName-<%= campaign.id %>">Nom :</label>

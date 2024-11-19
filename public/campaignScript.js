@@ -17,11 +17,8 @@ function hideEditCampaignModal(campaignId) {
 }
 
 // Mettre à jour une campagne
-async function editCampaign(event) {
+async function editCampaign(event, campaignId) {
   event.preventDefault();
-
-  const form = event.target;
-  const campaignId = form.querySelector('input[name="id"]').value;
 
   const name = form.querySelector(`#editName-${campaignId}`).value;
   const description = form.querySelector(
@@ -208,7 +205,7 @@ async function createCampaign(event) {
 document.addEventListener('DOMContentLoaded', () => {
   document.body.addEventListener('click', (event) => {
     const action = event.target.dataset.action;
-    const campaignId = event.target.dataset.userId;
+    const campaignId = event.target.dataset.campaignId;
 
     if (!action) return; // Ignorer les clics sans data-action
 
