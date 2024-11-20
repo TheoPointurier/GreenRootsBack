@@ -403,6 +403,7 @@ h2 {
   justify-content: space-around;
   align-items: center;
   height: 100%;
+  width: 15rem;
 }
 
 .edit-tree-modal,
