@@ -2,7 +2,7 @@
   <div class="modal-content modal-content-order">
     <h2>Modifier la Commande #<%= order.id %>
     </h2>
-    <form id="editOrderForm" onsubmit="editOrder(event)">
+    <form id="editOrderForm">
       <input type="hidden" name="id" value="<%= order.id %>">
       <div>
         <label>Utilisateur :</label>
@@ -59,9 +59,10 @@
       </div>
 
       <div class="edit_modal_button">
-        <button class="save" type="submit" onclick="editOrder(event,'<%= order.id %>' )">Enregistrer les
+        <button class="save" type="submit" data-action="editOrder" data-order-id="<%= order.id %>">Enregistrer les
           modifications</button>
-        <button onclick="hideEditOrderModal(`<%= order.id %>`)" class="cancel" type="button">Annuler</button>
+        <button data-action="hideEditOrderModal" data-order-id="<%= order.id %>" class="cancel"
+          type="button">Annuler</button>
       </div>
     </form>
   </div>

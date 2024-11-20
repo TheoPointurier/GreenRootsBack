@@ -185,3 +185,40 @@ async function deleteOrder(orderId) {
     console.error('Erreur réseau lors de la suppression de la commande', error);
   }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.body.addEventListener('click', (event) => {
+    const action = event.target.dataset.action;
+    const orderId = event.target.dataset.orderId;
+
+    if (!action) return; // Si l'attribut data-action n'est pas défini, on ne fait rien
+
+    switch (action) {
+      case 'displayEditOrderModal':
+        displayEditOrderModal(orderId);
+        break;
+      case 'hideEditOrderModal':
+        hideEditOrderModal(orderId);
+        break;
+      case 'displayDeleteOrderModal':
+        displayDeleteOrderModal(orderId);
+        break;
+      case 'hideDeleteOrderModal':
+        hideDeleteOrderModal(orderId);
+        break;
+      case 'editOrder':
+        editOrder(event, orderId);
+        break;
+      case 'deleteOrder':
+        displayDeleteOrderModal(orderId);
+        break;
+      default:
+        console.error(`Action non gérée : ${action}`);
+    }
+  });
+
+  // Pour gérer la recherche dans la barre de recherche
+  document
+    .querySelector('.searchInput')
+    ?.addEventListener('keyup', filterSearchBar);
+});

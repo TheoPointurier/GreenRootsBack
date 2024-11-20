@@ -6,7 +6,7 @@
     <main>
       <div class="searchAddBar">
 
-        <input type="text" class="searchInput" placeholder="Filtrer..." onkeyup="filterSearchBar()">
+        <input type="text" class="searchInput" placeholder="Filtrer..." data-action="filterSearchBar">
       </div>
       <div class="table_container">
         <table>
@@ -78,9 +78,11 @@
                   </table>
                 </td>
                 <td class="line-container-button">
-                  <button onclick="displayEditOrderModal('<%= order.id %>')" class="button save">Modifier</button>
+                  <button data-action="displayEditOrderModal" data-order-id="<%= order.id %>"
+                    class="button save">Modifier</button>
 
-                  <button onclick="displayDeleteOrderModal('<%= order.id %>')" class="delete button">Supprimer</button>
+                  <button data-action="displayDeleteOrderModal" data-order-id="<%= order.id %>"
+                    class="delete button">Supprimer</button>
                 </td>
               </tr>
 

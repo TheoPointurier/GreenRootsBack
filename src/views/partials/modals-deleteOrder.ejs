@@ -1,10 +1,12 @@
 <div id="deleteOrderModal-<%= order.id %>" class=" delete_modal modal hidden">
   <div class="modal-content">
     <h2>Confirmer la suppression</h2>
-    <p>Êtes-vous sûr de vouloir supprimer la commande</p>
+    <p>Êtes-vous sûr de vouloir supprimer la commande n° <%= order.id %>
+    </p>
     <div>
-      <button id="confirmDeleteButton-<%= order.id %>" class="delete button">Supprimer</button>
-      <button onclick="hideDeleteOrderModal('<%= order.id %>')" class="cancel button">Annuler</button>
+      <button id="confirmDeleteButton-<%= order.id %>" data-order-id="<%= order.id %>" class="delete button"
+        data-action="deleteOrder">Supprimer</button>
+      <button data-action="hideDeleteOrderModal" data-order-id="<%= order.id %>" class="cancel button">Annuler</button>
     </div>
   </div>
 </div>
