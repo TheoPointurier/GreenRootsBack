@@ -2,7 +2,7 @@
   <div class="modal-content">
     <h2>Ajouter un nouvel arbre</h2>
 
-    <form id="createTreeForm" onsubmit="createTree(event)" class="modal-form">
+    <form id="createTreeForm" class="modal-form">
       <input type="hidden" id="editTreeId" name="id">
       <div>
         <label for="createTreeName">Nom :</label>
@@ -26,7 +26,7 @@
       </div>
       <div>
         <label for="createTreeDescription">Description :</label>
-        <textarea id="createTreeDescription" name="description"></textarea>
+        <textarea id="createTreeDescription" name="description" required></textarea>
       </div>
       <div>
         <label for="createTreeCo2Absorption">Absorption de CO2 :</label>
@@ -39,8 +39,8 @@
 
 
       <div class="create_modal_button">
-        <button class="save button" type="submit">Ajouter l'arbre</button>
-        <button onclick="hideCreateTreeModal()" class="cancel button" type="button">Annuler</button>
+        <button class="save button" type="submit" data-action="createTree">Ajouter l'arbre</button>
+        <button data-action="hideCreateTreeModal" class="cancel button" type="button">Annuler</button>
       </div>
     </form>
   </div>

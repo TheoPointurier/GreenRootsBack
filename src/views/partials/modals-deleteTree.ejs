@@ -1,10 +1,11 @@
-<div id="deleteTreeModal" class=" delete_modal modal hidden">
+<div id="deleteTreeModal-<%= tree.id %>" class=" delete_modal modal hidden">
   <div class="modal-content">
     <h2>Confirmer la suppression</h2>
-    <p>Êtes-vous sûr de vouloir supprimer l'arbre?</p>
+    <p>Êtes-vous sûr de vouloir supprimer l'arbre <%= tree.id %> : <%= tree.name %> ?</p>
     <div>
-      <button id="confirmDeleteButton" class="delete button">Supprimer</button>
-      <button onclick="hideDeleteTreeModal()" class="cancel button">Annuler</button>
+      <button id="confirmDeleteButton-<%= tree.id %>" data-tree-id="<%= tree.id %>" class="delete button"
+        data-action="deleteTree">Supprimer</button>
+      <button data-action="hideDeleteTreeModal" data-tree-id="<%= tree.id %>" class="cancel button">Annuler</button>
     </div>
   </div>
 </div>
