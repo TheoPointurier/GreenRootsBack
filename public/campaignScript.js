@@ -20,32 +20,51 @@ function hideEditCampaignModal(campaignId) {
 async function editCampaign(event, campaignId) {
   event.preventDefault();
 
-  const name = form.querySelector(`#editName-${campaignId}`).value;
-  const description = form.querySelector(
-    `#editDescription-${campaignId}`,
+  // Récupérer les champs du formulaire
+  const name = document.querySelector(
+    `#editCampaignModal-${campaignId} input[name="name"]`,
   ).value;
-  const start_campaign =
-    form.querySelector(`#editStartCampain-${campaignId}`).value || null;
-  const end_campaign =
-    form.querySelector(`#editEndCampain-${campaignId}`).value || null;
+
+  const description = document.querySelector(
+    `#editCampaignModal-${campaignId} input[name="description"]`,
+  ).value;
+
+  const start_campaign = document.querySelector(
+    `#editCampaignModal-${campaignId} input[name="start_campaign"]`,
+  ).value;
+
+  let end_campaign = document.querySelector(
+    `#editCampaignModal-${campaignId} input[name="end_campaign"]`,
+  ).value;
+
+  // Ne pas inclure le champ si la date est vide
+  end_campaign = end_campaign ? new Date(end_campaign).toISOString() : null;
+
   const location = {
-    name_location: form.querySelector(`#editLocation-${campaignId}`).value,
+    name_location: document.querySelector(
+      `#editCampaignModal-${campaignId} input[name="location[name_location]"]`,
+    ).value,
     country: {
-      name: form.querySelector(`#editCountry-${campaignId}`).value,
+      name: document.querySelector(
+        `#editCampaignModal-${campaignId} input[name="location[country][name]"]`,
+      ).value,
     },
   };
 
+  // Récupérer les arbres associés
   const treesCampaign = [];
-  const allRadioButtons = form.querySelectorAll(
-    `#editTreesContainer-${campaignId} input[type="radio"]`,
+  const allRadioButtons = document.querySelectorAll(
+    `#editCampaignModal-${campaignId} input[type="radio"]`,
   );
 
-  for (const radio of allRadioButtons) {
+  // biome-ignore lint/complexity/noForEach: <explanation>
+  allRadioButtons.forEach((radio) => {
     if (radio.value === 'include' && radio.checked) {
       treesCampaign.push({ id: Number.parseInt(radio.dataset.treeId, 10) });
     }
-  }
+  });
 
+  // Construire le corps de la requête
   const body = JSON.stringify({
     name,
     description,
@@ -58,6 +77,7 @@ async function editCampaign(event, campaignId) {
   console.log('Données envoyées pour la mise à jour :', body);
 
   try {
+    // Envoyer la requête PATCH pour mettre à jour la campagne
     const response = await fetch(`/admin/campaigns/${campaignId}`, {
       method: 'PATCH',
       headers: {
@@ -79,18 +99,12 @@ async function editCampaign(event, campaignId) {
 }
 
 // Afficher la modal de suppression pour une campagne donnée
-function displayDeleteCampaignModal(campaignId, campaignName) {
+function displayDeleteCampaignModal(campaignId) {
   const deleteModal = document.getElementById(
     `deleteCampaignModal-${campaignId}`,
   );
   if (deleteModal) {
     deleteModal.classList.remove('hidden');
-    const campaignNameSpan = document.getElementById(
-      `deleteCampaignName-${campaignId}`,
-    );
-    if (campaignNameSpan) {
-      campaignNameSpan.textContent = campaignName;
-    }
   } else {
     console.error(
       `Modal de suppression pour la campagne ${campaignId} introuvable.`,
@@ -160,14 +174,15 @@ async function createCampaign(event) {
 
   const treesCampaign = [];
   const allRadioButtons = document.querySelectorAll(
-    '#createModal input[type="radio"]',
+    `#createCampaignModal input[type="radio"]`,
   );
 
-  for (const radio of allRadioButtons) {
+  // biome-ignore lint/complexity/noForEach: <explanation>
+  allRadioButtons.forEach((radio) => {
     if (radio.value === 'include' && radio.checked) {
-      treesCampaign.push({ id: Number.parseInt(radio.dataset.treeId) });
+      treesCampaign.push({ id: Number.parseInt(radio.dataset.treeId, 10) });
     }
-  }
+  });
 
   try {
     const response = await fetch('/admin/campaigns', {
@@ -227,6 +242,12 @@ document.addEventListener('DOMContentLoaded', () => {
         break;
       case 'hideDeleteCampaignModal':
         hideDeleteCampaignModal(campaignId);
+        break;
+      case 'createCampaign':
+        createCampaign(event);
+        break;
+      case 'editCampaign':
+        editCampaign(event, campaignId);
         break;
       case 'deleteCampaign':
         deleteCampaign(campaignId);

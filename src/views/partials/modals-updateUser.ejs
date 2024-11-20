@@ -2,8 +2,7 @@
   <div class="modal-content modal-content-user">
     <h2>Modifier l'Utilisateur #<%= user.id %>
     </h2>
-    <form id="editUserForm-<%= user.id %> " onsubmit="editUser(event, '<%= user.id %>')"
-      class="modal-content-user-form">
+    <form id="editUserForm-<%= user.id %> " class="modal-content-user-form">
       <input type="hidden" name="id" value="<%= user.id %>">
       <div class="userNames-container">
         <div>
@@ -71,8 +70,9 @@
       </div>
 
       <div class="edit_modal_button">
-        <button class="save" type="submit" onclick="editUser">Enregistrer les modifications</button>
-        <button class="cancel" type="button" data-action="hideEditUserModal"
+        <button class="save" type="submit" data-action="editUser" data-user-id="<%= user.id %>">Enregistrer les
+          modifications</button>
+        <button class=" cancel" type="button" data-action="hideEditUserModal"
           data-user-id="<%= user.id %>">Annuler</button>
 
       </div>

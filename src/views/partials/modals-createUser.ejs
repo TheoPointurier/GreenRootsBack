@@ -1,7 +1,7 @@
 <div id="createUserModal" class="modal hidden modalUser modal-form modal-user">
   <div class="modal-content modal-content-user">
     <h2>Création d'un Utilisateur</h2>
-    <form id="createUserForm" onsubmit="createUser(event)" class="modal-content-user-form">
+    <form id="createUserForm" class="modal-content-user-form">
       <div class="userNames-container">
         <div>
           <label>Prénom :</label>
@@ -18,12 +18,13 @@
       </div>
       <div>
         <label>Mot de passe :</label>
-        <input type="password" name="password" required
-          pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*À-ÿ])[A-Za-z\d!@#$%^&*À-ÿ]{12,}"
+        <input type="password" name="password" required pattern="(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\p{L}\p{N}\p{P}\p{S}])[\p{L}\p{N}\p{P}\p{S}]{12,}$/u,
+          )"
           title="Doit contenir au moins un nombre, une majuscule, une minuscule, et au minimum 12 ou plus caractères">
         <small>
-          Le mot de passe doit contenir au moins 12 caractères, une majuscule, une minuscule, un chiffre et un caractère
-          spécial (!@#$%^&*).
+          le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre, un caractère spécial ou
+          symbole Unicode, et faire au moins 12 caractères de long. (!@#$%^&*).
         </small>
       </div>
       <div>
@@ -78,7 +79,7 @@
       </div>
 
       <div class="edit_modal_button">
-        <button class="save" type="submit">Valider la création</button>
+        <button class="save" type="submit" data-action="createUser">Valider la création</button>
         <button class="cancel" type="button" data-action="hideCreateUserModal">Annuler</button>
 
       </div>

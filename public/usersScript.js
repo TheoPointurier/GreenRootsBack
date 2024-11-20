@@ -246,6 +246,12 @@ document.addEventListener('DOMContentLoaded', () => {
       case 'hideDeleteUserModal':
         hideDeleteUserModal(userId);
         break;
+      case 'createUser':
+        createUser(event);
+        break;
+      case 'editUser':
+        editUser(event, userId);
+        break;
       case 'deleteUser':
         deleteUser(userId);
         break;

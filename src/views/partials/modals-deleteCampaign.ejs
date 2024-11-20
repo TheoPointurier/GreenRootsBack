@@ -1,9 +1,8 @@
 <div id="deleteCampaignModal-<%= campaign.id %>" class="modal hidden delete_modal">
   <div class="modal-content">
     <h2>Confirmer la suppression</h2>
-    <p>Êtes-vous sûr de vouloir supprimer la campagne "<span id="deleteCampaignName-<%= campaign.id %>">
-        <%= campaign.name %>
-      </span>" ?</p>
+    <p>Êtes-vous sûr de vouloir supprimer la campagne n° <%= campaign.id %> :
+        <%= campaign.name %> ?</p>
     <div class="button-container">
       <button id="confirmDeleteButton-<%= campaign.id %>" class="delete button"
         onclick="deleteCampaign('<%= campaign.id %>')">Supprimer</button>

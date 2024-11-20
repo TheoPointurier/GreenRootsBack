@@ -2,7 +2,7 @@
   <div class="modal-content">
     <h2>Créer une nouvelle campagne</h2>
 
-    <form id="createForm" onsubmit="createCampaign(event)" class="modal-form">
+    <form id="createForm" class="modal-form">
       <div class="modal-form_campaign">
         <div>
           <label for="createName">Nom :</label>
@@ -53,7 +53,7 @@
         </div>
       </div>
       <div class="create_modal_button">
-        <button class="save button" type="submit">Créer la campagne</button>
+        <button class="save button" type="submit" data-action="createCampaign">Créer la campagne</button>
         <button type="button" data-action="hideCreateCampaignModal" class="cancel button">Annuler</button>
       </div>
     </form>

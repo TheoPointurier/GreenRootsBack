@@ -8,35 +8,32 @@
 
       <!-- Nom de la campagne -->
       <label for="editName-<%= campaign.id %>">Nom :</label>
-      <input type="text" id="editName-<%= campaign.id %>" name="name" value="<%= campaign.name %>" required>
+      <input type="text" name="name" value="<%= campaign.name %>" required>
 
       <!-- Description de la campagne -->
       <label for="editDescription-<%= campaign.id %>">Description :</label>
-      <input type="text" id="editDescription-<%= campaign.id %>" name="description"
-        value="<%= campaign.description || '' %>">
+      <input type="text" name="description" value="<%= campaign.description || '' %>">
 
       <!-- Date de début de la campagne -->
       <label for="editStartCampain-<%= campaign.id %>">Date de début :</label>
-      <input type="date" id="editStartCampain-<%= campaign.id %>" name="start_campaign"
+      <input type="date" name="start_campaign"
         value="<%= campaign.start_campaign ? new Date(campaign.start_campaign).toISOString().split('T')[0] : '' %>">
 
       <!-- Date de fin de la campagne -->
       <label for="editEndCampain-<%= campaign.id %>">Date de fin :</label>
-      <input type="date" id="editEndCampain-<%= campaign.id %>" name="end_campaign"
+      <input type="date" name="end_campaign"
         value="<%= campaign.end_campaign ? new Date(campaign.end_campaign).toISOString().split('T')[0] : '' %>">
 
       <!-- Emplacement de la campagne -->
       <label for="editLocation-<%= campaign.id %>">Emplacement :</label>
-      <input type="text" id="editLocation-<%= campaign.id %>" name="location[name_location]"
-        value="<%= campaign.location.name_location || '' %>">
+      <input type="text" name="location[name_location]" value="<%= campaign.location.name_location || '' %>">
 
       <!-- Pays de la campagne -->
       <label for="editCountry-<%= campaign.id %>">Pays :</label>
-      <input type="text" id="editCountry-<%= campaign.id %>" name="location[country][name]"
-        value="<%= campaign.location.country.name || '' %>">
+      <input type="text" name="location[country][name]" value="<%= campaign.location.country.name || '' %>">
 
       <!-- Arbres associés à la campagne -->
-      <div id="editTreesContainer-<%= campaign.id %>">
+      <div>
         <h3>Arbres associés</h3>
         <% trees.forEach(tree=> { %>
           <div>
@@ -58,9 +55,10 @@
 
       <!-- Boutons d'action -->
       <div class="button-container">
-        <button type="submit" class="save button">Enregistrer les modifications</button>
-        <button type="button" class="cancel button"
-          onclick="hideEditCampaignModal('<%= campaign.id %>')">Annuler</button>
+        <button type="submit" class="save button" data-action="editCampaign"
+          data-campaign-id="<%= campaign.id %>">Enregistrer les modifications</button>
+        <button type="button" class="cancel button" data-action="hideEditCampaignModal"
+          data-campaign-id="<%= campaign.id %>">Annuler</button>
       </div>
     </form>
   </div>
