@@ -38,19 +38,25 @@ export async function loginVerify(req, res) {
       return;
     }
 
-    // Création du token d'authentification qui expire au bout d'une heure
-    const accesstoken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
-      expiresIn: '1h',
-    });
+    if (user.is_admin) {
+      const accesstoken = jwt.sign(
+        { userId: user.id },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: '1h',
+        },
+      );
 
-    // Stocker le token dans un cookie sécurisé
-    res.cookie('token', accesstoken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 60 * 60 * 1000, // 1 heure
-    });
+      res.cookie('token', accesstoken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 60 * 60 * 1000, // 1 heure
+      });
 
-    res.redirect('/admin/home');
+      return res
+        .status(200)
+        .json({ message: 'Connexion réussie', redirect: '/admin/home' });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).send("Une erreur s'est produite");

@@ -1,4 +1,5 @@
 <%- include('./partials/head.ejs') %>
+  <script src='/authScript.js'></script>
 
   <main>
     <div class="loginPageContainer">
@@ -8,7 +9,7 @@
           <img src="/img/Logo_principal.webp" alt="logo Greenroots">
         </div>
 
-        <form action="/admin" method="post" class="form_login">
+        <form class="form_login" id="loginForm">
           <div>
             <label for="email"></label>
             <input type="email" id="email" name="email" placeholder="Email" required>
@@ -18,7 +19,7 @@
             <input type="password" id="password" name="password" placeholder="Password" required>
           </div>
 
-          <button type="submit" class="button">Login</button>
+          <button type="submit" class="button" data-action="login">Login</button>
         </form>
       </div>
     </div>
