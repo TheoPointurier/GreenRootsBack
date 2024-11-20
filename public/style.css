@@ -8,6 +8,15 @@ body {
   width: 100%;
 }
 
+.table_container {
+  overflow-y: scroll;
+  height: 100%;
+  width: 99%;
+  margin: 0 auto;
+  overflow-wrap: anywhere; /*Permet de casser les mots */
+  grid-template-columns: repeat(auto, 1fr);
+}
+
 main {
   width: 100%;
   display: flex;
@@ -170,16 +179,7 @@ td button:hover,
 
 table {
   width: 100%;
-}
-
-.table_container {
-  overflow-y: scroll;
   height: 100%;
-  width: 99%;
-  margin: 0 auto;
-  overflow-wrap: anywhere; /*Permet de casser les mots */
-  display: grid;
-  grid-template-columns: repeat(auto, 1fr);
 }
 
 table thead tr th {
@@ -193,7 +193,6 @@ table thead tr th {
   width: 90%;
 
   margin: 0 auto;
-  height: 100%;
   gap: 0.5rem;
 }
 
@@ -231,12 +230,11 @@ table thead tr th {
 
 .tree-option {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 0.5rem;
   border-radius: 5px;
-  background-color: #6a9c89;
+  background-color: #a2bbb1;
   border: 1px solid #47685b;
   cursor: pointer;
   gap: 0.5rem;
@@ -246,41 +244,15 @@ table thead tr th {
   transform: scale(1.05);
 }
 
-.tree-option label {
-  display: flex;
-}
-
-.create-campaign-modal,
-.edit-campaign-modal,
-.create-tree-modal,
-.edit-tree-modal {
-  z-index: 99;
-  position: fixed;
-  top: 3%;
-  bottom: 0%;
-  left: 1%;
-  right: 1%;
-  padding: 1rem;
-  background-color: #6a9c89;
-  overflow-y: scroll;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
-  max-height: 90vh;
-}
-
-.create-campaign-modal .modal-content,
-.edit-campaign-modal .modal-content {
+.table_container .edit-campaign-modal .modal-content {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   height: 100%;
 }
 
-.edit-tree-modal,
-.create-tree-modal {
-  width: 50%;
-  left: 33%;
-}
-.create-tree-modal > .modal-content > .modal-form {
+.create-tree-modal > .modal-content > .modal-form,
+.edit-tree-modal > .modal-content-tree > .modal-form {
   display: flex;
   flex-direction: column;
 }
@@ -316,7 +288,13 @@ table thead tr th {
 }
 
 .modalOrder,
-.modal-user {
+.modal-user,
+.modal-tree,
+.create-campaign-modal,
+.table_container .edit-campaign-modal,
+.create-tree-modal,
+.table_container .edit-tree-modal,
+.edit-campaign-modal {
   z-index: 5;
   position: fixed;
   top: 1%;
@@ -329,7 +307,9 @@ table thead tr th {
   max-height: 98vh;
 }
 
-.modal-content-user {
+.modal-content-user,
+.modal-content-tree,
+.modal-content-campaign {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -422,4 +402,11 @@ h2 {
   display: flex;
   justify-content: space-around;
   align-items: center;
+  height: 100%;
+}
+
+.edit-tree-modal,
+.create-tree-modal {
+  width: 50%;
+  left: 33%;
 }

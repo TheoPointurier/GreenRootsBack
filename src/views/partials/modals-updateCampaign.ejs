@@ -1,60 +1,74 @@
-<div id="editCampaignModal-<%= campaign.id %>" class="modal hidden edit-campaign-modal">
-  <div class="modal-content">
+<div id="editCampaignModal-<%= campaign.id %>" class="modal hidden edit-campaign-modal modal-form">
+  <div class="modal-content modal-content-campaign">
     <h2>Modifier la campagne #<%= campaign.id %>
     </h2>
-    <form id="editCampaignForm-<%= campaign.id %>" class="modal-form">
-      <!-- Champ caché pour l'ID de la campagne -->
-      <input type="hidden" name="id" value="<%= campaign.id %>">
-
-      <!-- Nom de la campagne -->
-      <label for="editName-<%= campaign.id %>">Nom :</label>
-      <input type="text" name="name" value="<%= campaign.name %>" required>
-
-      <!-- Description de la campagne -->
-      <label for="editDescription-<%= campaign.id %>">Description :</label>
-      <input type="text" name="description" value="<%= campaign.description || '' %>">
-
-      <!-- Date de début de la campagne -->
-      <label for="editStartCampain-<%= campaign.id %>">Date de début :</label>
-      <input type="date" name="start_campaign"
-        value="<%= campaign.start_campaign ? new Date(campaign.start_campaign).toISOString().split('T')[0] : '' %>">
-
-      <!-- Date de fin de la campagne -->
-      <label for="editEndCampain-<%= campaign.id %>">Date de fin :</label>
-      <input type="date" name="end_campaign"
-        value="<%= campaign.end_campaign ? new Date(campaign.end_campaign).toISOString().split('T')[0] : '' %>">
-
-      <!-- Emplacement de la campagne -->
-      <label for="editLocation-<%= campaign.id %>">Emplacement :</label>
-      <input type="text" name="location[name_location]" value="<%= campaign.location.name_location || '' %>">
-
-      <!-- Pays de la campagne -->
-      <label for="editCountry-<%= campaign.id %>">Pays :</label>
-      <input type="text" name="location[country][name]" value="<%= campaign.location.country.name || '' %>">
-
-      <!-- Arbres associés à la campagne -->
-      <div>
-        <h3>Arbres associés</h3>
-        <% trees.forEach(tree=> { %>
-          <div>
-            <!-- Option pour inclure l'arbre -->
-            <label>
-              <input type="radio" name="tree_<%= tree.id %>" value="include" data-tree-id="<%= tree.id %>"
-                <%=campaign.treesCampaign.some(t=> t.id === tree.id) ? 'checked' : '' %>>
-              Inclus
-            </label>
-            <!-- Option pour exclure l'arbre -->
-            <label>
-              <input type="radio" name="tree_<%= tree.id %>" value="exclude" <%=campaign.treesCampaign.some(t=> t.id ===
-              tree.id) ? '' : 'checked' %>>
-              Exclus
-            </label>
-          </div>
-          <% }) %>
+    <form id=`editCampaignForm-<%=campaign.id %>` class="modal-form">
+      <div class="modal-form_campaign">
+        <!-- Champ caché pour l'ID de la campagne -->
+        <input type="hidden" name="id" value="<%= campaign.id %>">
+        <div>
+          <!-- Nom de la campagne -->
+          <label for="editName-<%= campaign.id %>">Nom :</label>
+          <input type="text" id="editName-<%= campaign.id %>" name="name" value="<%= campaign.name %>" required>
+        </div>
+        <div>
+          <!-- Description de la campagne -->
+          <label for="editDescription-<%= campaign.id %>">Description :</label>
+          <input type="text" id="editDescription-<%= campaign.id %>" name="description"
+            value="<%= campaign.description || '' %>">
+        </div>
+        <div>
+          <!-- Date de début de la campagne -->
+          <label for="editStartCampain-<%= campaign.id %>">Date de début :</label>
+          <input type="date" name="start_campaign" id="editStartCampain-<%= campaign.id %>"
+            value="<%= campaign.start_campaign ? new Date(campaign.start_campaign).toISOString().split('T')[0] : '' %>">
+        </div>
+        <div>
+          <!-- Date de fin de la campagne -->
+          <label for="editEndCampain-<%= campaign.id %>">Date de fin :</label>
+          <input type="date" name="end_campaign" id="editEndCampain-<%= campaign.id %>"
+            value="<%= campaign.end_campaign ? new Date(campaign.end_campaign).toISOString().split('T')[0] : '' %>">
+        </div>
+        <div>
+          <label for="editLocation-<%= campaign.id %>">Emplacement :</label>
+          <input type="text" name="location[name_location]" id="editLocation-<%= campaign.id %>"
+            value="<%= campaign.location.name_location || '' %>">
+        </div>
+        <div>
+          <!-- Pays de la campagne -->
+          <label for="editCountry-<%= campaign.id %>">Pays :</label>
+          <input type="text" name="location[country][name]" id="editCountry-<%=campaign.id %>" value="<%=
+            campaign.location.country.name || '' %>">
+        </div>
       </div>
-
+      <!-- Arbres associés à la campagne -->
+      <div class="modal-form_trees">
+        <label>
+          <h3>Arbres associés</h3>
+        </label>
+        <div class="trees-options">
+          <% trees.forEach(tree=> { %>
+            <div class="tree-option">
+              <h3>
+                <%= tree.name %>
+              </h3>
+              <label>
+                <input type="radio" name="tree_<%= tree.id %>" value="include" data-tree-id="<%= tree.id %>"
+                  <%=campaign.treesCampaign.some(t=> t.id === tree.id) ? 'checked' : '' %>>
+                <span class="choiceTree">Inclus</span>
+              </label>
+              <label>
+                <input type="radio" name="tree_<%= tree.id %>" value="exclude" <%=campaign.treesCampaign.some(t=> t.id
+                ===
+                tree.id) ? '' : 'checked' %>>
+                <span class="choiceTree">Exclus</span>
+              </label>
+            </div>
+            <% }) %>
+        </div>
+      </div>
       <!-- Boutons d'action -->
-      <div class="button-container">
+      <div class="button-container create_modal_button">
         <button type="submit" class="save button" data-action="editCampaign"
           data-campaign-id="<%= campaign.id %>">Enregistrer les modifications</button>
         <button type="button" class="cancel button" data-action="hideEditCampaignModal"

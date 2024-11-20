@@ -76,7 +76,7 @@ export async function createTreeBackOffice(req, res) {
       age,
       id_species: treeSpecies.id,
     });
-    res.status(201).redirect('/admin/trees');
+    res.status(200).json({ message: 'Arbre créé avec succès' });
   } catch (error) {
     console.error(error);
     res.status(500).send("Une erreur s'est produite");

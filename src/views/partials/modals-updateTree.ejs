@@ -1,10 +1,10 @@
-<div id="editTreeModal-<%= tree.id  %>" class="modal hidden edit-tree-modal">
-  <div class="modal-content">
+<div class="modal hidden modal-form modal-tree edit-tree-modal" id="editTreeModal-<%= tree.id %>">
+  <div class="modal-content modal-content-tree">
     <h2>Modifier l'Arbre #<%= tree.id %>
     </h2>
-
-    <form id="editTreeForm-<%= tree.id %> " class="modal-form">
+    <form class="modal-form" id="editTreeForm-<%= tree.id %>">
       <input type="hidden" id="editTreeId" name="id" value="<%= tree.id %>">
+
       <div>
         <label for="editTreeName">Nom :</label>
         <input type="text" id="editTreeName" name="name" value="<%= tree.name %>" required>
@@ -18,7 +18,7 @@
         <input type="number" id="editTreeQuantity" name="quantity" value="<%= tree.quantity %>">
       </div>
       <div>
-        <label for="editTreeAge">Age (années) :</label>
+        <label for="editTreeAge">Âge (années) :</label>
         <input type="number" id="editTreeAge" name="age" value="<%= tree.age %>">
       </div>
       <div>
@@ -27,8 +27,7 @@
       </div>
       <div>
         <label for="editTreeDescription">Description :</label>
-        <input type="textarea" id="editTreeDescription" name="description"
-          value="<%= tree.species.description %>"></input>
+        <textarea id="editTreeDescription" name="description" required><%= tree.species.description %></textarea>
       </div>
       <div>
         <label for="editTreeCo2Absorption">Absorption de CO2 :</label>
@@ -41,11 +40,10 @@
           value="<%= tree.species.average_lifespan %>">
       </div>
 
-
       <div class="edit_modal_button">
-        <button class="save" type="submit" data-action="editTree" data-tree-id="<%= tree.id %>">Enregistrer les
+        <button class="save button" type="submit" data-action="editTree" data-tree-id="<%= tree.id %>">Enregistrer les
           modifications</button>
-        <button data-action="hideEditTreeModal" data-tree-id="<%= tree.id %>" class="cancel"
+        <button data-action="hideEditTreeModal" data-tree-id="<%= tree.id %>" class="cancel button"
           type="button">Annuler</button>
       </div>
     </form>

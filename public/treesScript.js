@@ -9,35 +9,28 @@ function hideEditTreeModal(treeId) {
 async function editTree(event, treeId) {
   event.preventDefault();
 
-  const id = document.querySelector(
-    `#editTreeModal-${treeId} input[name="id"]`,
-  ).value;
-  const name = document.querySelector(
-    `#editTreeModal-${treeId} input[name="name"]`,
-  ).value;
-  const price_ht =
-    document.querySelector(`#editTreeModal-${treeId} input[name="price_ht"]`)
-      .value || null;
-  const quantity =
-    document.querySelector(`#editTreeModal-${treeId} input[name="quantity"]`)
-      .value || null;
-  const age =
-    document.querySelector(`#editTreeModal-${treeId} input[name="age"]`)
-      .value || null;
-  const species_name = document.querySelector(
-    `#editTreeModal-${treeId} input[name="species_name"]`,
-  ).value;
+  // Sélectionner le formulaire spécifique à ce modal
+  const form = document.querySelector(`#editTreeForm-${treeId}`);
+
+  // Vérifie si le formulaire est valide avant de continuer
+  if (!form.checkValidity()) {
+    form.reportValidity();
+    return;
+  }
+
+  // Préparer les données du formulaire
+  const id = document.querySelector('#editTreeId').value;
+  const name = document.getElementById('editTreeName').value;
+  const price_ht = document.getElementById('editTreePriceHt').value || null;
+  const quantity = document.getElementById('editTreeQuantity').value || null;
+  const age = document.getElementById('editTreeAge').value || null;
+  const species_name = document.getElementById('editTreeSpecies').value;
   const description =
-    document.querySelector(`#editTreeModal-${treeId} input[name="description"]`)
-      .value || null;
+    document.getElementById('editTreeDescription').value || null;
   const co2_absorption =
-    document.querySelector(
-      `#editTreeModal-${treeId} input[name="co2_absorption"]`,
-    ).value || null;
+    document.getElementById('editTreeCo2Absorption').value || null;
   const average_lifespan =
-    document.querySelector(
-      `#editTreeModal-${treeId} input[name="average_lifespan"]`,
-    ).value || null;
+    document.getElementById('editTreeAverageLifespan').value || null;
 
   const body = JSON.stringify({
     name,
@@ -53,7 +46,6 @@ async function editTree(event, treeId) {
         : null,
     },
   });
-
   try {
     const response = await fetch(`/admin/trees/${id}`, {
       method: 'PATCH',
@@ -65,7 +57,7 @@ async function editTree(event, treeId) {
 
     if (response.ok) {
       console.log('Arbre mis à jour avec succès');
-      window.location.reload();
+      window.location.href = '/admin/trees';
     } else {
       console.error("Erreur lors de la mise à jour de l'arbre");
     }

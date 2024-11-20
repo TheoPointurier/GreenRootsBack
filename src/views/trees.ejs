@@ -52,7 +52,7 @@
                   <%= tree.species.co2_absorption %>
                 </td>
                 <td>
-                  <%= tree.species.average_lifespan%>
+                  <%= tree.species.average_lifespan %>
                 </td>
                 <td>
                   <ul>
@@ -61,22 +61,18 @@
                         <%= campaign.name %>
                       </li>
                       <% }) %>
+                  </ul>
                 </td>
-
                 <td class="line-container-button">
                   <button data-action="displayEditTreeModal" data-tree-id="<%= tree.id %>"
                     class="button save">Modifier</button>
-
                   <button data-action="displayDeleteTreeModal" data-tree-id="<%= tree.id %>"
                     class="delete button">Supprimer</button>
-
                 </td>
               </tr>
-
-              <%- include('./partials/modals-updateTree.ejs', {tree}) %>
-                <%- include('./partials/modals-deleteTree.ejs', {tree}) %>
+              <%- include('./partials/modals-updateTree.ejs', { tree }) %>
+                <%- include('./partials/modals-deleteTree.ejs', { tree }) %>
                   <% }) %>
-
           </tbody>
 
         </table>
