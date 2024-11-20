@@ -41,14 +41,16 @@ async function editTree(event, treeId) {
 
   const body = JSON.stringify({
     name,
-    price_ht: Number.parseInt(price_ht),
-    quantity: Number.parseInt(quantity),
-    age: Number.parseInt(age),
+    price_ht: price_ht ? Number.parseFloat(price_ht) : null,
+    quantity: quantity ? Number.parseInt(quantity) : null,
+    age: age ? Number.parseInt(age) : null,
     species: {
       species_name,
       description,
-      co2_absorption: Number.parseInt(co2_absorption),
-      average_lifespan: Number.parseInt(average_lifespan),
+      co2_absorption: co2_absorption ? Number.parseFloat(co2_absorption) : null,
+      average_lifespan: average_lifespan
+        ? Number.parseInt(average_lifespan)
+        : null,
     },
   });
 

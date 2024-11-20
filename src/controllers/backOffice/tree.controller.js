@@ -69,7 +69,7 @@ export async function createTreeBackOffice(req, res) {
     }
 
     // Créer l'arbre avec la référence à l'espèce trouvée ou créée
-    const createdTree = await Tree.create({
+    await Tree.create({
       name,
       price_ht,
       quantity,
@@ -89,6 +89,7 @@ export async function updateTreeBackOffice(req, res) {
     if (errorId) {
       return res.status(400).json({ message: errorId.message });
     }
+
     // Récupérer l'id de l'arbre à modifier
     const treeId = Number.parseInt(req.params.id);
 
@@ -101,33 +102,46 @@ export async function updateTreeBackOffice(req, res) {
         .json({ error: 'Erreur de validation', details: error.details });
     }
 
-    // Récupérer l'arbre à partir de la base de données
-    const tree = await Tree.findByPk(treeId);
+    // Récupérer l'arbre et son espèce à partir de la base de données
+    const tree = await Tree.findByPk(treeId, {
+      include: [{ model: TreeSpecies, as: 'species' }], // Inclure l'espèce associée
+    });
 
     if (!tree) {
       return res.status(404).json({ error: 'Arbre non trouvé' });
     }
 
-    const { name, price_ht, quantity, age, id_species } = req.body;
+    const { name, price_ht, quantity, age, species } = req.body;
 
-    // Mettre à jour les champs modifiés
+    // Mettre à jour les champs de l'arbre
     if (name !== undefined) tree.name = name;
     if (price_ht !== undefined) tree.price_ht = price_ht;
     if (quantity !== undefined) tree.quantity = quantity;
     if (age !== undefined) tree.age = age;
-    if (id_species !== undefined) tree.id_species = id_species;
 
-    // Sauvegarder les modifications
-    try {
-      await tree.save();
-      res.status(200).json({ message: 'Arbre mis à jour avec succès' });
-    } catch (saveError) {
-      console.error("Erreur lors de la sauvegarde de l'arbre:", saveError);
-      res.status(500).json({
-        error: "Erreur lors de la sauvegarde de l'arbre",
-        details: saveError.message,
-      });
+    // Mettre à jour les champs de l'espèce, si fournis
+    if (species) {
+      const { species_name, description, co2_absorption, average_lifespan } =
+        species;
+
+      if (tree.species) {
+        if (species_name !== undefined)
+          tree.species.species_name = species_name;
+        if (description !== undefined) tree.species.description = description;
+        if (co2_absorption !== undefined)
+          tree.species.co2_absorption = co2_absorption;
+        if (average_lifespan !== undefined)
+          tree.species.average_lifespan = average_lifespan;
+
+        // Sauvegarder les modifications de l'espèce
+        await tree.species.save();
+      }
     }
+
+    // Sauvegarder les modifications de l'arbre
+    await tree.save();
+
+    res.status(200).json({ message: 'Arbre mis à jour avec succès' });
   } catch (error) {
     console.error('Erreur inattendue:', error);
     res
