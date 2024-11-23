@@ -125,7 +125,7 @@ async function editOrder(event, orderId) {
 
   // Envoi de la requête PATCH avec les données mises à jour
   try {
-    const response = await fetch(`/admin/orders/${orderId}`, {
+    const response = await fetch(`${baseUrl}/admin/orders/${orderId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -171,7 +171,7 @@ async function deleteOrder(orderId) {
   }
 
   try {
-    const response = await fetch(`/admin/orders/${orderId}`, {
+    const response = await fetch(`${baseUrl}/admin/orders/${orderId}`, {
       method: 'DELETE',
     });
 

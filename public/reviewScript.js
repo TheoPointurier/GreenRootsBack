@@ -48,7 +48,7 @@ async function editReview(event) {
   console.log(body);
 
   try {
-    const response = await fetch(`/admin/reviews/${id}`, {
+    const response = await fetch(`${baseUrl}/admin/reviews/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -80,7 +80,7 @@ function hideDeleteReviewModal() {
 
 async function deleteReview(id) {
   try {
-    const response = await fetch(`/admin/reviews/${id}`, {
+    const response = await fetch(`${baseUrl}/admin/reviews/${id}`, {
       method: 'DELETE',
     });
 

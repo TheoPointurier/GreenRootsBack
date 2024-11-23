@@ -78,7 +78,7 @@ async function editCampaign(event, campaignId) {
 
   try {
     // Envoyer la requête PATCH pour mettre à jour la campagne
-    const response = await fetch(`/admin/campaigns/${campaignId}`, {
+    const response = await fetch(`${baseUrl}/admin/campaigns/${campaignId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -125,7 +125,7 @@ function hideDeleteCampaignModal(campaignId) {
 // Supprimer une campagne
 async function deleteCampaign(campaignId) {
   try {
-    const response = await fetch(`/admin/campaigns/${campaignId}`, {
+    const response = await fetch(`${baseUrl}/admin/campaigns/${campaignId}`, {
       method: 'DELETE',
     });
 
@@ -185,7 +185,7 @@ async function createCampaign(event) {
   });
 
   try {
-    const response = await fetch('/admin/campaigns', {
+    const response = await fetch(`${baseUrl}/admin/campaigns`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -53,9 +53,10 @@ export async function loginVerify(req, res) {
         maxAge: 60 * 60 * 1000, // 1 heure
       });
 
-      return res
-        .status(200)
-        .json({ message: 'Connexion réussie', redirect: '/admin/home' });
+      return res.status(200).json({
+        message: 'Connexion réussie',
+        redirect: `${req.app.locals.baseUrl}/admin/home`,
+      });
     }
   } catch (error) {
     console.error(error);

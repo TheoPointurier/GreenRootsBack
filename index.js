@@ -64,18 +64,19 @@ app.set('views', './src/views');
 
 //Configuration d'un prefixe pour les routes -- A MODIFIER POUR LA PROD au besoin
 app.locals.staticPath = '/greenrootsback/static';
+app.locals.baseUrl = '/greenrootsback';
 
 // Configuration des fichiers statiques
 app.use(app.locals.staticPath, express.static('public'));
 
 // Routes API
-app.use('/greenrootsback/api', apiRouter);
+app.use(`${app.locals.baseUrl}/api`, apiRouter);
 
 // Route pour le backoffice
-app.use('/greenrootsback/admin', backOfficeRouter);
+app.use(`${app.locals.baseUrl}/admin`, backOfficeRouter);
 
 // Route racine
-app.use('/greenrootsback', (req, res) => {
+app.use(`${app.locals.baseUrl}`, (req, res) => {
   res.send("<h1>Bienvenue sur l'API de GreenRoots</h1>");
 });
 

@@ -5,7 +5,8 @@ async function connect(event) {
   const password = document.getElementById('password').value;
 
   try {
-    const response = await fetch('/admin', {
+    console.log('Base URL utilisée pour la requête :', baseUrl); // Vérification
+    const response = await fetch(`${baseUrl}/admin`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -31,6 +32,7 @@ async function connect(event) {
 
 // Initialisation des événements DOM
 document.addEventListener('DOMContentLoaded', () => {
+  console.log('Base URL au chargement :', baseUrl); // Vérification
   document.body.addEventListener('click', (event) => {
     const action = event.target.dataset.action;
 

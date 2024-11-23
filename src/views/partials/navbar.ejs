@@ -1,20 +1,20 @@
 <nav>
   <div>
-    <a href="/admin/home">
+    <a href="<%= baseUrl %>/admin/home">
 
-      <img src="/img/Logo_principal.webp" alt="logo Greenroots">
+      <img src="<%= staticPath %>/img/Logo_principal.webp" alt="logo Greenroots">
     </a>
   </div>
   <ul>
-    <li><a href="/admin/home">Dashboard</a></li>
-    <li><a href="/admin/users">Utilisateurs</a></li>
-    <li><a href="/admin/campaigns">Campagnes</a></li>
-    <li><a href="/admin/trees">Arbres</a></li>
-    <li><a href="/admin/orders">Commandes</a></li>
-    <li><a href="/admin/reviews">Avis d'utilisateurs</a></li>
+    <li><a href="<%= baseUrl %>/admin/home">Dashboard</a></li>
+    <li><a href="<%= baseUrl %>/admin/users">Utilisateurs</a></li>
+    <li><a href="<%= baseUrl %>/admin/campaigns">Campagnes</a></li>
+    <li><a href="<%= baseUrl %>/admin/trees">Arbres</a></li>
+    <li><a href="<%= baseUrl %>/admin/orders">Commandes</a></li>
+    <li><a href="<%= baseUrl %>/admin/reviews">Avis d'utilisateurs</a></li>
   </ul>
 
-  <form action="/admin/logout" method="post" class="form_logout">
+  <form action="<%= baseUrl %>/admin/logout" method="post" class="form_logout">
     <button type="submit">Déconnexion</button>
   </form>
 

@@ -47,7 +47,7 @@ async function editTree(event, treeId) {
     },
   });
   try {
-    const response = await fetch(`/admin/trees/${id}`, {
+    const response = await fetch(`${baseUrl}/admin/trees/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -80,7 +80,7 @@ function hideDeleteTreeModal(treeId) {
 
 async function deleteTree(treeId) {
   try {
-    const response = await fetch(`/admin/trees/${treeId}`, {
+    const response = await fetch(`${baseUrl}/admin/trees/${treeId}`, {
       method: 'DELETE',
     });
 
@@ -139,7 +139,7 @@ async function createTree(event) {
     },
   });
   try {
-    const response = await fetch('/admin/trees', {
+    const response = await fetch(`${baseUrl}/admin/trees`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
