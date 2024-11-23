@@ -62,17 +62,20 @@ app.use(express.json({ limit: '10kb' })); // Body parser pour routes API pour le
 app.set('view engine', 'ejs');
 app.set('views', './src/views');
 
+//Configuration d'un prefixe pour les routes -- A MODIFIER POUR LA PROD au besoin
+app.locals.staticPath = '/greenrootsback/static';
+
 // Configuration des fichiers statiques
-app.use('/greenrootsback/static', express.static('public'));
+app.use(app.locals.staticPath, express.static('public'));
 
 // Routes API
-app.use('greenrootsback/api', apiRouter);
+app.use('/greenrootsback/api', apiRouter);
 
 // Route pour le backoffice
-app.use('greenrootsback/admin', backOfficeRouter);
+app.use('/greenrootsback/admin', backOfficeRouter);
 
 // Route racine
-app.use('/grenrootsback', (req, res) => {
+app.use('/greenrootsback', (req, res) => {
   res.send("<h1>Bienvenue sur l'API de GreenRoots</h1>");
 });
 
