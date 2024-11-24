@@ -222,7 +222,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const action = event.target.dataset.action;
     const campaignId = event.target.dataset.campaignId;
 
-    if (!action) return; // Ignorer les clics sans data-action
+    const validActions = [
+      'displayCreateCampaignModal',
+      'hideCreateCampaignModal',
+      'displayEditCampaignModal',
+      'hideEditCampaignModal',
+      'displayDeleteCampaignModal',
+      'hideDeleteCampaignModal',
+      'createCampaign',
+      'editCampaign',
+      'deleteCampaign',
+    ];
+
+    if (!action || !validActions.includes(action)) return; // Ignorer les clics sans action valide
 
     switch (action) {
       case 'displayCreateCampaignModal':

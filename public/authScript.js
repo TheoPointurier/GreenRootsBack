@@ -50,11 +50,12 @@ async function logout() {
 
 // Initialisation des événements DOM
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('Base URL au chargement :', baseUrl); // Vérification
   document.body.addEventListener('click', (event) => {
     const action = event.target.dataset.action;
 
-    if (!action) return; // Ignorer les clics sans data-action
+    const validAuthAction = ['login', 'logout'];
+
+    if (!action || !validAuthAction.includes(action)) return; // Ignorer les clics sans data-action
 
     switch (action) {
       case 'login':
