@@ -51,7 +51,7 @@ async function editUser(event, userId) {
   ).value;
 
   try {
-    const response = await fetch(`/admin/users/${userId}`, {
+    const response = await fetch(`${baseUrl}/admin/users/${userId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -146,7 +146,7 @@ async function createUser(event) {
   ).value;
 
   try {
-    const response = await fetch('/admin/users', {
+    const response = await fetch(`${baseUrl}/admin/users`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -198,7 +198,7 @@ function hideDeleteUserModal(userId) {
 
 async function deleteUser(userId) {
   try {
-    const response = await fetch(`/admin/users/${userId}`, {
+    const response = await fetch(`${baseUrl}/admin/users/${userId}`, {
       method: 'DELETE',
     });
 

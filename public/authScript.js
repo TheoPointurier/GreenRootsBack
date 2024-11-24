@@ -5,7 +5,6 @@ async function connect(event) {
   const password = document.getElementById('password').value;
 
   try {
-    console.log('Base URL utilisée pour la requête :', baseUrl); // Vérification
     const response = await fetch(`${baseUrl}/admin`, {
       method: 'POST',
       headers: {
@@ -30,6 +29,25 @@ async function connect(event) {
   }
 }
 
+async function logout() {
+  try {
+    const response = await fetch(`${baseUrl}/admin/logout`, {
+      method: 'POST',
+    });
+
+    if (response.ok) {
+      window.location.href = response.json();
+    } else {
+      const error = await response.json();
+      console.error('Erreur lors de la déconnexion :', error);
+      alert(error);
+    }
+  } catch (error) {
+    console.error('Erreur réseau lors de la déconnexion', error);
+    alert('Impossible de se déconnecter. Vérifiez votre connexion réseau.');
+  }
+}
+
 // Initialisation des événements DOM
 document.addEventListener('DOMContentLoaded', () => {
   console.log('Base URL au chargement :', baseUrl); // Vérification
@@ -41,6 +59,9 @@ document.addEventListener('DOMContentLoaded', () => {
     switch (action) {
       case 'login':
         connect(event);
+        break;
+      case 'logout':
+        logout();
         break;
       default:
         console.warn(`Action non gérée : ${action}`);

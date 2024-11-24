@@ -167,7 +167,7 @@ export async function deleteTreeBackOffice(req, res) {
 
     await tree.destroy();
 
-    res.status(204).redirect('/admin/trees');
+    res.status(204).json({ message: 'Arbre supprimé avec succès' });
   } catch (error) {
     console.error(error);
     res.status(500).send("Une erreur s'est produite");

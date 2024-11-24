@@ -162,12 +162,6 @@ export async function updateOrderBackOffice(req, res) {
     // Envoyer une réponse JSON au lieu de rediriger
     res.status(200).json({
       message: 'Commande mise à jour avec succès',
-      updatedOrder: {
-        id: orderId,
-        total_amount: order.total_amount,
-        status: order.status,
-        order_number: order.order_number,
-      },
     });
   } catch (updateError) {
     console.log('Erreur lors de la mise à jour de la commande:', updateError);
@@ -193,13 +187,14 @@ export async function deleteOrderBackOffice(req, res) {
 
     await order.destroy();
 
-    res.status(204).end();
+    res.status(204).json({ message: 'Commande supprimée avec succès' });
   } catch (error) {
     console.error(error);
     res.status(500).send("Une erreur s'est produite");
   }
 }
 
+//TODO Fonction a adapter si besoin d'avoir la possibilité de créer une commande
 export async function createOrder(req, res) {
   // Schéma de validation de l'ID
   const { errorId } = idSchema.validate({ id: req.params.id });

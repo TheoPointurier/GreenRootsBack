@@ -132,7 +132,7 @@ export async function createCampaignBackoffice(req, res) {
       await campaign.setTreesCampaign(treeIds);
     }
 
-    res.redirect('/admin/campaigns');
+    res.status(201).json({ message: 'Campagne créée avec succès' });
   } catch (error) {
     console.error('Erreur lors de la création de la campagne:', error);
     res.status(500).send({
@@ -265,7 +265,9 @@ export async function deleteCampaignBackOffice(req, res) {
     await campaign.destroy({ transaction });
 
     await transaction.commit(); // Valider la transaction
-    res.status(200).redirect('/admin/campaigns');
+    res
+      .status(200)
+      .json({ message: ` La campagne avec l'id ${req.params.id} ` });
   } catch (error) {
     await transaction.rollback(); // Annuler la transaction en cas d'erreur
     console.error('Erreur lors de la suppression de la campagne :', error);

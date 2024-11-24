@@ -6,7 +6,7 @@ export default function verifyTokenAdmin(req, res, next) {
 
   // Vérifier que le token est présent et qu'il suit le format "Bearer <token>"
   if (!token) {
-    return res.redirect('/admin');
+    return res.redirect(`${req.app.locals.baseUrl}/admin`);
   }
 
   try {
@@ -17,6 +17,6 @@ export default function verifyTokenAdmin(req, res, next) {
     next();
   } catch (error) {
     // Si le token est invalide ou a expiré
-    return res.redirect('/admin');
+    return res.redirect(`${req.app.locals.baseUrl}/admin`);
   }
 }

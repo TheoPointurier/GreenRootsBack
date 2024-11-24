@@ -79,7 +79,7 @@ export async function updateReviewBackOffice(req, res) {
     // Sauvegarder les modifications
     await review.save();
 
-    res.status(200).redirect('/admin/reviews');
+    res.status(200).json({ message: 'Avis mise à jour avec succès' });
   } catch (error) {
     console.error(error);
     res.status(500).send("Une erreur s'est produite");
@@ -104,7 +104,7 @@ export async function deleteReviewBackOffice(req, res) {
 
     await review.destroy();
 
-    res.status(204).redirect('/admin/reviews');
+    res.status(204).json({ message: 'Avis supprimé avec succès' });
   } catch (error) {
     console.error(error);
     res.status(500).send("Une erreur s'est produite");

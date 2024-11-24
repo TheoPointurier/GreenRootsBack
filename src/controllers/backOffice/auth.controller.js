@@ -81,5 +81,8 @@ export function logout(req, res) {
     path: '/',
   });
 
-  res.redirect('/admin');
+  res.status(200).json({
+    message: 'Déconnexion réussie',
+    redirect: `${req.app.locals.baseUrl}/admin/login`,
+  });
 }

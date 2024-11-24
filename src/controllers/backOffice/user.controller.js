@@ -133,7 +133,7 @@ export async function createUserBackOffice(req, res) {
       is_admin,
     });
 
-    res.status(201).redirect('/admin/users');
+    res.status(201).json({ message: 'Utilisateur créé avec succès' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Une erreur s'est produite" });
@@ -221,7 +221,7 @@ export async function updateUserBackOffice(req, res) {
     await user.save();
     console.log('User mis à jour avec succès :', user);
 
-    res.status(200).redirect('/admin/users');
+    res.status(200).json({ message: 'Utilisateur mis à jour avec succès' });
   } catch (error) {
     console.error(error);
     res.status(500).send("Une erreur s'est produite");
@@ -246,7 +246,7 @@ export async function deleteUserBackOffice(req, res) {
 
     await user.destroy();
 
-    res.status(204).redirect('/admin/users');
+    res.status(204).json({ message: 'Utilisateur supprimé avec succès' });
   } catch (error) {
     console.error(error);
     res.status(500).send("Une erreur s'est produite");

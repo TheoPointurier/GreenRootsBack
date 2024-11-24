@@ -1,3 +1,4 @@
+<script src='<%= staticPath %>/authScript.js'></script>
 <nav>
   <div>
     <a href="<%= baseUrl %>/admin/home">
@@ -14,8 +15,8 @@
     <li><a href="<%= baseUrl %>/admin/reviews">Avis d'utilisateurs</a></li>
   </ul>
 
-  <form action="<%= baseUrl %>/admin/logout" method="post" class="form_logout">
-    <button type="submit">Déconnexion</button>
+  <form method="post" class="form_logout">
+    <button type="submit" data-action="logout" class="button">Déconnexion</button>
   </form>
 
 </nav>
