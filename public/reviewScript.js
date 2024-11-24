@@ -18,6 +18,7 @@ async function editReview(event, reviewId) {
   event.preventDefault();
 
   const form = document.querySelector(`#editReviewForm-${reviewId}`);
+  // console.log('Form :', form);
 
   // Vérifie si le formulaire est valide avant de continuer
   if (!form.checkValidity()) {
@@ -51,9 +52,11 @@ async function editReview(event, reviewId) {
       console.log('Review mise à jour avec succès');
       window.location.reload();
     } else {
-      const error = await response.json();
-      console.error('Erreur lors de la mise à jour de la review', error);
-      console.log('Review non mise à jour');
+      const errorText = await response.text(); // Récupérer l'erreur en texte brut
+      console.error('Erreur lors de la mise à jour de la review :', errorText);
+      // const error = await response.json();
+      // console.error('Erreur lors de la mise à jour de la review', error);
+      // console.log('Review non mise à jour');
     }
   } catch (error) {
     console.error('Erreur réseau lors de la mise à jour de la review', error);

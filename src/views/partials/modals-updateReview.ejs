@@ -5,12 +5,11 @@
 
     <form id="editReviewForm-<%= review.id %>" class="modal-form">
       <label for="editReviewId-<%= review.id %>">Id review</label>
-      <input type="number" id="editReviewId-<%= review.id %>" name="id" value="<%= review.id %>" disabled
-        readonly></input>
+      <input type="number" id="editReviewId-<%= review.id %>" name="id" value="<%= review.id %>" disabled readonly>
       <div>
         <label for="editReviewContent-<%= review.id %>">Avis :</label>
         <input type="text" id="editReviewContent-<%= review.id %>" name="content" value="<%= review.content %>"
-          required></input>
+          required>
       </div>
       <div>
         <label for="editReviewRating-<%= review.id %>">Note</label>
@@ -37,8 +36,8 @@
           readonly>
       </div>
       <div class="edit_modal_button">
-        <button class="save button" type="submit" data-action="editReview"
-          data-review-id="-<%= review.id %>">Enregistrer les modifications</button>
+        <button class="save button" type="submit" data-action="editReview" data-review-id="<%= review.id %>">Enregistrer
+          les modifications</button>
         <button data-action="hideEditReviewModal" class="cancel button" data-review-id="<%= review.id %>"
           type="button cancel">Annuler</button>
       </div>
