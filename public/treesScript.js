@@ -11,6 +11,7 @@ async function editTree(event, treeId) {
 
   // Sélectionner le formulaire spécifique à ce modal
   const form = document.querySelector(`#editTreeForm-${treeId}`);
+  console.log(form);
 
   // Vérifie si le formulaire est valide avant de continuer
   if (!form.checkValidity()) {
@@ -19,18 +20,22 @@ async function editTree(event, treeId) {
   }
 
   // Préparer les données du formulaire
-  const id = document.querySelector('#editTreeId').value;
-  const name = document.getElementById('editTreeName').value;
-  const price_ht = document.getElementById('editTreePriceHt').value || null;
-  const quantity = document.getElementById('editTreeQuantity').value || null;
-  const age = document.getElementById('editTreeAge').value || null;
-  const species_name = document.getElementById('editTreeSpecies').value;
+  const id = document.querySelector(`#editTreeId-${treeId}`).value;
+  const name = document.getElementById(`editTreeName-${treeId}`).value;
+  const price_ht =
+    document.getElementById(`editTreePriceHt-${treeId}`).value || null;
+  const quantity =
+    document.getElementById(`editTreeQuantity-${treeId}`).value || null;
+  const age = document.getElementById(`editTreeAge-${treeId}`).value || null;
+  const species_name = document.getElementById(
+    `editTreeSpecies-${treeId}`,
+  ).value;
   const description =
-    document.getElementById('editTreeDescription').value || null;
+    document.getElementById(`editTreeDescription-${treeId}`).value || null;
   const co2_absorption =
-    document.getElementById('editTreeCo2Absorption').value || null;
+    document.getElementById(`editTreeCo2Absorption-${treeId}`).value || null;
   const average_lifespan =
-    document.getElementById('editTreeAverageLifespan').value || null;
+    document.getElementById(`editTreeAverageLifespan-${treeId}`).value || null;
 
   const body = JSON.stringify({
     name,
@@ -57,7 +62,7 @@ async function editTree(event, treeId) {
 
     if (response.ok) {
       console.log('Arbre mis à jour avec succès');
-      window.location.href = '/admin/trees';
+      window.location.reload();
     } else {
       console.error("Erreur lors de la mise à jour de l'arbre");
     }
@@ -149,7 +154,7 @@ async function createTree(event) {
 
     if (response.ok) {
       console.log('Arbre créé avec succès');
-      window.location.href = '/admin/trees';
+      window.location.reload();
     } else {
       const error = await response.json();
       console.error("Erreur lors de la création de l'arbre", error);

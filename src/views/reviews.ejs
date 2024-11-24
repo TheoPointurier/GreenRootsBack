@@ -6,9 +6,9 @@
     <main>
       <div class="searchAddBar">
 
-        <input type="text" class="searchInput" placeholder="Filtrer..." onkeyup="filterSearchBar()">
+        <input type="text" class="searchInput" placeholder="Filtrer..." data-action="filterSearchBar">
       </div>
-      <div class="table_container">
+      <div class=" table_container">
         <table>
           <thead>
             <tr>
@@ -47,25 +47,19 @@
                   <%= new Date(review.created_at).toLocaleDateString('fr-FR') %>
                 </td>
                 <td class="line-container-button">
-                  <button onclick="displayEditReviewModal(
-                    `<%= review.id %>`,
-                    `<%= review.content %>`,
-                    `<%= review.rating %>`,
-                    `<%= review.id_user %>`,
-                    `<%= review.user.firstname %>`,
-                    `<%= review.user.lastname %>`,
-                    `<%= review.user.email %>`
-                    )">Modifier</button>
-                  <button onclick="displayDeleteReviewModal(`<%= review.id %>`)" class="delete">Supprimer</button>
+                  <button data-action="displayEditReviewModal" data-review-id="<%= review.id %>"
+                    class="button save">Modifier</button>
+                  <button data-action="displayDeleteReviewModal" data-review-id="<%= review.id %>"
+                    class="delete button">Supprimer</button>
                 </td>
               </tr>
-              <% }) %>
+              <%- include('./partials/modals-updateReview.ejs', { review }) %>
+                <%- include('./partials/modals-deleteReview.ejs', { review }) %>
+                  <% }) %>
           </tbody>
         </table>
       </div>
 
-      <%- include('./partials/modals-updateReview.ejs') %>
-        <%- include('./partials/modals-deleteReview.ejs') %>
 
     </main>
     <%- include('./partials/footer.ejs') %>

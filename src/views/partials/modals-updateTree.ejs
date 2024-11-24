@@ -3,41 +3,44 @@
     <h2>Modifier l'Arbre #<%= tree.id %>
     </h2>
     <form class="modal-form" id="editTreeForm-<%= tree.id %>">
-      <input type="hidden" id="editTreeId" name="id" value="<%= tree.id %>">
+      <input type="number" disabled id="editTreeId-<%= tree.id %>" name="id" value="<%- tree.id %>">
 
       <div>
         <label for="editTreeName">Nom :</label>
-        <input type="text" id="editTreeName" name="name" value="<%= tree.name %>" required>
+        <input type="text" id="editTreeName-<%= tree.id %>" name="name" value="<%- tree.name %>" required>
       </div>
       <div>
         <label for="editTreePriceHt">Prix HT :</label>
-        <input type="number" id="editTreePriceHt" name="price_ht" step="0.01" value="<%= tree.price_ht %>">
+        <input type="number" id="editTreePriceHt-<%= tree.id %>" name="price_ht" step="0.01"
+          value="<%- tree.price_ht %>">
       </div>
       <div>
         <label for="editTreeQuantity">Quantité :</label>
-        <input type="number" id="editTreeQuantity" name="quantity" value="<%= tree.quantity %>">
+        <input type="number" id="editTreeQuantity-<%= tree.id %>" name="quantity" value="<%- tree.quantity %>">
       </div>
       <div>
         <label for="editTreeAge">Âge (années) :</label>
-        <input type="number" id="editTreeAge" name="age" value="<%= tree.age %>">
+        <input type="number" id="editTreeAge-<%= tree.id %>" name="age" value="<%- tree.age %>">
       </div>
       <div>
         <label for="editTreeSpecies">Espèce :</label>
-        <input type="text" id="editTreeSpecies" name="species_name" value="<%= tree.species.species_name %>" required>
+        <input type="text" id="editTreeSpecies-<%= tree.id %>" name="species_name"
+          value="<%- tree.species.species_name %>" required>
       </div>
       <div>
         <label for="editTreeDescription">Description :</label>
-        <textarea id="editTreeDescription" name="description" required><%= tree.species.description %></textarea>
+        <textarea id="editTreeDescription-<%= tree.id %>" name="description"
+          required><%- tree.species.description %></textarea>
       </div>
       <div>
         <label for="editTreeCo2Absorption">Absorption de CO2 :</label>
-        <input type="number" id="editTreeCo2Absorption" name="co2_absorption"
-          value="<%= tree.species.co2_absorption %>">
+        <input type="number" id="editTreeCo2Absorption-<%= tree.id %>" name="co2_absorption"
+          value="<%- tree.species.co2_absorption %>">
       </div>
       <div>
         <label for="editTreeAverageLifespan">Durée de vie moyenne :</label>
-        <input type="number" id="editTreeAverageLifespan" name="average_lifespan"
-          value="<%= tree.species.average_lifespan %>">
+        <input type="number" id="editTreeAverageLifespan-<%= tree.id %>" name="average_lifespan"
+          value="<%- tree.species.average_lifespan %>">
       </div>
 
       <div class="edit_modal_button">

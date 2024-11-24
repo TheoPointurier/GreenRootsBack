@@ -1,10 +1,11 @@
-<div id="deleteReviewModal" class=" delete_modal modal hidden">
+<div id="deleteReviewModal-<%= review.id %>" class=" delete_modal modal hidden">
   <div class="modal-content">
     <h2>Confirmer la suppression</h2>
     <p>Êtes-vous sûr de vouloir supprimer l'avis?</p>
     <div>
-      <button id="confirmDeleteButton" class="delete button">Supprimer</button>
-      <button onclick="hideDeleteReviewModal()" class="cancel button">Annuler</button>
+      <button id="confirmDeleteButton-<%= review.id %>" data-review-id="-<%= review.id %>" data-action="deleteReview"
+        class="delete button">Supprimer</button>
+      <button data-action="hideDeleteReviewModal" class="cancel button">Annuler</button>
     </div>
   </div>
 </div>

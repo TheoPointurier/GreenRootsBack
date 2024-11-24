@@ -1,37 +1,46 @@
-<div id="editReviewModal" class="modal hidden edit-review-modal">
+<div id="editReviewModal-<%= review.id %>" class="modal hidden modal-form modal-review edit-review-modal">
   <div class="modal-content">
-    <h2>Modifier l'avis</h2>
+    <h2>Modifier l'avis #<%= review.id %>
+    </h2>
 
-    <form id="editReviewForm" onsubmit="editReview(event)" class="modal-form">
-      <label for="editReviewId">Id review</label>
-      <input type="number" id="editReviewId" name="id" disabled readonly>
+    <form id="editReviewForm-<%= review.id %>" class="modal-form">
+      <label for="editReviewId-<%= review.id %>">Id review</label>
+      <input type="number" id="editReviewId-<%= review.id %>" name="id" value="<%= review.id %>" disabled
+        readonly></input>
       <div>
-        <label for="editReviewContent">Avis :</label>
-        <input type="text" id="editReviewContent" name="content" required>
+        <label for="editReviewContent-<%= review.id %>">Avis :</label>
+        <input type="text" id="editReviewContent-<%= review.id %>" name="content" value="<%= review.content %>"
+          required></input>
       </div>
       <div>
-        <label for="editReviewRating">Note</label>
-        <input type="number" id="editReviewRating" name="rating">
+        <label for="editReviewRating-<%= review.id %>">Note</label>
+        <input type="number" id="editReviewRating-<%= review.id %>" name="rating" value="<%= review.rating %>">
       </div>
       <div>
-        <label for="editReviewUserId">Id user</label>
-        <input type="text" id="editReviewUserId" name="id_user" disabled readonly>
+        <label for="editReviewUserId-<%= review.id %>">Id user</label>
+        <input type="text" id="editReviewUserId-<%= review.id %>" name="id_user" value="<%= review.id_user %>" disabled
+          readonly>
       </div>
       <div>
-        <label for="editReviewFirstname">Prénom</label>
-        <input type="text" id="editReviewFirstname" name="firstname" disabled readonly>
+        <label for="editReviewFirstname-<%= review.id %>">Prénom</label>
+        <input type="text" id="editReviewFirstname-<%= review.id %>" name="firstname"
+          value="<%= review.user.firstname %>" disabled readonly>
       </div>
       <div>
-        <label for="editReviewLastname">Nom</label>
-        <input type="text" id="editReviewLastname" name="lastname" disabled readonly>
+        <label for="editReviewLastname-<%= review.id %>">Nom</label>
+        <input type="text" id="editReviewLastname-<%= review.id %>" name="lastname" value="<%= review.user.lastname %>"
+          disabled readonly>
       </div>
       <div>
-        <label for="editReviewEmail">Email</label>
-        <input type="email" id="editReviewEmail" name="email" disabled readonly>
+        <label for="editReviewEmail-<%= review.id %>">Email</label>
+        <input type="email" id="editReviewEmail-<%= review.id %>" name="email" value="<%= review.user.email %>" disabled
+          readonly>
       </div>
       <div class="edit_modal_button">
-        <button class="save" type="submit">Enregistrer les modifications</button>
-        <button onclick="hideEditReviewModal()" class="cancel" type="button">Annuler</button>
+        <button class="save button" type="submit" data-action="editReview"
+          data-review-id="-<%= review.id %>">Enregistrer les modifications</button>
+        <button data-action="hideEditReviewModal" class="cancel button" data-review-id="<%= review.id %>"
+          type="button cancel">Annuler</button>
       </div>
     </form>
   </div>

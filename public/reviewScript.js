@@ -1,51 +1,43 @@
-function displayEditReviewModal(
-  id,
-  content,
-  rating,
-  id_user,
-  firstname,
-  lastname,
-  email,
-) {
-  console.log(id, content, rating, id_user, firstname, lastname, email);
-  console.log('identificant avis', id);
-  console.log('contenu avis', content);
-  console.log('note avis', rating);
-  console.log('identifiant utilisateur', id_user);
-  console.log('prénom utilisateur', firstname);
-  console.log('nom utilisateur', lastname);
-  console.log('email utilisateur', email);
-
-  document.getElementById('editReviewId').value = id;
-  document.getElementById('editReviewContent').value = content;
-  document.getElementById('editReviewRating').value = rating;
-  document.getElementById('editReviewUserId').value = id_user;
-  document.getElementById('editReviewFirstname').value = firstname;
-  document.getElementById('editReviewLastname').value = lastname;
-  document.getElementById('editReviewEmail').value = email;
-
-  document.getElementById('editReviewModal').classList.remove('hidden');
+function displayEditReviewModal(reviewId) {
+  const reviewModal = document.getElementById(`editReviewModal-${reviewId}`);
+  if (reviewModal) {
+    reviewModal.classList.remove('hidden');
+  } else {
+    console.error(`Modal d'édition pour la review ${reviewId} introuvable.`);
+  }
 }
 
-function hideEditReviewModal() {
-  document.getElementById('editReviewModal').classList.add('hidden');
+function hideEditReviewModal(reviewId) {
+  const editModal = document.getElementById(`editReviewModal-${reviewId}`);
+  if (editModal) {
+    editModal.classList.add('hidden');
+  }
 }
 
-async function editReview(event) {
+async function editReview(event, reviewId) {
   event.preventDefault();
 
-  const id = document.getElementById('editReviewId').value;
-  const content = document.getElementById('editReviewContent').value;
-  const rating = document.getElementById('editReviewRating').value;
-  const id_user = document.getElementById('editReviewUserId').value;
+  const form = document.querySelector(`#editReviewForm-${reviewId}`);
+
+  // Vérifie si le formulaire est valide avant de continuer
+  if (!form.checkValidity()) {
+    form.reportValidity();
+    return;
+  }
+
+  // Récupérer les champs du formulaire
+  const id = document.querySelector(`#editReviewId-${reviewId}`).value;
+  const content = document.querySelector(
+    `#editReviewContent-${reviewId}`,
+  ).value;
+  const rating = document.querySelector(`#editReviewRating-${reviewId}`).value;
+  const id_user = document.querySelector(`#editReviewUserId-${reviewId}`).value;
 
   const body = JSON.stringify({
     content,
     rating: Number.parseInt(rating),
     id_user: Number.parseInt(id_user),
   });
-
-  console.log(body);
 
   try {
     const response = await fetch(`${baseUrl}/admin/reviews/${id}`, {
@@ -68,19 +60,23 @@ async function editReview(event) {
   }
 }
 
-function displayDeleteReviewModal(id) {
-  document.getElementById('deleteReviewModal').classList.remove('hidden');
-  document.getElementById('confirmDeleteButton').onclick = () =>
-    deleteReview(id);
+function displayDeleteReviewModal(reviewId) {
+  document
+    .getElementById(`deleteReviewModal-${reviewId}`)
+    .classList.remove('hidden');
+  document.getElementById(`confirmDeleteButton-${reviewId}`).onclick = () =>
+    deleteReview(reviewId);
 }
 
-function hideDeleteReviewModal() {
-  document.getElementById('deleteReviewModal').classList.add('hidden');
+function hideDeleteReviewModal(reviewId) {
+  document
+    .getElementById(`deleteReviewModal-${reviewId}`)
+    .classList.add('hidden');
 }
 
-async function deleteReview(id) {
+async function deleteReview(reviewId) {
   try {
-    const response = await fetch(`${baseUrl}/admin/reviews/${id}`, {
+    const response = await fetch(`${baseUrl}/admin/reviews/${reviewId}`, {
       method: 'DELETE',
     });
 
@@ -94,3 +90,50 @@ async function deleteReview(id) {
     console.error('Erreur réseau lors de la suppression de la review', error);
   }
 }
+
+// Initialisation des événements DOM
+document.addEventListener('DOMContentLoaded', () => {
+  document.body.addEventListener('click', (event) => {
+    const action = event.target.dataset.action;
+    const reviewId = event.target.dataset.reviewId;
+
+    const validActions = [
+      'displayEditReviewModal',
+      'hideEditReviewModal',
+      'editReview',
+      'displayDeleteReviewModal',
+      'hideDeleteReviewModal',
+      'deleteReview',
+    ];
+
+    if (!action || !validActions.includes(action)) return; // Ignorer les clics sans action valide
+
+    switch (action) {
+      case 'displayEditReviewModal':
+        displayEditReviewModal(reviewId);
+        break;
+      case 'hideEditReviewModal':
+        hideEditReviewModal(reviewId);
+        break;
+      case 'displayDeleteReviewModal':
+        displayDeleteReviewModal(reviewId);
+        break;
+      case 'hideDeleteReviewModal':
+        hideDeleteReviewModal(reviewId);
+        break;
+      case 'editReview':
+        editReview(event, reviewId);
+        break;
+      case 'deleteReview':
+        deleteReview(reviewId);
+        break;
+      default:
+        console.warn(`Action non gérée : ${action}`);
+    }
+  });
+
+  // Pour gérer la recherche dans la barre de recherche
+  document
+    .querySelector('.searchInput')
+    ?.addEventListener('keyup', filterSearchBar);
+});

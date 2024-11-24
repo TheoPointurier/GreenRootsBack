@@ -263,7 +263,7 @@ table thead tr th {
   justify-content: center;
   flex-wrap: wrap;
   gap: 5rem;
-  margin-bottom: 2rem;
+  margin: 2rem 0;
 }
 
 .create_modal_button,
@@ -290,6 +290,7 @@ table thead tr th {
 .modalOrder,
 .modal-user,
 .modal-tree,
+.modal-review,
 .create-campaign-modal,
 .table_container .edit-campaign-modal,
 .create-tree-modal,
