@@ -14,10 +14,12 @@ app.disable('x-powered-by');
 
 // Adresses autorisées pour CORS
 const allowedOrigins = process.env.CORS_ORIGIN.split(','); // Remplace par
+console.log('Allowed origins:', allowedOrigins);
 
 // Configuration CORS
 app.use((req, res, next) => {
   const origin = req.headers.origin;
+  console.log('Request from:', origin);
 
   if (allowedOrigins.includes(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
@@ -32,10 +34,12 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Credentials', 'true'); // pour les cookies
   }
 
-  // Si la méthode est OPTIONS, on répond directement pour les reuëtes préflight
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(204);
-  }
+  // // Si la méthode est OPTIONS, on répond directement pour les reuëtes préflight
+  // if (req.method === 'OPTIONS') {
+  //   return res.sendStatus(204);
+  // }
+
+
   next();
 });
 

@@ -5,12 +5,12 @@
   "main": "index.js",
   "scripts": {
     "pm2:start": "./node_modules/.bin/pm2 start index.js",
-    "startprod": "pm2 start index.js",
+    "startprod": "pm2 start index.js --name greenroots-back",
     "stopprod": "pm2 stop index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node --watch index.js",
-    "db:create": "psql -U greenroots_user -d greenroots_prod -f ./data/create_BDD.sql",
-    "db:populate": "psql -U greenroots_user -d greenroots_prod -f ./data/seeding_data.sql",
+    "db:create": "psql -U greenroots -d greenroots -f ./data/create_BDD.sql",
+    "db:populate": "psql -U greenroots -d greenroots -f ./data/seeding_data.sql",
     "db:reset": "npm run db:create && npm run db:populate && node ./data/hashingPassword.js"
   },
   "type": "module",
